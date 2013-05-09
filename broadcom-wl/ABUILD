@@ -21,6 +21,7 @@ longdesc=("Firmware for Broadcom BCM43xx. Homepage: http://www.broadcom.com/supp
 
 source=("http://www.broadcom.com/docs/linux_sta/hybrid-portsrc_${arch_src}-v${pkgver_src}.tar.gz")
 
+build_deps="kernel-source"
 BUILD_PARAMS="API=WEXT"
 
 tags="network net-wireless"

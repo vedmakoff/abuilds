@@ -1,21 +1,23 @@
 
 pkgname=glibc-zoneinfo
-pkgver=2.12.2_2011l
+pkgver=2012i
 pkgbuild=1
-_tzcode=2011i
-_tzdata=2011l
+_tzcode=${pkgver}
+_tzdata=${pkgver}
 shortdesc="Sources for time zone and daylight saving time data"
 longdesc="Sources for time zone and daylight saving time data"
 arch=("noarch")
 tags=("libs sys-libs")
-source=("http://www.iana.org/time-zones/repository/releases/tzdata${_tzdata}.tar.gz n"
+source=("http://www.iana.org/time-zones/repository/releases/tzdata${_tzdata}.tar.gz"
         "http://www.iana.org/time-zones/repository/releases/tzcode${_tzcode}.tar.gz")
+
+build_deps="mkpkg"
 
 build() {
 	go_src_dir
 
-	tar -xf ${srcache}/tzcode${_tzcode}.tar.gz
-	tar -xf ${srcache}/tzdata${_tzdata}.tar.gz
+	#tar -xf ${srcache}/tzcode${_tzcode}.tar.gz
+	#tar -xf ${srcache}/tzdata${_tzdata}.tar.gz
 	burn_patches
 	
 	make -j${numjobs}

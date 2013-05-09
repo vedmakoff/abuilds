@@ -1,0 +1,12 @@
+pkgname=libusb
+pkgver=0.1.12.1
+pkgbuild=1
+arch=("noarch")
+
+shortdesc=("libusb->libusb-compat transition package")
+
+tags=("virtual sys-libs")
+adddep="libusb-compat"
+build() {
+	echo "Building virtual package"
+}

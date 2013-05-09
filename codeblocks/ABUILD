@@ -10,7 +10,7 @@ shortdesc="The open source, cross platform, free C++ IDE"
 #longdesc=(""
 #)
 
-source=("svn:http://svn.code.sf.net/p/codeblocks/code/trunk")
+source=("http://sourceforge.net/projects/codeblocks/files/Sources/${pkgver}/codeblocks_${pkgver}-1.tar.gz")
 
 patch_opts=("")
 
@@ -44,10 +44,18 @@ custom_opts=""
 #----------------------------- Make PKG --------------------------------------
 #-------------------------- Сборка пакета ------------------------------------
 
-build(){
-go_src_dir
- ./bootstrap || return 1
-  ./configure --prefix=/usr \
+#ran before function build()
+#запускается перед сборкой.
+#before_build()
+#{
+#
+#}
+
+BUILD_SYSTEM="autotools"
+
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+
+BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -55,10 +63,13 @@ go_src_dir
 --mandir=/usr/man \
 --program-prefix= \
 --program-suffix= \
---with-contrib-plugins=all
-  make || return 1
-  make DESTDIR="${pkgdir}" install || return 1
+--with-contrib-plugins=all"
 
-}
+INSTALL_KEYS="DESTDIR=$pkgdir"
 
+#ran after function build() 
+#после сборки
+#after_build()
+#{
 
+#}

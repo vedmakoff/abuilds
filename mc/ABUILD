@@ -2,7 +2,7 @@
 pkgname=mc
 pkgver=4.8.6
 srcver=${pkgver//_/-}
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('Midnight Commander is a text based file manager')
@@ -51,6 +51,7 @@ BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --sysconfdir=/etc --loc
 	--enable-rpath=yes \
 	--enable-vfs-mcfs=yes \
 	--enable-static=no \
+	--without-x \
 	--with-slang-libs=/usr/lib$LIBDIRSUFFIX"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
