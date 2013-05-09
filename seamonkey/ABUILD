@@ -1,27 +1,21 @@
-#ABUILD created by/создан: SirAnthony, anthony at adsorbtion.org
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org
 
 # Package metadata
 pkgname=seamonkey
-pkgver=2.13.1
+pkgver=2.15
 pkgbuild=1
 arch=("auto")
+build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite')
 
-# Package description
 shortdesc=('open-source web browser suite')
 longdesc=("The SeaMonkey browser suite.  SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client."
 "Visit the SeaMonkey project at this URL:  http://www.mozilla.org/projects/seamonkey/")
 
-# Source URL
 source=("http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.bz2")
-
-# Tags
 tags=("xapps www-client")
 
 docs="LEGAL"
 
-numjobs=1
-
-# Build system
 BUILD_SYSTEM="autotools"
 LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/seamonkey-$pkgver"
 #MAKE_WORD="make -j$numjobs -f client.mk build"

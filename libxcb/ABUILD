@@ -1,6 +1,6 @@
 # libxcb ABUILD
 pkgname=libxcb
-pkgver=1.8.1
+pkgver=1.9
 pkgbuild=1
 arch=('auto')
 
