@@ -11,7 +11,7 @@ tags=("base sys-apps")
 
 source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="libcap-ng gcc-libs"
+build_deps="libcap-ng gcc"
 
 config_files="etc/smartd.conf"
 BUILD_SYSTEM="autotools"

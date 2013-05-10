@@ -10,7 +10,7 @@ tags=("develop dev-lang")
 
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="pcre zlib gcc-libs"
+build_deps="pcre zlib gcc"
 
 
 BUILD_SYSTEM="autotools"

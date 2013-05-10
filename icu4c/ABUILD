@@ -10,7 +10,7 @@ tags="dev-libs libs"
 
 src_subdir=source/
 
-build_deps="glibc-solibs gcc-libs"
+build_deps="glibc-solibs gcc"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \

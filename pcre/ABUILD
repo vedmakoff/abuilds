@@ -11,7 +11,7 @@ longdesc=("The PCRE library is a set of functions that implement regular express
 tags=("dev-libs libs")
 
 source=("ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/${pkgname}-${pkgver}.tar.bz2")
-build_deps="gcc-libs"
+build_deps="gcc"
 
 before_build() {
 	go_src_dir

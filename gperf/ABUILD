@@ -10,7 +10,7 @@ tags=("develop dev-util")
 
 source=("http://ftp.gnu.org/pub/gnu/gperf/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc-solibs gcc-libs"
+build_deps="glibc-solibs gcc"
 
 
 BUILD_SYSTEM="autotools"

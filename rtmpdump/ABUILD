@@ -1,5 +1,5 @@
 pkgname=rtmpdump
-pkgver=2.4
+pkgver=20121203
 pkgbuild=1
 arch=("auto")
 
@@ -13,9 +13,7 @@ source=("ftp://ftp.archlinux.org/other/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 build() {
 	go_src_dir
-	sed -i 's/^install_so.0:.*/& install_base/' librtmp/Makefile
-	mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+	mkdir -p $pkgdir/usr/lib
 	make -j${NUMJOBS} prefix=/usr MANDIR="${pkgdir}/usr/man" LIBDIR="${pkgdir}/usr/lib${LIBDIRSUFFIX}" DESTDIR="${pkgdir}" install
-
 }
 
