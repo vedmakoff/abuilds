@@ -1,5 +1,5 @@
 pkgname=gobject-introspection
-pkgver=1.34.1.1
+pkgver=1.36.0
 tree=`echo $pkgver | cut -d . -f 1-2`
 pkgbuild=1
 arch=('auto')

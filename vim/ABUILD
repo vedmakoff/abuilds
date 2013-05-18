@@ -3,8 +3,8 @@
 pkgname=vim
 _basever=7.3
 _srcver=73
-pkgver=7.3.712
-pkgbuild=5
+pkgver=7.3.931
+pkgbuild=1
 arch=('auto')
 
 shortdesc=('Vi IMproved')
@@ -41,16 +41,6 @@ config_vim() {
 }
 
 build() {
-	mkdir -p $srcdir/__vim_patches
-	cd $srcdir/__vim_patches
-	tar xf ${filedir}/vim_patches.tar.xz
-	cd ${srcdir}/vim${_srcver}
-	for i in $srcdir/__vim_patches/vim_patches/* ; do
-		echo Patching $i
-		patch -p0 < $i || exit 1 > /dev/null
-		pkgver=`basename $i`
-	done
-
 	echo "VIM version: $pkgver"
 
 	# Build CTAGS
@@ -81,10 +71,11 @@ build() {
 	rm -rf runtime/syntax
 	mv runtime/syntax.orig runtime/syntax
 
-
 	echo "Applying syntax updates"
 	# Apply the syntax update:
-	zcat $startdir/vim-runtime-syntax.diff.gz | patch -p0 --verbose
+	#zcat $startdir/vim-runtime-syntax.diff.gz | patch -p0 --verbose
+	
+	bzcat $filedir/vim-patches-${pkgver}.patch.bz2 | patch -p1 --verbose
 
 	burn_patches
 
@@ -93,6 +84,12 @@ build() {
 	make -j${numjobs} || make
 	make install DESTDIR=$pkgdir
 
+}
+
+
+after_build() {
+	cd ${srcdir}/vim${_srcver}
+	
 	rsync -lprvt $pkgdir/usr/share/man/ $pkgdir/usr/man/
 	rm -r $pkgdir/usr/share/man
 
@@ -132,7 +129,5 @@ build() {
 	( cd $pkgdir/usr/bin ; ln -sf vim eview )
 	( cd $pkgdir/usr/bin ; rm -rf evim )
 	( cd $pkgdir/usr/bin ; ln -sf vim evim )
-
-
 }
 

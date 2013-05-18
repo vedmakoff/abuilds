@@ -1,6 +1,6 @@
 # Note: we build procps-ng instead of procps, but the package name remains the same.
 pkgname=procps
-pkgver=3.3.5
+pkgver=3.3.7
 pkgbuild=1
 arch=("auto")
 

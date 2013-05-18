@@ -1,5 +1,5 @@
 pkgname=glib2
-pkgver=2.34.2
+pkgver=2.36.1
 pkgtree=`echo $pkgver | cut -d . -f 1-2`
 pkgbuild=1
 arch=('auto')

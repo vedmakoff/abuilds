@@ -21,7 +21,7 @@ source=("ftp://ftp.gnu.org/gnu/gcc/gcc-${pkgver}/gcc-${pkgver}.tar.bz2"
 "ftp://gcc.gnu.org/pub/gcc/libstdc++/doxygen/libstdc++-api.${_libstdcppmanver}.man.tar.bz2"
 )
 
-build_deps="ppl cloog libmpc binutils"
+build_deps="ppl cloog libmpc binutils gcc-gnat"
 pkglist="gxx gfortran gnat java objc go gcclibs gxxlibs javalibs"
 
 if [ "$ARCH" = "x86_64" ] ; then
@@ -35,7 +35,7 @@ fi
 gxx() {
 	pkgname=gcc-g++
 	shortdesc=("C++ support for GCC")
-	longdesc=("C++ support for the GNU Compiler Collection. This package contains those parts of the compiler collection needed to compile C++ code.  The base gcc package is also required.")
+	longdesc=("C++ support for the GNU Compiler Collection. This package contains those parts of the compiler collection needed to compile C++ code. The base gcc package is also required.")
 }
 
 gnat() {
@@ -198,6 +198,7 @@ gcclibs_prep() {
 gxxlibs_prep() {
 	echo "gcc-g++-libs is now part of gcc-libs"
 }
+
 after_build() {
 	cd ${srcdir}/gcc-${pkgver}/gcc.build.lnx
 	make install DESTDIR=${pkgdir}

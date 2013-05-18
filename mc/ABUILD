@@ -1,15 +1,16 @@
 # ABUILD for mc
 pkgname=mc
-pkgver=4.8.6
+pkgver=4.8.8
 srcver=${pkgver//_/-}
-pkgbuild=2
+pkgbuild=1
 arch=('auto')
 
 shortdesc=('Midnight Commander is a text based file manager')
 
 tags=('console app-misc')
 
-source=("http://www.midnight-commander.org/downloads/mc-${srcver}.tar.bz2")
+source=("https://github.com/MidnightCommander/mc/archive/${pkgver}.tar.gz")
+
 
 build_deps='glibc-solibs glib2 libssh2'
 
@@ -17,7 +18,6 @@ config_files="etc/mc/edit.indent.rc
 etc/mc/filehighlight.ini
 etc/mc/mc.ext
 etc/mc/mc.keymap
-etc/mc/mc.keymap.emacs
 etc/mc/mc.menu
 etc/mc/mc.menu.sr
 etc/mc/sfs.ini"
@@ -55,3 +55,7 @@ BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --sysconfdir=/etc --loc
 	--with-slang-libs=/usr/lib$LIBDIRSUFFIX"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
+before_build() {
+    go_src_dir
+    ./autogen.sh
+}
