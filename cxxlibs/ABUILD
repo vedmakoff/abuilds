@@ -8,8 +8,7 @@ arch=("noarch")
 shortdesc=("C++ shared libraries (now part of gcc-libs)")
 
 tags=("sys-libs virtual")
-
-
+build_deps="gcc-g++"
 adddep="gcc-libs"
 build() {
 	echo "Building virtual package"

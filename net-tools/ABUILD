@@ -12,7 +12,7 @@ tags=("network net-misc")
 
 # 1.60 released years ago, so even Slackware uses git snapshot. We will use latest trunk, of cource :)
 source=("git:git://net-tools.git.sourceforge.net/gitroot/net-tools/net-tools")
-build_deps="glibc-solibs"
+build_deps="glibc-solibs git"
 
 build() {
 	go_src_dir

@@ -14,7 +14,7 @@ source=("git:git://github.com/aix27249/mpkg.git")
 # Tags
 tags="xapps sys-apps"
 
-build_deps="libagiliasetup"
+build_deps="libagiliasetup mpkg-parted"
 
 # Build system
 BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr"

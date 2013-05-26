@@ -12,7 +12,7 @@ tags=("base sys-libs")
 
 source=("http://www.nico.schottelius.org/software/gpm/archives/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="ncurses"
+build_deps="ncurses autoconf"
 config_files="etc/conf.d/gpm"
 
 before_build() {

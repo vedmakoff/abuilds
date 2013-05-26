@@ -11,7 +11,7 @@ source=("http://www.cgsecurity.org/${pkgname}-${pkgver}-WIP.tar.bz2")
 
 tags="utils app-admin"
 
-build_deps="make gcc"
+build_deps="make gcc libjpeg-turbo"
 
 BUILD_SYSTEM="autotools"
 

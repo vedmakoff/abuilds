@@ -15,7 +15,7 @@ BUILD_KEYS="--prefix=/usr \
 	--disable-fam \
 	--mandir=/usr/man"
 INSTALL_KEYS="DESTDIR=${pkgdir} completiondir=/usr/share/bash-completion/completions"
-build_deps="libffi pcre python"
+build_deps="libffi pcre python pkg-config"
 after_build() {
 	# Install profile scripts:
 	mkdir -p $pkgdir/etc/profile.d/

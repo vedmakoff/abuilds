@@ -1,6 +1,6 @@
 # util-linux-ng ABUILD
 pkgname=util-linux-ng
-pkgver=2.22
+pkgver=2.23
 pkgbuild=1
 arch=('auto')
 
@@ -9,7 +9,7 @@ longdesc=('The util-linux package is a huge collection of random utilities that 
 
 tags=('base sys-apps')
 
-source=("ftp://ftp.kernel.org/pub/linux/utils/util-linux/v2.22/util-linux-${pkgver}.tar.xz")
+source=("ftp://ftp.kernel.org/pub/linux/utils/util-linux/v${pkgver}/util-linux-${pkgver}.tar.xz")
 config_files="etc/pam.d/su"
 build_deps="udev linux-pam acl"
 build() {

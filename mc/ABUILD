@@ -12,7 +12,7 @@ tags=('console app-misc')
 source=("https://github.com/MidnightCommander/mc/archive/${pkgver}.tar.gz")
 
 
-build_deps='glibc-solibs glib2 libssh2'
+build_deps='glibc-solibs glib2 libssh2 git'
 
 config_files="etc/mc/edit.indent.rc
 etc/mc/filehighlight.ini

@@ -9,7 +9,7 @@ longdesc=("Fontconfig is a library and tools designed to provide system-wide fon
 tags=("xserver x11-utils")
 
 source=("http://www.fontconfig.org/release/$pkgname-$pkgver.tar.gz")
-build_deps="bzip2 expat freetype"
+build_deps="bzip2 expat freetype pkg-config"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \

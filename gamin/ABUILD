@@ -10,7 +10,7 @@ tags=("libs app-admin")
 
 source=("http://www.gnome.org/~veillard/${pkgname}/sources/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc-solibs"
+build_deps="glibc-solibs pkg-config"
 config_files="etc/gamin/gaminrc"
 
 # Note: package depends on python *optionally*, and maybe we should split it out into gamin-python

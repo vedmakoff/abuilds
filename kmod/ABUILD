@@ -9,7 +9,7 @@ source="ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz"
 
 tags="base sys-apps"
 
-build_deps="zlib"
+build_deps="pkg-config zlib"
 
 BUILD_SYSTEM="autotools"
 
