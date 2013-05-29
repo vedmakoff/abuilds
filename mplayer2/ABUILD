@@ -1,5 +1,5 @@
 #ABUILD created by/создан: K900, k0009000 at gmail.com 
-pkgname=MPlayer2
+pkgname=mplayer2
 pkgver=2.0
 pkgbuild=3
 realver=`echo $pkgver | sed s/_/-/g`
@@ -8,9 +8,13 @@ arch=('auto')
 shortdesc="A fork of MPlayer with some patches."
 longdesc=("A fork of MPlayer with some patches and features added, including MKV segment linking. For anime fans :)")
 
-source="http://ftp.mplayer2.org/pub/release/mplayer2-build-${realver}.tar.xz"
+source="git:git://git.mplayer2.org/mplayer2.git"
 
 tags="xapps media-video"
+build_deps=("a52dec aalib cdparanoia desktop-file-utils enca faad2 ffmpeg fontconfig freetype
+	    lame libass libbluray libdca libdvdcss libdvdnav libdvdread libgl
+	    libjpeg-turbo libmad libquvi libtheora libvdpau libXinerama libXv libXxf86dga libXxf86vm
+	    mpg123 ncurses sdl dejavu-fonts-ttf")
 
 provides="MPlayer"
 

@@ -1,6 +1,6 @@
 pkgname=dcron
 pkgver=4.5
-pkgbuild=3
+pkgbuild=4
 arch=('auto')
 
 shortdesc=("Dillon's Cron daemon")
@@ -56,6 +56,5 @@ build() {
 
 	# Logrotate script
 	install -Dm644 ${filedir}/dcron.logrotate ${pkgdir}/etc/logrotate.d/cron
-	
 
 }

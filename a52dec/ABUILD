@@ -33,5 +33,4 @@ INSTALL_KEYS="DESTDIR=${pkgdir}"
 
 after_build(){
  install -m644 liba52/a52_internal.h "${pkgdir}/usr/include/a52dec/"
- echo "End after_build"
 }

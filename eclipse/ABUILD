@@ -14,7 +14,7 @@ source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops/R-${pkgver}-${
 [ "${LIBDIRSUFFIX}" = "64" ] && source=("ftp://ftp.osuosl.org/pub/eclipse/eclipse/downloads/drops/R-${pkgver}-${_date}/${pkgname}-SDK-${pkgver}-linux-gtk-x86_64.tar.gz")
 
 conflicts="eclipse-unstable"
-
+build_deps="infozip"
 adddep="jre gtk+2 xulrunner"
 
 build() {

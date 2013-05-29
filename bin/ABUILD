@@ -69,5 +69,4 @@ build() {
 	zcat $filedir/scripts/xx.gz > ${pkgdir}/usr/bin/xx
 	chmod 755 ${pkgdir}/usr/bin/diskcopy
 	chmod 755 ${pkgdir}/usr/bin/xx
-
 }

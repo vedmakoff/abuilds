@@ -1,5 +1,5 @@
 pkgname=bash-completion
-pkgver=2.0
+pkgver=2.1
 pkgbuild=2
 arch=("noarch")
 

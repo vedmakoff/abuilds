@@ -2,8 +2,8 @@
 # Copyright 1999-2011 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-DAEMON=/opt/logmein-hamachi/bin/hamachid
-PIDFILE=/var/run/logmein-hamachi/hamachid.pid
+DAEMON=/opt/hamachi/bin/hamachid
+PIDFILE=/var/run/hamachi/hamachid.pid
 
 depend() {
 	need net

@@ -1,6 +1,3 @@
-# $Id: PKGBUILD 49798 2009-08-16 14:04:06Z jgc $
-# Maintainer:
-
 pkgname=agg
 pkgver=2.5
 pkgbuild=1
@@ -11,6 +8,7 @@ url="http://www.antigrain.com/"
 license=('GPL')
 source=(http://www.antigrain.com/${pkgname}-${pkgver}.tar.gz)
 tags=("libs media-libs")
+build_deps="gcc freetype sdl"
 build() {
 	go_src_dir
 	burn_patches || exit 1

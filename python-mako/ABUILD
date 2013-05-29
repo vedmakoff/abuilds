@@ -13,5 +13,6 @@ source=("http://www.makotemplates.org/downloads/Mako-$pkgver.tar.gz")
 
 build_deps="python pysetuptools python-markupsafe python-beaker"
 adddep="python-markupsafe python-beaker"
+provides="mako"
 
 BUILD_SYSTEM="python"

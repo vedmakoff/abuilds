@@ -1,5 +1,5 @@
 pkgname=cdrtools
-pkgver=3.01a08
+pkgver=3.01a14
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ tags=("console app-cdr")
 
 source=("ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-$pkgver.tar.gz")
 
-build_deps="acl"
+build_deps="acl libcap"
 
 config_files="etc/default/cdrecord"
 

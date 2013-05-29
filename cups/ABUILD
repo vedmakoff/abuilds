@@ -1,5 +1,5 @@
 pkgname=cups
-pkgver=1.5.2
+pkgver=1.6.2
 pkgbuild=2
 arch=('auto')
 
@@ -9,7 +9,7 @@ longdesc=('The Common UNIX Printing System provides a portable printing layer fo
 tags=('base net-print')
 
 source=("http://ftp.easysw.com/pub/cups/${pkgver}/cups-${pkgver}-source.tar.bz2")
-
+build_deps="autoconf bc libusb"
 
 before_build() {
 	go_src_dir

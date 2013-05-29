@@ -1,5 +1,5 @@
 pkgname=bash
-pkgver=4.2.039
+pkgver=4.2.045
 pkgbuild=1
 arch=('auto')
 

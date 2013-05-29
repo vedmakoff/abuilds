@@ -1,4 +1,4 @@
-#ABUILD created by/создан: SirAnthony, anthony at adsorbtion.org 
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=dmidecode
 pkgver=2.12
 pkgbuild=1

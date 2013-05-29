@@ -2,7 +2,7 @@
 
 # Package metadata
 pkgname=cloog-ppl
-pkgver=0.15.9
+pkgver=0.16.1
 pkgbuild=1
 arch="auto"
 
@@ -15,6 +15,7 @@ source=("ftp://gcc.gnu.org/pub/gcc/infrastructure/${pkgname}-${pkgver}.tar.gz")
 
 # Tags
 tags="develop sys-devel"
+build_deps="automake autoconf libtool"
 
 
 # Build system

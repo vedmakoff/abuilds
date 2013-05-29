@@ -1,6 +1,6 @@
 pkgname=bzip2
 pkgver=1.0.6
-pkgbuild=4
+pkgbuild=2
 arch=('auto')
 
 shortdesc=("A block-sorting file compressor")

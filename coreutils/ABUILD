@@ -1,6 +1,6 @@
 # Coreutils ABUILD
 pkgname=coreutils
-pkgver=8.19
+pkgver=8.21
 pkgbuild=1
 arch=('auto')
 

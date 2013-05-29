@@ -1,5 +1,5 @@
 pkgname=hamachi
-pkgver=2.1.0.17
+pkgver=2.1.0.86
 pkgbuild=2
 arch="auto"
 tags="network net-misc"

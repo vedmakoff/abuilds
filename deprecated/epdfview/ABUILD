@@ -1,6 +1,6 @@
 pkgname=epdfview
 pkgver=0.1.8
-pkgbuild=3
+pkgbuild=4
 arch=('auto')
 
 shortdesc="A lightweight PDF viewer"

@@ -7,6 +7,7 @@ shortdesc=('damageproto')
 longdesc=('damageproto is part of X11. For more information about the X.Org Foundation (the providers of the X.Org implementation of the X Window System), see their website: http://www.x.org')
 
 tags=('x11-protos xserver')
+build_deps="xproto fixesproto xorg-util-macros"
 
 source=("http://xorg.freedesktop.org/archive/individual/proto/damageproto-${pkgver}.tar.bz2")
 

@@ -1,5 +1,4 @@
 #ABUILD created by: SirAnthony, anthony at adsorbtion.org 
-#----------------------------- General vars --------------------------------------
 pkgname=django-debug-toolbar
 pkgver=0.9.4
 pkgbuild=1
@@ -11,6 +10,7 @@ longdesc=("The Django Debug Toolbar is a plug-in Django application that display
 
 source=("https://github.com/django-debug-toolbar/${pkgname}/tarball/${pkgver}")
 tags="develop dev-python"
+build_deps="python"
 adddep="django"
 
 BUILD_SYSTEM="python"
