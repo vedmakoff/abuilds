@@ -11,7 +11,7 @@ longdesc=("FUSE is a simple interface for userspace programs to export a virtual
 tags=("libs sys-fs")
 
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
-build_deps="glibc-solibs"
+build_deps="glibc"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr --enable-lib --libdir=/lib${LIBDIRSUFFIX} --enable-util --bindir=/bin"

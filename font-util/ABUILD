@@ -1,6 +1,6 @@
 pkgname=font-util
 pkgver=1.3.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('font-util')

@@ -1,6 +1,6 @@
 pkgname=fontconfig
-pkgver=2.10.1
-pkgbuild=5
+pkgver=2.10.93
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("fontconfig (Font library and tools)")
@@ -46,8 +46,6 @@ after_build() {
 		69-unifont.conf \
 		80-delicious.conf \
 		90-synthetic.conf ; do
-	ln -sf ../conf.avail/$fontconf . || exit 1
-done
-
-)
+	    ln -sf ../conf.avail/$fontconf . || exit 1
+	done )
 }

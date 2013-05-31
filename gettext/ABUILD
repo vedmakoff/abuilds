@@ -1,6 +1,6 @@
 pkgname=gettext
-pkgver=0.18.1.1
-pkgbuild=3
+pkgver=0.18.2.1
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("gettext (internationalization framework)")
@@ -11,12 +11,14 @@ tags=("base sys-devel")
 source=("ftp://ftp.gnu.org/pub/gnu/gettext/${pkgname}-${pkgver}.tar.gz")
 
 build_deps="acl glib2"
+conflicts="gettext-tools"
 
 before_build() {
 	go_src_dir
 	sed -i -e 's/libexpat.so.0/libexpat.so.1/' gettext-tools/src/x-glade.c
 	sed -i -e '/gets is a/d' gettext-*/*/stdio.in.h
 }
+
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
 	--libdir=/usr/lib${LIBDIRSUFFIX} \

@@ -1,6 +1,5 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=icedtea-web
-pkgver=1.2.1
+pkgver=1.4
 pkgbuild=1
 arch=('auto')
 adddep='jre-openjdk'

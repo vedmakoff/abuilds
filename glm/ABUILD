@@ -1,13 +1,14 @@
 #ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 
 pkgname=glm
-pkgver=0.9.4.1
+pkgver=0.9.4.3
 pkgbuild=1
 arch=('auto')
 
 shortdesc="C++ mathematics library for 3D software based on the OpenGL Shading Language (GLSL) specification"
 source=("http://sourceforge.net/projects/ogl-math/files/${pkgname}-${pkgver}/${pkgname}-${pkgver}.zip")
 tags="develop dev-libs"
+build_deps="" # headers only
 
 build()
 {

@@ -1,5 +1,5 @@
 pkgname=icu4c
-pkgver=50.1
+pkgver=51.2
 pkgbuild=1
 arch=('auto')
 
