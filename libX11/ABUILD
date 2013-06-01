@@ -3,7 +3,7 @@ pkgver=1.5.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc=('libX11')
+shortdesc=('X11 client-side library')
 longdesc=('libX11 is part of X11. For more information about the X.Org Foundation (the providers of the X.Org implementation of the X Window System), see their website: http://www.x.org')
 
 tags=('x11-libs xserver')

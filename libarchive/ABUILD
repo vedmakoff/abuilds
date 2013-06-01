@@ -1,5 +1,5 @@
 pkgname=libarchive
-pkgver=3.0.4
+pkgver=3.1.2
 pkgbuild=1
 arch=("auto")
 

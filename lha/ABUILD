@@ -8,6 +8,7 @@ shortdesc="LHa is an archiving and compressing utility written by Tsugio Okamoto
 source=("http://slackware.rol.ru/slackware/slackware-14.0/source/a/lha/lha-114i.tar.gz")
 
 tags="base app-arch"
+build_deps="gcc"
 
 build() {
 	go_src_dir

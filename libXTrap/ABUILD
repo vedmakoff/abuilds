@@ -1,5 +1,5 @@
 pkgname=libXTrap
-pkgver=1.0.0
+pkgver=1.0.1
 pkgbuild=10
 arch=('auto')
 

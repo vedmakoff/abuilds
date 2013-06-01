@@ -1,13 +1,12 @@
 pkgname=libssh2
-pkgver=1.4.2
+pkgver=1.4.3
 pkgbuild=2
 arch=('auto')
 
 shortdesc="A library implementing the SSH2 protocol as defined by Internet Drafts"
 source=("http://www.libssh2.org/download/${pkgname}-${pkgver}.tar.gz")
-
 tags="libs net-misc"
-build_deps="openssl"
+build_deps="openssl zlib"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \

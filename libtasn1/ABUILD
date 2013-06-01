@@ -1,5 +1,5 @@
 pkgname=libtasn1
-pkgver=3.0
+pkgver=3.3
 pkgbuild=1
 arch=("auto")
 
@@ -10,7 +10,7 @@ tags=("dev-libs libs")
 
 source=("http://ftp.gnu.org/gnu/libtasn1/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc-solibs"
+build_deps="glibc-solibs texinfo"
 
 
 BUILD_SYSTEM="autotools"

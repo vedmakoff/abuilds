@@ -1,12 +1,13 @@
 
 pkgname=libgphoto2
-pkgver=2.5.0
+pkgver=2.5.2
 pkgbuild=1
 shortdesc="The core library of gphoto2, designed to allow access to digital camera by external programs."
 longdesc="The core library of gphoto2, designed to allow access to digital camera by external programs."
 arch=('auto')
 source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.gz")
 tags=("libs media-libs")
+build_deps="libexif libjpeg gd libltdl libusb"
 
 numjobs=1
 

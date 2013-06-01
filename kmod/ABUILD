@@ -1,5 +1,5 @@
 pkgname=kmod
-pkgver=10
+pkgver=13
 pkgbuild=1
 arch=('auto')
 
@@ -8,8 +8,8 @@ shortdesc="A kernel module management tool, a module-init-tools replacement"
 source="ftp://ftp.kernel.org/pub/linux/utils/kernel/kmod/kmod-$pkgver.tar.xz"
 
 tags="base sys-apps"
-
 build_deps="pkg-config zlib"
+
 
 BUILD_SYSTEM="autotools"
 

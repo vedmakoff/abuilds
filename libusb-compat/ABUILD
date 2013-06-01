@@ -1,5 +1,5 @@
 pkgname=libusb-compat
-pkgver=0.1.4
+pkgver=0.1.5
 pkgbuild=1
 arch=("auto")
 
