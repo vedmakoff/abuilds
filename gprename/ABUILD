@@ -11,7 +11,7 @@ longdesc=("GPRename is a complete batch renamer for files and directories and is
 )
 source=("http://sourceforge.net/projects/gprename/files/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.bz2")
 tags="xapps app-misc"
-build_deps="perl-gtk2 perl-libintl perl-gettext"
+build_deps="perl-gtk2 perl-libintl perl-locale-gettext"
 
 build()
 {

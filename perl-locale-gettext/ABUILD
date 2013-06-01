@@ -1,17 +1,18 @@
-pkgname=locale-gettext
+pkgname=perl-locale-gettext
 downname=gettext
 pkgver=1.05
-pkgbuild=2
+pkgbuild=1
 arch=('auto')
 
-shortdesc="Locale::gettext perl module"
+shortdesc="Locale::gettext perl module. Permits access from Perl to the gettext() family of functions"
 
 source=("http://cpan.rinet.ru/authors/id/P/PV/PVANDRY/${downname}-${pkgver}.tar.gz")
 tags="develop dev-lang"
 build_deps="gettext perl"
 
+
 BUILD_SYSTEM="perl"
-BUILD_KEYS="Makefile.PL PREFIX=/usr && make"
+BUILD_KEYS="Makefile.PL PREFIX=/usr INSTALLDIRS=vendor"
 INSTALL_WORD="make pure_vendor_install"
 after_build()
 {
@@ -20,5 +21,5 @@ after_build()
 	find ${pkgdir} -name perllocal.pod -o -name ".packlist" -o -name "*.bs" | xargs rm -f || true
 
 	# Remove empty directories
-	find ${pkgdir} -depth -type d -empty -delete || true
+	#find ${pkgdir} -depth -type d -empty -delete || true
 }

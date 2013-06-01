@@ -1,7 +1,5 @@
-#ABUILD created by: NK, nk-man at yandex.ru 
-#----------------------------- General vars --------------------------------------
 pkgname=matplotlib
-pkgver=1.2.0
+pkgver=1.2.1
 pkgbuild=1
 arch=('auto')
 
@@ -12,7 +10,7 @@ longdesc=("Matplotlib is a python library for making publication quality plots u
 source=("http://downloads.sourceforge.net/project/matplotlib/${pkgname}/${pkgname}-${pkgver}/${pkgname}-${pkgver}.tar.gz")
 
 tags="dev-python libs"
-adddep="python"
+adddep="python numpy PyQt cairo pycairo pygtk"
 docs="license/ PKG-INFO"
 
 BUILD_SYSTEM="python"

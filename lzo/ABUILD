@@ -1,4 +1,4 @@
-#ABUILD created by/создан: SirAnthony, anthony at adsorbtion.org 
+#ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=lzo
 pkgver=2.06
 pkgbuild=1
@@ -8,7 +8,7 @@ shortdesc="Portable lossless data compression library"
 source=("http://www.oberhumer.com/opensource/lzo/download/lzo-${pkgver}.tar.gz")
 tags="dev-libs libs"
 
-build_deps="gcc"
+build_deps="gcc nasm"
 
 
 BUILD_SYSTEM="autotools"
