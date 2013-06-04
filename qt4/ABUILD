@@ -1,20 +1,21 @@
 # Qt4 ABUILD
 pkgname=qt4
 pkgver=4.8.4
-pkgbuild=2
+pkgbuild=3
 arch=('auto')
 
 shortdesc=('Qt (a multi-platform C++ graphical user interface toolkit)')
 longdesc=('Qt is a complete and well-developed object-oriented framework for developing graphical user interface (GUI) applications using C++.')
-
 tags=('libs x11-libs')
-
 source=("http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-${pkgver}.tar.gz")
-
 pkglist="qtdoc"
 
 gendeps_blacklist="usr/lib$LIBDIRSUFFIX/qt/plugins/"
 removedep="mysql postgresql"
+build_deps=("alsa-lib libtiff libjpeg libpng libmng sqlite ca-certificates dbus fontconfig libICE \
+    libSM freetype libgl libXrandr libXv libXi alsa-lib xdg-utils hicolor-icon-theme \
+    desktop-file-utils mysql cups gtk+2 mesa zlib libXinerama libXcursor libXfixes \
+    libxml2 icu4c glib2 openssl-solibs")
 
 before_build() {
 	CXXFLAGS=$SLKCFLAGS
@@ -26,8 +27,8 @@ before_build() {
 	#sed -i "/^QMAKE_RPATH/s| -Wl,-rpath,||g" mkspecs/common/g++.conf
 	sed -i "/^QMAKE_LFLAGS\s/s|+=|+= $LDFLAGS|g" mkspecs/common/g++.conf
 	echo "Using $CXX compiler"
-
 }
+
 BUILD_SYSTEM='autotools'
 BUILD_KEYS="-confirm-license -opensource \
 	-prefix /usr \
@@ -108,5 +109,3 @@ qtdoc_prep() {
 	mkdir -p ${pkgdir}/usr/doc
 	mv ${p_pkgdir}/usr/doc/qt ${pkgdir}/usr/doc/qt
 }
-
-

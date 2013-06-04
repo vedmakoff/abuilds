@@ -1,5 +1,5 @@
 pkgname=openssl
-pkgver=1.0.1c
+pkgver=1.0.1e
 pkgbuild=1
 arch=('auto')
 
@@ -9,7 +9,7 @@ longdesc=("The OpenSSL certificate management tool and the shared libraries that
 tags=('dev-libs network')
 source=("http://www.openssl.org/source/openssl-${pkgver}.tar.gz")
 
-build_deps='glibc-solibs'
+build_deps='glibc-solibs perl'
 pkglist="solibs"
 adddep="openssl-solibs==${pkgver}"
 

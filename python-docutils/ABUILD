@@ -1,11 +1,12 @@
 #ABUILD created by: NK, nk-man at yandex.ru 
-pkgname=docutils
+pkgbase=docutils
+pkgname=python-docutils
 pkgver=0.10
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Docutils: Documentation Utilities"
-source=("http://downloads.sourceforge.net/project/docutils/docutils/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("http://downloads.sourceforge.net/$pkgbase/$pkgbase-$pkgver.tar.gz")
 tags="dev-python develop"
 build_deps="python"
 adddep="python"
@@ -17,7 +18,7 @@ BUILD_SYSTEM="python"
 BUILD_KEYS=
 
 after_build() {
-  for f in $pkgdir/usr/bin/*.py; do
-      mv $f $pkgdir/usr/bin/$(basename $f .py)
+  for _f in "$pkgdir"/usr/bin/*.py; do
+      ln -s "$(basename $_f)" "$pkgdir/usr/bin/$(basename $_f .py)"
   done
 }

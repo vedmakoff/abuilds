@@ -1,14 +1,12 @@
 pkgname=randrproto
 pkgver=1.4.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
-shortdesc=('randrproto')
-longdesc=('randrproto is part of X11. For more information about the X.Org Foundation (the providers of the X.Org implementation of the X Window System), see their website: http://www.x.org')
-
+shortdesc=('X11 RandR extension wire protocol')
 tags=('x11-protos xserver')
-
 source=("http://xorg.freedesktop.org/archive/individual/proto/randrproto-${pkgver}.tar.bz2")
+build_deps="xorg-util-macros"
 
 
 BUILD_SYSTEM='autotools'

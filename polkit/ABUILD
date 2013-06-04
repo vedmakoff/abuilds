@@ -2,7 +2,7 @@
 
 # Package metadata
 pkgname=polkit
-pkgver=0.101
+pkgver=0.111
 pkgbuild=1
 arch="auto"
 
@@ -15,6 +15,8 @@ source=("http://hal.freedesktop.org/releases/polkit-${pkgver}.tar.gz")
 
 # Tags
 tags="libs sys-auth"
+
+build_deps="glib2 pam expat intltool gobject-introspection"
 
 # Manually-added dependencies
 adddep="gobject-introspection"

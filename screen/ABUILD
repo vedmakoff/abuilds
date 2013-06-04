@@ -41,5 +41,4 @@ build() {
 
 	install -Dm0644 etc/screenrc ${pkgdir}/etc/screenrc
 	install -Dm0644 etc/screenrc ${pkgdir}/etc/skel/.screenrc
-
 }
