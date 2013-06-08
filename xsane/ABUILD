@@ -2,7 +2,7 @@
 
 pkgname=xsane
 pkgver=0.998
-pkgbuild=3
+pkgbuild=4
 arch=("auto")
 
 shortdesc=("xsane (Graphical frontend to SANE, Scanner Access Now Easy)")
@@ -12,6 +12,7 @@ tags=("media-gfx xapps")
 pkglist="gimp"
 
 source=("http://www.xsane.org/download/$pkgname-$pkgver.tar.gz")
+build_deps="gtk+2 lcms sane zlib libjpeg gimp"
 
 build() {
 	go_src_dir

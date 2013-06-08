@@ -2,7 +2,7 @@
 
 pkgname=tango-icon-theme
 pkgver=0.8.90
-pkgbuild=2
+pkgbuild=3
 arch="noarch"
 
 shortdesc=("Tango icon theme (Another standard icon theme)")

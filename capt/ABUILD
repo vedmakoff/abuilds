@@ -1,15 +1,16 @@
 pkgname=capt
-pkgver=2.40
-foldername=Linux_CAPT_PrinterDriver_V240_uk_EN
-pkgbuild=2
+pkgver=2.56
+foldername=Linux_CAPT_PrinterDriver_V256_uk_EN
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Canon CAPT Printer Driver for Linux"
 
-source=("http://gdlp01.c-wss.com/gds/4/0900007724/12/${foldername}.tar.gz")
+source=("http://gdlp01.c-wss.com/gds/6/0100004596/02/${foldername}.tar.gz")
 
 tags="drivers net-print"
 build_deps="rpmextract"
+
 build() {
 	cd ${pkgdir}
 	if [ "$ARCH" == "x86_64" ]; then

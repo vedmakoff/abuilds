@@ -1,5 +1,5 @@
 pkgname=xulrunner
-pkgver=17.0.1
+pkgver=21.0
 pkgbuild=1
 arch=('auto')
 
@@ -8,7 +8,7 @@ shortdesc="Xulrunner - common Mozilla runtime"
 source=("ftp://ftp.mozilla.org/pub/xulrunner/releases/${pkgver}/source/xulrunner-${pkgver}.source.tar.bz2")
 
 tags="libs net-libs"
-build_deps="autoconf>=2.13 yasm"
+build_deps="autoconf yasm gtk+2 nss nspr libXt libXrender alsa-lib sqlite libvpx python libjpeg bz2 hunspell libevent"
 
 pkglist="xd"
 

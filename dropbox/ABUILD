@@ -1,6 +1,6 @@
 pkgname=dropbox
-pkgver=1.0.10
-pkgbuild=2
+pkgver=2.2.1
+pkgbuild=1
 arch=('auto')
 
 shortdesc="dropbox-client (store, sync and share files online)"
@@ -13,6 +13,8 @@ fi
 
 tags="network www-client"
 custom_opts="no_strip"
+build_deps="mkpkg"
+
 build() {
 	set -e
 	mkdir -p $pkgdir/opt/$pkgname
@@ -24,4 +26,3 @@ build() {
 	ln -s ../../opt/dropbox/dropboxd dropboxd
 	set +e
 }
-

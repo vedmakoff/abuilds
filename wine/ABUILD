@@ -1,6 +1,6 @@
 
 pkgname=wine
-pkgver=1.5.30
+pkgver=1.5.31
 pkgbuild=1
 arch=('i686')
 shortdesc="Wine - Wine Is Not Emulator"
@@ -12,7 +12,7 @@ source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pk
 
 
 tags="xapps app-emulation"
-build_deps="flex bison"
+build_deps="flex bison fontconfig libXcursor libXrandr libXdamage libXi gettext freetype libSM gcc"
 custom_opts="no_ccache"
 
 BUILD_SYSTEM="autotools"

@@ -2,10 +2,10 @@
 
 # Package metadata
 pkgname=seamonkey
-pkgver=2.15
+pkgver=2.17.1
 pkgbuild=1
 arch=("auto")
-build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite')
+build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite gtk+2 libnotify unzip infozip libvpx')
 
 shortdesc=('open-source web browser suite')
 longdesc=("The SeaMonkey browser suite.  SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client."
@@ -21,28 +21,36 @@ LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/seamonkey-$pkgver"
 #MAKE_WORD="make -j$numjobs -f client.mk build"
 BUILD_KEYS="--prefix=/usr \
     --enable-optimize=-O2 \
-    --disable-debug \
     --with-default-mozilla-five-home=/usr/lib${LIBDIRSUFFIX}/seamonkey-${VERSION} \
+    --enable-system-hunspell \
     --enable-shared-js \
     --enable-strip \
-    --disable-tests \
     --enable-svg \
     --enable-canvas \
-    --disable-short-wchar \
     --enable-extensions=default \
     --enable-crypto \
-    --disable-xprint \
+
     --with-system-nss \
     --with-system-nspr \
     --with-system-zlib \
     --with-system-jpeg \
     --with-system-bz2 \
     --with-system-mng \
+    --with-system-png \
+    --with-system-libvpx \
     --enable-application=suite \
     --enable-xft \
     --disable-necko-wifi \
     --enable-storage \
+    --enable-system-ffi \
     --enable-system-sqlite \
+    --disable-gnomevfs \
+    --disable-crashreporter \
+    --disable-updater \
+    --disable-installer \
+    --disable-tests \
+    --disable-debug \
+    --disable-xprint \
     --host=$ARCH-slackware-linux \
     --target=$ARCH-slackware-linux \
     --libdir=/usr/lib$LIBDIRSUFFIX"
@@ -63,11 +71,6 @@ EOF
 
 after_build() {
     go_src_dir
-    #Install js/nspr/nss headers.
-#    for includedir in nspr nspr/obsolete nspr/private ; do
-#	mkdir -p ${pkgdir}/usr/include/seamonkey-${pkgver}/$includedir
-#	cp mozilla/dist/include/${includedir}/*.h ${pkgdir}/usr/include/seamonkey-${pkgver}/$includedir
-#    done
     mkdir -p ${pkgdir}/usr/include/seamonkey-${pkgver}/js
     cp mozilla/js/src/*.tbl ${pkgdir}/usr/include/seamonkey-${pkgver}/js
     cp mozilla/js/src/*.h ${pkgdir}/usr/include/seamonkey-${pkgver}/js
@@ -92,7 +95,7 @@ after_build() {
     mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
     for file in ${startdir}/files/pkgconfig/* ; do
         cat $file \
-    	    | sed -e "s/@LIB@/lib${LIBDIRSUFFIX}/" \
+            | sed -e "s/@LIB@/lib${LIBDIRSUFFIX}/" \
             -e "s/@VERSION@/$pkgver/" \
             > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/$(basename $file)
     done
@@ -108,13 +111,6 @@ after_build() {
 
     # This remains the standard plugin directory for all browsers.
     mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
-
-    # This is traditional.
-    #( cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-	#if [ ! -e seamonkey ]; then
-	#    ln -sf seamonkey-${pkgver} seamonkey
-	#fi
-    #)
 
     mkdir -p ${pkgdir}/usr/share/applications
     cp -a ${startdir}/files/*.desktop ${pkgdir}/usr/share/applications

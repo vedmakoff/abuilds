@@ -1,6 +1,6 @@
 pkgname=time
 pkgver=1.7
-pkgbuild=3
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("The GNU time command for measuring program resource use")

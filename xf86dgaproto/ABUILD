@@ -1,6 +1,6 @@
 pkgname=xf86dgaproto
 pkgver=2.1
-pkgbuild=10
+pkgbuild=11
 arch=('auto')
 
 shortdesc=('xf86dgaproto')
@@ -10,7 +10,7 @@ tags=('x11-protos xserver')
 
 source=('http://xorg.freedesktop.org/archive/individual/proto/xf86dgaproto-2.1.tar.bz2')
 
-build_deps='x11-skel'
+build_deps='x11-skel gcc'
 
 before_build() {
  echo ""

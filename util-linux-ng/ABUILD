@@ -1,6 +1,6 @@
 # util-linux-ng ABUILD
 pkgname=util-linux-ng
-pkgver=2.23
+pkgver=2.23.1
 pkgbuild=1
 arch=('auto')
 
@@ -11,7 +11,7 @@ tags=('base sys-apps')
 
 source=("ftp://ftp.kernel.org/pub/linux/utils/util-linux/v${pkgver}/util-linux-${pkgver}.tar.xz")
 config_files="etc/pam.d/su"
-build_deps="udev linux-pam acl"
+build_deps="udev linux-pam acl shadow coreutils"
 build() {
 	go_src_dir
 	burn_patches

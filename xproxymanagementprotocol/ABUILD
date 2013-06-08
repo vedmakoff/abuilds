@@ -1,6 +1,6 @@
 pkgname=xproxymanagementprotocol
 pkgver=1.0.3
-pkgbuild=10
+pkgbuild=11
 arch=('auto')
 
 shortdesc=('xproxymanagementprotocol')

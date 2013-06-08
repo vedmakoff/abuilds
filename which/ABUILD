@@ -1,7 +1,7 @@
 
 pkgname=which
 pkgver=2.20
-pkgbuild=3
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("Shows the full path to shell commands")

@@ -6,6 +6,7 @@ shortdesc="Script to install various redistributable runtime libraries in wine m
 source=("http://www.kegel.com/wine/winetricks")
 tags="console app-emulation"
 adddep="wine>=1.3 p7zip wget zenity cabextract"
+build_deps="mkpkg"
 
 build()
 {

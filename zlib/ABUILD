@@ -1,6 +1,6 @@
 pkgname=zlib
-pkgver=1.2.7
-pkgbuild=2
+pkgver=1.2.8
+pkgbuild=1
 arch=('auto')
 
 shortdesc="A Massively Spiffy Yet Delicately Unobtrusive Compression Library"
