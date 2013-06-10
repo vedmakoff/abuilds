@@ -4,7 +4,7 @@ icedtea_ver=2.3.9
 
 pkgname=jdk-openjdk
 pkgver=${java_ver}.${updatever}_${icedtea_ver}
-pkgbuild=2
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Free Java environment based on OpenJDK with IcedTea replacing binary plugs - SDK"

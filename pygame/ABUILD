@@ -6,7 +6,7 @@ arch=('auto')
 shortdesc="pygame (a set of Python modules designed for writing games)"
 source=("http://pygame.org/ftp/${pkgname}-${pkgver}release.tar.gz")
 tags="libs dev-python"
-build_deps="sdl_mixer sdl_ttf sdl_image python"
+build_deps="sdl_mixer sdl_ttf sdl_image python smpeg"
 adddep=${build_deps}
 
 BUILD_SYSTEM="python"

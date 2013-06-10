@@ -8,10 +8,9 @@ source=("http://diracvideo.org/download/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 tags="libs media-libs"
 build_deps="orc gcc"
 
+
 BUILD_SYSTEM="autotools"
-
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
 BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \

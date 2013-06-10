@@ -1,6 +1,6 @@
 
 pkgname=flash-player
-pkgver=11.2.202.280
+pkgver=11.2.202.285
 pkgbuild=1
 arch=('auto')
 
@@ -19,6 +19,7 @@ source=("http://fpdownload.macromedia.com/get/flashplayer/pdc/${pkgver}/install_
 tags="www-plugins proprietary network"
 
 custom_opts="no_strip"
+build_deps="mkpkg"
 
 pkglist="kde"
 

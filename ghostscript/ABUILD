@@ -2,7 +2,7 @@
 
 pkgname=ghostscript
 pkgver=9.07
-pkgbuild=3
+pkgbuild=1
 arch=("auto")
 
 shortdesc=("GPL Ghostscript")

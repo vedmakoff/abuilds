@@ -5,7 +5,7 @@ pkgver=006
 pkgbuild=1
 arch=("auto")
 usbhid_ver=1.2
-shortdesc=("usbutils (USB utilities)")
+shortdesc=("USB Device Utilities")
 longdesc=("lsusb displays detailed information about all USB buses and devices in the system. usbmodules lists the kernel modules for a plugged in USB device. See the manual pages for more details.")
 
 tags=("base sys-apps")

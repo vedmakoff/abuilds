@@ -1,0 +1,24 @@
+pkgname=mkinitcpio-nfs-utils
+pkgver=0.3
+pkgbuild=1
+arch=("auto")
+
+shortdesc=("ipconfig and nfsmount tools for NFS root support in mkinitcpio")
+tags=("base sys-apps")
+source=("ftp://ftp.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.gz")
+build_deps="glibc"
+
+build() {
+  go_src_dir
+  burn_patches
+  make -j${numjobs}
+
+}
+
+after_build() {
+  make DESTDIR="$pkgdir" install
+
+  # override hooks, they need updates
+  install -m644 "$filedir/initcpio-install-net" "$pkgdir/usr/lib/initcpio/install/net"
+  install -m644 "$filedir/initcpio-hook-net" "$pkgdir/usr/lib/initcpio/hooks/net"
+}

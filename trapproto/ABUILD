@@ -1,6 +1,6 @@
 pkgname=trapproto
 pkgver=3.4.3
-pkgbuild=10
+pkgbuild=11
 arch=('auto')
 
 shortdesc=('trapproto')
