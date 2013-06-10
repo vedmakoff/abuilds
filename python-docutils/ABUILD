@@ -11,6 +11,7 @@ tags="dev-python develop"
 build_deps="python"
 adddep="python"
 docs="licenses/python*"
+provides="docutils"
 
 
 BUILD_SYSTEM="python"

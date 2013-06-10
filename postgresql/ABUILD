@@ -11,7 +11,7 @@ longdesc=("PostgreSQL is an advanced Object-Relational database management syste
 tags=("server dev-db")
 
 source=("ftp://ftp.postgresql.org/pub/source/v${pkgver}/postgresql-${pkgver}.tar.bz2")
-build_deps=("krb5 libxml2 python perl tcl openssl openldap pam libxslt')
+build_deps=("krb5 libxml2 python perl tcl openssl openldap pam libxslt")
 
 config_files="etc/logrotate.d/postgresql
 etc/conf.d/postgresql"
@@ -21,7 +21,7 @@ BUILD_KEYS="--prefix=/usr \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
 --sysconfdir=/etc \
 --mandir=/usr/man \
---docdir=/usr/doc/$NAME-$VERSION/ \
+--docdir=/usr/doc/${pkgname}-${pkgver}/ \
 --with-tcl \
 --with-perl \
 --with-python \
@@ -34,7 +34,9 @@ BUILD_KEYS="--prefix=/usr \
 --with-system-tzdata=/usr/share/zoneinfo \
 --enable-thread-safety \
 --enable-nls"
+
 INSTALL_KEYS="DESTDIR=$pkgdir"
+
 
 after_build() {
 	go_src_dir

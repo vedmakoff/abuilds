@@ -13,7 +13,7 @@ tags=("x11-apps xserver")
 source=("ftp://invisible-island.net/xterm/xterm-${pkgver}.tgz")
 build_deps=("fontconfig ncurses utempter libICE libSM libX11 libXau \
     libXaw libxcb libXdmcp libXext libXft libXmu libXpm libXrender \
-    libXt util-linux-ng"
+    libXt util-linux-ng")
 
 BUILD_SYSTEM='autotools'
 BUILD_KEYS="--prefix=/usr \

@@ -4,7 +4,7 @@ pkgbuild=1
 arch=('auto')
 
 shortdesc="A higher level API for streaming DV, MPEG-2 and audio over Linux IEEE 1394"
-source=("http://ftp.osuosl.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.gz"
+source=("http://ftp.osuosl.org/pub/linux/libs/ieee1394/${pkgname}-${pkgver}.tar.gz")
 tags="libs media-libs"
 build_deps="libraw1394"
 

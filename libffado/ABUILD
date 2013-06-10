@@ -3,7 +3,7 @@ pkgver=2.1.0
 pkgbuild=1
 arch=('auto')
 
-shortdesc="Libffado (Free Firewire Audio Drivers)")
+shortdesc="Libffado (Free Firewire Audio Drivers)"
 source=("http://www.ffado.org/files/${pkgname}-${pkgver}.tar.gz")
 tags="libs media-libs"
 build_deps="libiec61883 libavc1394 dbus libxml++ alsa-lib libsigc++ libconfig scons subversion python PyQt"
@@ -11,23 +11,23 @@ build_deps="libiec61883 libavc1394 dbus libxml++ alsa-lib libsigc++ libconfig sc
 
 build()
 {
-go_src_dir
-burn_patches
+  go_src_dir
+  burn_patches
 
-sed -i 's/-O2//g' SConstruct
+  sed -i 's/-O2//g' SConstruct
 
-if [ "$CARCH" = "x86_64" ]; then
-	sed -i "s/-m64/-m64 $CFLAGS/g" SConstruct
-else
-	sed -i "s/-m32/-m32 $CFLAGS/g" SConstruct
-fi
+  if [ "$CARCH" = "x86_64" ]; then
+    sed -i "s/-m64/-m64 $CFLAGS/g" SConstruct
+  else
+    sed -i "s/-m32/-m32 $CFLAGS/g" SConstruct
+  fi
 
-scons \
+  scons \
 	PREFIX=/usr \
 	LIBDIR=/usr/lib${LIBDIRSUFFIX} \
 	DEBUG="False" || exit 1
 
-scons \
+  scons \
 	--implicit-deps-unchanged \
 	PREFIX=/usr \
 	LIBDIR=/usr/lib${LIBDIRSUFFIX} \
