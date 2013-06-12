@@ -6,7 +6,7 @@ arch=('auto')
 shortdesc="An old configuration database system for GNOME"
 source=("http://ftp.gnome.org/pub/gnome/sources/GConf/2.32/GConf-${pkgver}.tar.bz2")
 tags="gnome gnome-base"
-build_deps="libxml2 libldap dbus-glib"
+build_deps="libxml2 openldap dbus-glib"
 
 before_build() {
     go_src_dir

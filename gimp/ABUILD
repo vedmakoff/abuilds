@@ -7,7 +7,7 @@ arch=('auto')
 shortdesc="GNU Image Manipulation Program."
 source=("ftp://ftp.gtk.org/pub/${pkgname}/v`echo $pkgver | cut -d . -f 1-2`/${pkgname}-${pkgver}.tar.bz2")
 tags="xapps media-gfx"
-build_deps="pygtk lcms libxpm libwmf libXmu librsvg libmng dbus-glib \
+build_deps="pygtk lcms libXpm libwmf libXmu librsvg libmng dbus-glib \
             libexif gegl jasper desktop-file-utils hicolor-icon-theme babl gegl \
             intltool curl ghostscript poppler curl"
 

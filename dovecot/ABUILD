@@ -12,7 +12,7 @@ longdesc=("Dovecot is an open source IMAP and POP3 server for Linux/UNIX-like sy
 source=("http://www.dovecot.org/releases/2.0/${pkgname}-${pkgver}.tar.gz")
 
 tags="server net-mail"
-build_deps="openssl sqlite mysql pam libcap openldap nss expat curl bzip2"
+build_deps="openssl sqlite mysql linux-pam libcap openldap nss expat curl bzip2"
 
 config_files="etc/dovecot/dovecot.conf"
 

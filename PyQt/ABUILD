@@ -7,7 +7,7 @@ arch=("auto")
 
 shortdesc=("PyQt - Python Bindings for the Qt Toolkit")
 tags=("dev-python libs")
-build_deps="sip python-dbus mesa python-opengl qt-assistant-compat qt"
+build_deps="sip python-dbus mesa python-opengl qt4"
 
 source=("http://downloads.sourceforge.net/project/pyqt/PyQt4/PyQt-${pkgver}/PyQt-x11-gpl-${pkgver}.tar.gz")
 removedep="phonon"

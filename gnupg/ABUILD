@@ -11,7 +11,7 @@ longdesc=("GnuPG is GNU's tool for secure communication and data storage. It can
 tags=("app-crypt network")
 source=("")
 build_deps="cyrus-sasl glibc-solibs openldap openssl-solibs libgcrypt libgpg-error libksba pth readline curl libusb"
-provides="gnupg2"
+conflicts="gnupg2"
 
 
 BUILD_SYSTEM="autotools"

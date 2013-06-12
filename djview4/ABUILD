@@ -7,7 +7,7 @@ arch=('auto')
 shortdesc="A portable djvu viewer"
 source=("http://downloads.sourceforge.net/project/djvu/DjView/${pkgver}/${pkgname/4/}-${pkgver}.tar.gz")
 tags="app-text xapps"
-build_deps="qt djvulibre"
+build_deps="qt4 djvulibre"
 
 before_build() {
     go_src_dir

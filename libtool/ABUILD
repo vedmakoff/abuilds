@@ -25,5 +25,3 @@ BUILD_KEYS="--prefix=/usr \
 	--docdir=/usr/doc/libtool-${pkgver} \
 	--build=${ARCH}-slackware-linux"
 INSTALL_KEYS="DESTDIR=$pkgdir"
-
-

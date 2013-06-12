@@ -10,7 +10,7 @@ longdesc=("This package includes python bindings for the D-Bus messagebus.")
 
 tags=("libs dev-python")
 source=("http://dbus.freedesktop.org/releases/${pkgname}/${pkgname}-${pkgver}.tar.gz")
-build-deps="docutils dbus-glib python"
+build_deps="python-docutils dbus-glib python"
 provides="dbus-python"
 
 BUILD_SYSTEM="autotools"

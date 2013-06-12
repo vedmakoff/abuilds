@@ -8,7 +8,7 @@ source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz
 tags="net-im xapps"
 adddep="libpurple==$pkgver"
 pkglist="finch libpurple"
-build_deps=("libXScrnSaver nss libsasl libSM libidn python hicolor-icon-theme intltool \
+build_deps=("libXScrnSaver nss libSM libidn python hicolor-icon-theme intltool \
     atk cairo dbus dbus-glib fontconfig freetype gdk-pixbuf glib2 glibc-solibs gstreamer \
     gtk+2 libICE libSM libX11 libXext libxml2 pango")
 

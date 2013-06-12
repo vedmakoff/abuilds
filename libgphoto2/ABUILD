@@ -7,7 +7,7 @@ longdesc="The core library of gphoto2, designed to allow access to digital camer
 arch=('auto')
 source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.gz")
 tags=("libs media-libs")
-build_deps="libexif libjpeg gd libltdl libusb"
+build_deps="libexif libjpeg gd libtool libusb"
 
 numjobs=1
 

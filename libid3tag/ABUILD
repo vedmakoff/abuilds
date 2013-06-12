@@ -11,7 +11,7 @@ longdesc=("libid3tag is a library for reading and (eventually) writing ID3 tags,
 tags=("libs media-libs")
 source=("ftp://ftp.mars.org/pub/mpeg/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc-solibs gpref"
+build_deps="glibc-solibs gperf"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc"

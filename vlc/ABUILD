@@ -1,17 +1,12 @@
-#----------------------------- General vars --------------------------------------
-#------------------------- Основные переменные -----------------------------------
 pkgname=vlc
-pkgver=2.0.6
-pkgbuild=9
+pkgver=2.0.7
+pkgbuild=1
 arch=('auto')
 
 shortdesc="VLC (VideoLAN Client multimedia player)"
 
 source=("http://download.videolan.org/pub/videolan/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.xz")
 
-
-#----------------------------- AgiliaLinux vars --------------------------------------
-#--------------------- Специфичные для AgiliaLinux ------------------------------
 tags="xapps media-video"
 custom_opts="no_ccache"
 #dependencies only needed to build package
@@ -24,9 +19,6 @@ expat sqlite qt4 yasm libbluray fluidsynth libmtp zvbi libkate gcc-g++ git opus 
 pkglist="vlc-plugins-ext"
 
 removedep="xulrunner"
-
-#----------------------------- Make PKG --------------------------------------
-#-------------------------- Сборка пакета ------------------------------------
 
 build()
 {

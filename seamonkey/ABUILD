@@ -5,7 +5,7 @@ pkgname=seamonkey
 pkgver=2.17.1
 pkgbuild=1
 arch=("auto")
-build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite gtk+2 libnotify unzip infozip libvpx')
+build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite gtk+2 libnotify infozip infozip libvpx')
 
 shortdesc=('open-source web browser suite')
 longdesc=("The SeaMonkey browser suite.  SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client."

@@ -11,7 +11,7 @@ longdesc=("An interpreter for the PostScript language")
 tags=("app-text console")
 
 source=("http://downloads.ghostscript.com/public/ghostscript-${pkgver}.tar.bz2")
-build_deps="libXt libcups fontconfig libjpeg libong zlib jasper expat libtiff lcms dbus"
+build_deps="libXt cups fontconfig libjpeg libpng zlib jasper expat libtiff lcms dbus"
 
 
 # Fails to build with multiple jobs

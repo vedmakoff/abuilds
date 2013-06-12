@@ -6,7 +6,7 @@ shortdesc="A fast, light, GTK+ IDE"
 #source=("http://download.geany.org/${pkgname}-${pkgver}.tar.bz2")
 source=("git:https://github.com/geany/geany.git")
 tags="xapps dev-util"
-build_deps="perl-xml-parser intltool gtk2 vte desktop-file-utils"
+build_deps="perl-xml-parser intltool gtk+2 vte desktop-file-utils"
 
 
 BUILD_SYSTEM="autotools"

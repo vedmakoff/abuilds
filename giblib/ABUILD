@@ -9,7 +9,7 @@ shortdesc=("Wrapper library for imlib2, and other stuff")
 longdesc=("giblib is a library of handy stuff. Contains an imlib2 wrapper to avoid the context stuff, doubly-linked lists and font styles.")
 tags=("libs media-libs")
 source=("http://linuxbrit.co.uk/downloads/${pkgname}-${pkgver}.tar.gz")
-build_deps="glibc-solibs freetype2 imlib2 libpthread-stubs libX11 libXau libxcb libXdmcp libXext"
+build_deps="glibc-solibs freetype imlib2 libpthread-stubs libX11 libXau libxcb libXdmcp libXext"
 
 
 BUILD_SYSTEM="autotools"

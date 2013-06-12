@@ -6,7 +6,7 @@ arch=('auto')
 shortdesc="A software suite to create, edit, compose, or convert bitmap images."
 source=("ftp://sunsite.icm.edu.pl/packages/ImageMagick/ImageMagick-${pkgver%.*}-${pkgver##*.}.tar.xz")
 tags="xapps media-gfx"
-build_deps=("libltdl lcms2 libXt fontconfig libxext ghostscript openexr libwmf librsvg libxml2 jasper liblqr perl")
+build_deps=("libtool lcms2 libXt fontconfig libXext ghostscript openexr libwmf librsvg libxml2 jasper liblqr perl")
 
 
 BUILD_SYSTEM="autotools"

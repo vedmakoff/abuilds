@@ -9,7 +9,7 @@ longdesc=('libXtst is part of X11. For more information about the X.Org Foundati
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXtst-${pkgver}.tar.bz2")
-build_deps="libXext libXi recordproto inputproto libxfixes xorg-util-macros"
+build_deps="libXext libXi recordproto inputproto libXfixes util-macros"
 
 
 BUILD_SYSTEM='autotools'

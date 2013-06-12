@@ -10,7 +10,7 @@ longdesc=("libproxy is a library that provides automatic proxy configuration man
 tags=("libs net-libs")
 source=("http://libproxy.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="cmake automoc4 pyhon perl gcc glibc-solibs libICE libpthread-stubs libSM libX11 libXau libxcb libXdmcp libXext libXmu libXt util-linux-ng"
+build_deps="cmake automoc4 python perl gcc glibc-solibs libICE libpthread-stubs libSM libX11 libXau libxcb libXdmcp libXext libXmu libXt util-linux-ng"
 
 
 BUILD_SYSTEM="cmake"

@@ -12,7 +12,7 @@ longdesc=("Apache is an HTTP server designed as a plug-in replacement for the NC
 tags=('server www-apache')
 
 source=("http://www.apache.org/dist/httpd/httpd-${pkgver}.tar.bz2")
-build_deps="penssl zlib apr-util pcre openldap"
+build_deps="openssl zlib apr-util pcre openldap"
 
 docs=('ABOUT_APACHE Apache.dsw BuildBin.dsp CHANGES INSTALL InstallBin.dsp LAYOUT NOTICE NWGNUmakefile ROADMAP VERSIONING')
 

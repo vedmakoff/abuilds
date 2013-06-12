@@ -11,7 +11,8 @@ longdesc=("lspci displays detailed information about all PCI buses and devices i
 tags=("base sys-apps")
 
 source=("ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci/pciutils-${pkgver}.tar.gz")
-build_deps="kmod hwids curl glibc"
+build_deps="kmod curl glibc"
+
 
 build() {
 	go_src_dir
@@ -23,5 +24,4 @@ build() {
 	make OPT="${CFLAGS} ${SLKCFLAGS}" ZLIB=no SHARED=yes PREFIX=/usr LIBDIR=/usr/lib${LIBDIRSUFFIX} SHAREDIR=/usr/share MANDIR=/usr/man all -j${numjobs}
 	make SHARED=yes PREFIX=/usr SHAREDIR=/usr/share MANDIR=/usr/man LIBDIR=/usr/lib${LIBDIRSUFFIX} DESTDIR=${pkgdir} install install-lib
 	install -m644 ${srcdir}/libpci.a ${pkgdir}/usr/lib${LIBDIRSUFFIX}/
-
 }

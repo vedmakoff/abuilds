@@ -9,7 +9,7 @@ longdesc=('libXinerama is part of X11. For more information about the X.Org Foun
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXinerama-${pkgver}.tar.bz2")
-build_deps="libXext xinemaramaproto xorg-util-macros"
+build_deps="libXext xineramaproto xorg-util-macros"
 
 
 BUILD_SYSTEM='autotools'

@@ -5,7 +5,7 @@ arch=('auto')
 shortdesc="Library to access Blu-Ray disks for video playback"
 source=("ftp://ftp.videolan.org/pub/videolan/$pkgname/$pkgver/$pkgname-$pkgver.tar.bz2")
 tags="libs media-video"
-build_deps="libxml2 freetype2"
+build_deps="libxml2 freetype"
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"

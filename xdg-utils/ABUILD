@@ -11,8 +11,8 @@ longdesc=('Xdg-utils is a set of command line tools that assist applications wit
 tags=('x11-base xserver')
 
 source=("git://anongit.freedesktop.org/xdg/xdg-utils")
-adddep=("bash")
-build_deps="lynx xmlto docbook-xsl"
+adddep=("bash xprop xset")
+build_deps="xmlto docbook-xsl links"
 
 
 BUILD_SYSTEM="autotools"

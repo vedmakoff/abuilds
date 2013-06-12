@@ -12,7 +12,7 @@ tags=('net-fs network')
 
 source=(http://samba.org/samba/ftp/stable/${pkgname}-${pkgver}.tar.gz)
 
-build_deps="talloc python docbook-xsl pkg-config libbsd db popt cups readline acl openldap krb5 pam gamin gnutls dbus"
+build_deps="talloc python docbook-xsl pkg-config libbsd db popt cups readline acl openldap krb5 linux-pam gamin gnutls dbus"
 pkglist="smb_client wb_client"
 adddep="smbclient libwbclient"
 config_files="etc/conf.d/samba

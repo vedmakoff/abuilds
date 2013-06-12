@@ -10,7 +10,7 @@ shortdesc=("wxWidgets: cross-platform GUI library")
 tags=("libs x11-libs")
 
 source=("http://downloads.sourceforge.net/project/wxwindows/2.9.4/wxWidgets-${pkgver}.tar.bz2")
-build_deps="gtk+2 libpng libtiff libxpm libjpeg-turbo"
+build_deps="gtk+2 libpng libtiff libXpm libjpeg"
 
 build() {
   go_src_dir

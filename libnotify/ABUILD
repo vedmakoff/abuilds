@@ -1,17 +1,21 @@
-# This packages requires gtk+3 for build, but still can be used in non-gtk+3 environments, so I push it in repo.
 pkgname=libnotify
 pkgver=0.7.5
 pkgbuild=1
 arch=('auto')
 
 shortdesc="sends desktop notifications to a notification daemon"
-#-ruler---|--------------------------------------------------------------------------|
 longdesc=("A library that sends desktop notifications to a notification daemon, as defined in the Desktop Notifications spec. These notifications can be used to inform the user about an event or display some form of information without getting in the user's way."
 )
 
 source=("http://ftp.gnome.org/pub/GNOME/sources/$pkgname/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")
 tags="libs x11-libs"
-build_deps="gtk+3 gobject-introspection gdk-pixbuf2"
+build_deps=" gobject-introspection gdk-pixbuf glib2 pkg-config"
+
+before_build() {
+  go_src_dir
+  # disable gtk+3 modules
+  sed -i -e '/PKG_CHECK_MODULES(TESTS/d' configure.ac || die
+}
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
