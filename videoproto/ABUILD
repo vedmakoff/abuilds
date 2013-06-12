@@ -8,7 +8,7 @@ longdesc=('videoproto is part of X11. For more information about the X.Org Found
 
 tags=('x11-protos xserver')
 source=("http://xorg.freedesktop.org/archive/individual/proto/videoproto-${pkgver}.tar.bz2")
-build_deps='x11-skel'
+build_deps='gcc'
 
 
 BUILD_SYSTEM='autotools'

@@ -8,7 +8,7 @@ shortdesc="Netscape Portable Runtime"
 longdesc=("This library provides platform independent non-GUI operating system facilities")
 source=("ftp://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v${pkgver}/src/${pkgname}-${pkgver}.tar.gz")
 tags="net-libs libs"
-build_deps="glibc"
+build_deps="glibc-solibs"
 conflicts="seamonkey-solibs"
 
 

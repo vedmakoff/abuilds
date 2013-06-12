@@ -11,7 +11,7 @@ source=("svn:svn://svn.mplayerhq.hu/mplayer/trunk")
 tags="xapps media-video"
 build_deps="libXxf86dga libXxf86vm libmad libXinerama sdl lame libtheora xvidcore libmng libXScrnSaver smbclient
 aalib libcaca x264 faac faad2 libXvMC enca libvdpau opencore-amr libdca a52dec schroedinger libvpx ffmpeg
-fribidi unzip mesa yasm git fontconfig mpg123 ladspa libass libbluray libcdio-paranoia subversion"
+fribidi infozip mesa yasm git fontconfig mpg123 ladspa libass libbluray libcdio-paranoia subversion"
 
 pkglist=mencoder
 

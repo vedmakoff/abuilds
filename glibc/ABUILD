@@ -10,6 +10,7 @@ longdesc=("Virtual package that collects all glibc components.")
 
 tags=("virtual sys-libs")
 
+build_deps="glibc-solibs"
 addep="glibc-solibs==${pkgver} glibc-i18n==${pkgver}"
 
 build() {
