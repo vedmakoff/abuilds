@@ -9,7 +9,7 @@ longdesc=('libxkbfile is part of X11. For more information about the X.Org Found
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libxkbfile-${pkgver}.tar.bz2")
-build_deps="xorg-util-macros libX11"
+build_deps="util-macros libX11"
 
 
 BUILD_SYSTEM='autotools'

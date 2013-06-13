@@ -9,7 +9,7 @@ longdesc=('libXevie is part of X11. For more information about the X.Org Foundat
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXevie-${pkgver}.tar.bz2")
-build_deps="libXext xorg-util-macros evieext"
+build_deps="libXext util-macros evieext"
 
 BUILD_SYSTEM='autotools'
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --infodir=/usr/info --mandir=/usr/man --disable-static --with-fontrootdir=/usr/share/fonts"

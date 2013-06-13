@@ -1,14 +1,12 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=libbsd
-pkgver=0.3.0
+pkgver=0.5.2
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Provides useful functions commonly found on BSD systems"
-
 source="http://libbsd.freedesktop.org/releases/$pkgname-$pkgver.tar.gz"
-
 tags="libs dev-libs"
+build_deps="glibc"
 
 build()
 {

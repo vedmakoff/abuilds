@@ -1,10 +1,11 @@
 pkgname=perl-Archive-Zip
 pkgver=1.30
-pkgbuild=4
+pkgbuild=5
 arch=('auto')
 shortdesc="perl interface to zip archives"
 source=("http://search.cpan.org/CPAN/authors/id/A/AD/ADAMK/Archive-Zip-${pkgver}.tar.gz")
 tags="libs dev-libs"
+build_deps="perl"
 
 build()
 {

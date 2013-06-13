@@ -9,7 +9,7 @@ longdesc=('libXxf86dga is part of X11. For more information about the X.Org Foun
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXxf86dga-${pkgver}.tar.bz2")
-build_deps="libXext xf86dgaproto xorg-util-macros"
+build_deps="libXext xf86dgaproto util-macros"
 
 
 BUILD_SYSTEM='autotools'

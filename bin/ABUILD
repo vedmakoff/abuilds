@@ -10,6 +10,7 @@ longdesc=("The bin package is a collection of miscellaneous command-line utiliti
 
 tags=("base app-misc")
 adddep="fbset"
+build_deps="gcc"
 
 DUTILS=2.7
 

@@ -8,7 +8,7 @@ longdesc=('dmxproto is part of X11. For more information about the X.Org Foundat
 
 tags=('x11-protos xserver')
 
-build_deps="xorg-util-macros"
+build_deps="util-macros"
 
 source=("http://xorg.freedesktop.org/archive/individual/proto/dmxproto-${pkgver}.tar.bz2")
 

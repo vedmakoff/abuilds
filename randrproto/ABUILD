@@ -6,7 +6,7 @@ arch=('auto')
 shortdesc=('X11 RandR extension wire protocol')
 tags=('x11-protos xserver')
 source=("http://xorg.freedesktop.org/archive/individual/proto/randrproto-${pkgver}.tar.bz2")
-build_deps="xorg-util-macros"
+build_deps="util-macros"
 
 
 BUILD_SYSTEM='autotools'

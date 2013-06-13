@@ -8,7 +8,7 @@ shortdesc="MySQL support for Python"
 longdesc=("MySQL support for Python")
 source=("http://downloads.sourceforge.net/${pkgname}/MySQL-python-${pkgver}.tar.gz")
 tags="dev-python libs"
-build_deps="python libmysqlclient python-distribute"
+build_deps="python libmysqlclient pysetuptools"
 
 build()
 {

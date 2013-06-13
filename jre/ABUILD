@@ -8,7 +8,7 @@ arch=("noarch")
 shortdesc=("Sun Java to OpenJDK virtual package")
 
 tags=("virtual dev-java")
-
+build_deps="jre-openjdk icedtea-web"
 adddep="jre-openjdk icedtea-web"
 
 source=("")

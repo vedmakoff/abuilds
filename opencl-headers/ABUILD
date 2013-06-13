@@ -13,7 +13,7 @@ source=("${_url}/cl_ext.h"
         "${_url}/cl_platform.h"
         "${_url}/opencl.h")
 tags="libs dev-libs"
-build_deps=" " # none - headers
+build_deps="mkpkg"
 
 build()
 {

@@ -5,7 +5,7 @@ arch=('auto')
 
 shortdesc=('compositeproto')
 longdesc=('compositeproto is part of X11. For more information about the X.Org Foundation (the providers of the X.Org implementation of the X Window System), see their website: http://www.x.org')
-build_deps="fixesproto xorg-util-macros"
+build_deps="fixesproto util-macros"
 adddep="fixesproto"
 
 tags=('x11-protos xserver')

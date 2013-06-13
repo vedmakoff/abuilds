@@ -9,7 +9,7 @@ longdesc=('libXt is part of X11. For more information about the X.Org Foundation
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXt-${pkgver}.tar.bz2")
-build_deps="libX11 libSM xorg-util-macros"
+build_deps="libX11 libSM util-macros"
 
 BUILD_SYSTEM='autotools'
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --infodir=/usr/info --mandir=/usr/man --disable-static --with-appdefaultdir=/etc/X11/app-defaults"

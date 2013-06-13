@@ -12,6 +12,7 @@ tags=("console sys-apps")
 source=("http://www.kernel.org/pub/linux/docs/man-pages/$pkgname-$pkgver.tar.gz"
 "http://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/$pkgname-posix-${_posixver}.tar.bz2")
 
+build_deps="sed mkpkg"
 adddep="man"
 custom_opts="skip_gendeps"
 

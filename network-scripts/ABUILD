@@ -9,7 +9,7 @@ shortdesc=("Scripts to configure a network")
 longdesc=("Network configuration basics")
 
 tags=("net-misc network")
-
+build_deps="lftp"
 source=("")
 
 config_files="etc/rc.d/rc.inet1.conf

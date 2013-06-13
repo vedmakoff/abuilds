@@ -1,5 +1,5 @@
 #ABUILD created by/создан: K900, k0009000 at gmail.com 
-pkgname=python-distribute
+pkgname=pysetuptools
 pkgver=0.6.24
 pkgbuild=1
 arch=('auto')

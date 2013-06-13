@@ -9,7 +9,7 @@ longdesc=('libXext is part of X11. For more information about the X.Org Foundati
 tags=('x11-libs xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/lib/libXext-${pkgver}.tar.bz2")
-build_deps="libX11 xextproto xorg-util-macros"
+build_deps="libX11 xextproto util-macros"
 
 
 BUILD_SYSTEM='autotools'

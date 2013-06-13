@@ -9,7 +9,7 @@ longdesc=('setxkbmap is part of X11. For more information about the X.Org Founda
 tags=('x11-apps xserver')
 
 source=("http://xorg.freedesktop.org/archive/individual/app/setxkbmap-${pkgver}.tar.bz2")
-build_deps="libxkbfile xorg-util-macros"
+build_deps="libxkbfile util-macros"
 
 
 BUILD_SYSTEM='autotools'

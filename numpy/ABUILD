@@ -7,7 +7,7 @@ shortdesc="Numerical library for Python"
 longdesc=("Numerical Python adds a fast and sophisticated array facility to the Python language. NumPy is the most recent and most actively supported package. Numarray and Numeric are no longer supported.")
 source=("http://downloads.sourceforge.net/project/${pkgname}/NumPy/${pkgver}/${pkgname}-${pkgver}.tar.gz")
 tags="dev-python libs"
-build_deps="python lapack python-distribute gcc-gfortran python-nose"
+build_deps="python lapack pysetuptools gcc-gfortran python-nose"
 adddep="python lapack"
 
 
