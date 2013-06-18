@@ -14,8 +14,14 @@ build_deps="glibc-solibs"
 build() {
   go_src_dir
   make -j${numjobs}
-  make DESTDIR="$pkgdir" \
-       BINDIR="/usr/bin"\
-       MANDIR="/usr/man/man1" \
-       install
+#  make DESTDIR="$pkgdir" \
+#       BINDIR="/usr/bin"\
+#       MANDIR="/usr/man/man1" \
+#       install
+
+  install -Dm755 compress $pkgdir/usr/bin/compress
+  mkdir -p $pkgdir/usr/man/man1/
+  cat compress.1 | gzip -9c > $pkgdir/usr/man/man1/compress.1.gz
+  ln -s compress.1.gz $pkgdir/usr/man/man1/uncompress.1.gz
+  ln -s compress $pkgdir/usr/bin/uncompress
 }

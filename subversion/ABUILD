@@ -50,7 +50,7 @@ after_build() {
 	rmdir $pkgdir/usr/lib${LIBDIRSUFFIX}/svn-python
 	
 	# Perl bindings
-	make swig-pl-lib
+	make -j${numjobs} swig-pl-lib
 	make install-swig-pl-lib DESTDIR=$pkgdir
 	( cd subversion/bindings/swig/perl/native
 	perl Makefile.PL
@@ -60,8 +60,8 @@ after_build() {
 	mv $pkgdir/$archlib/perllocal.pod $pkgdir/$archlib/subversion.pod
 	
 	# Ruby bindings
-	make swig-rb
-	make install-swig-rb DESTDIR=$pkgdir
+	#make swig-rb
+	#make install-swig-rb DESTDIR=$pkgdir
 	
 	rm -rf $pkgdir/usr/info
 	# Something doesn't honor --mandir
@@ -90,7 +90,7 @@ after_build() {
 	-e "s%\.7$%\.7\.gz%g" \
 	-e "s%\.8$%\.8\.gz%g" \
 	${plist} > ${plist}.new
-	mv -f ${plist}.new ${plist}
+	  mv -f ${plist}.new ${plist}
 	done
 
 	# OpenRC scripts for svnserve

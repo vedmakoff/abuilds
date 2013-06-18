@@ -8,8 +8,7 @@ longdesc=("Libarchive is a programming library that can create and read several 
 
 tags=("app-arch libs")
 build_deps="acl bzip2 expat openssl xz zlib"
-
-source=("https://github.com/downloads/libarchive/libarchive/libarchive-${pkgver}.tar.gz")
+source=("http://www.libarchive.org/downloads/$pkgname-${pkgver}.tar.gz")
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --without-xml2"

@@ -6,10 +6,8 @@ pkgbuild=2
 arch=('auto')
 
 shortdesc="Sparse dynamic array library"
-#-ruler---|--------------------------------------------------------------------------|
-longdesc=("Judy is a C library that provides a state-of-the-art core technology that implements a sparse dynamic array. Judy arrays are declared simply with a null pointer. A Judy array consumes memory only when it is populated, yet can grow  to take advantage of all available memory if desired."
-)
-
+longdesc=("Judy is a C library that provides a state-of-the-art core technology that implements a sparse dynamic array. Judy arrays are declared simply with a null pointer. A Judy array consumes memory only when it is populated, yet can grow  to take advantage of all available memory if desired.")
+numjobs=1
 source=("http://downloads.sourceforge.net/project/${pkgname}/${pkgname}/${downname}-${pkgver}/${downname}-${pkgver}.tar.gz")
 tags="libs dev-libs"
 build_deps="gcc"

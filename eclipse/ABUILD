@@ -1,8 +1,8 @@
 # Lots of thanks to ArchLinux maintainers :)
 pkgname=eclipse
-pkgver=3.8.1
+pkgver=3.8.2
 pkgbuild=1
-_date=201209141540
+_date=201301310800
 arch=('auto')
 
 shortdesc="An IDE for Java and other languages"

@@ -18,7 +18,7 @@ BUILD_KEYS="--prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --with-apr=/usr \
   --with-dbm=db \
-  --with-berkeley-db=/usr
+  --with-berkeley-db=/usr \
   --disable-util-dso \
   --without-gdbm \
   --with-ldap \

@@ -5,7 +5,7 @@ arch=('auto')
 
 shortdesc="A Massively Spiffy Yet Delicately Unobtrusive Compression Library"
 
-source=("http://prdownloads.sourceforge.net/libpng/zlib-${pkgver}.tar.bz2")
+source=("http://downloads.sourceforge.net/libpng/zlib-${pkgver}.tar.xz")
 
 tags="libs app-arch"
 

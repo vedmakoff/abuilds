@@ -8,10 +8,10 @@ tags="develop dev-libs"
 numjobs=1
 build_deps="gcc"
 
-before_build()
-{
-	[ "$ARCH" = "x86_64" ] && CONFIGFLAG="-with-pic"
-}
+if [ "$ARCH" = "x86_64" ]; then
+  CONFIGFLAG="--with-pic"
+fi
+
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"

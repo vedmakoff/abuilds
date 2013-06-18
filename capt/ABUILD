@@ -9,7 +9,7 @@ shortdesc="Canon CAPT Printer Driver for Linux"
 source=("http://gdlp01.c-wss.com/gds/6/0100004596/02/${foldername}.tar.gz")
 
 tags="drivers net-print"
-build_deps="rpmextract"
+build_deps="rpm"
 
 build() {
 	cd ${pkgdir}

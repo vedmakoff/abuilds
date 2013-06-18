@@ -4,29 +4,21 @@ pkgbuild=1
 arch=('auto')
 
 shortdesc="A Trivia Database similar to GDBM but allows simultaneous commits"
-source=("git:git://git.samba.org/samba.git")
+source=("http://samba.org/ftp/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 tags="network sys-libs"
 build_deps="python libxslt docbook-xsl"
 adddep="python"
 
-before_build()
-{
-  go_src_dir
-  cd lib/tdb
-  #Use system docbook.xsl
-  _manstyle="/usr/share/xml/docbook/xsl-stylesheets-1.75.2/manpages/docbook.xsl"
-  sed -i "s#http.*xsl#$_manstyle#" tdb.mk
-  ./autogen.sh
-}
-
 build()
 {
   go_src_dir
-  cd lib/tdb
+  #Use system docbook.xsl
+  #_manstyle="/usr/share/xml/docbook/xsl-stylesheets-1.75.2/manpages/docbook.xsl"
+  #sed -i "s#http.*xsl#$_manstyle#" tdb.mk
   ./configure --prefix=/usr \
     --localstatedir=/var \
     --sysconfdir=/etc/samba \
     --libdir=/usr/lib$LIBDIRSUFFIX
-  make
+  make -j${numjobs}
   make DESTDIR=$pkgdir install
 }

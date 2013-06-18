@@ -4,7 +4,7 @@ pkgbuild=1
 arch="auto"
 
 shortdesc=("interactive text-mode process viewer")
-source=("http://ovh.dl.sourceforge.net/project/htop/htop/${pkgver}/htop-${pkgver}.tar.gz")
+source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
 tags="sys-process console"
 build_deps="ncurses python lsof strace"
 

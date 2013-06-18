@@ -5,12 +5,11 @@ arch=('auto')
 
 shortdesc="GDialog replacement for GNOME2"
 #-ruler---|--------------------------------------------------------------------------|
-longdesc=("Zenity allows you to display GTK+ dialogs from shell scripts; it is a rewrite of the 'gdialog' command from GNOME 1. Also includes gdialog wrapper for legacy scripts"
-)
+longdesc=("Zenity allows you to display GTK+ dialogs from shell scripts; it is a rewrite of the 'gdialog' command from GNOME 1. Also includes gdialog wrapper for legacy scripts")
 
-source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/2.32/${pkgname}-${pkgver}.tar.bz2")
+source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 tags="gnome-extra gnome"
-build_deps="intltool itstool docbook-xsl"
+build_deps="intltool itstool docbook-xsl gtk+3"
 
 BUILD_SYSTEM="autotools"
 

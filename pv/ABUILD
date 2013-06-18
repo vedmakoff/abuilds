@@ -4,7 +4,7 @@ pkgbuild=2
 arch=('auto')
 
 shortdesc="pv - Pipe Viewer - is a terminal-based tool for monitoring the progress of data through a pipeline"
-source=("http://pipeviewer.googlecode.com/files/$pkgname-$pkgver.tar.bz2")
+source=("http://www.ivarch.com/programs/sources/$pkgname-$pkgver.tar.bz2")
 tags="console app-admin "
 build_deps="glibc"
 

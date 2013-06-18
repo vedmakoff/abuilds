@@ -16,10 +16,4 @@ BUILD_KEYS="--prefix=/usr \
    --sysconfdir=/etc/samba \
    --libdir=/usr/lib$LIBDIRSUFFIX \
    --localstatedir=/var \
-   --enable-talloc-compat1 \
-   --enable-largefile"
-
-after_build() {
-	# fix permission
-	chmod 644 $pkgdir/usr/lib${LIBDIRSUFFIX}/libtalloc.a
-}
+   --enable-talloc-compat1"

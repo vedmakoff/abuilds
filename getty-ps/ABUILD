@@ -9,7 +9,7 @@ longdesc=("/sbin/getty and /sbin/uugetty. These control the process of logging i
 tags=("base sys-base")
 
 source=("http://slackware.rol.ru/slackware/slackware-14.0/source/a/getty-ps/getty_ps-${pkgver}.tar.gz")
-build_deps="glibc-solibs"
+build_deps="glibc-solibs libtermcap"
 
 build() {
 	go_src_dir

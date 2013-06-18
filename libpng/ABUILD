@@ -6,7 +6,7 @@ arch=('auto')
 
 shortdesc="libpng (Portable Network Graphics library)"
 
-source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2"
+source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.xz"
 "http://downloads.sourceforge.net/sourceforge/libpng-apng/libpng-$_apngver-apng.patch.gz")
 
 tags="media-libs libs"
@@ -14,8 +14,12 @@ tags="media-libs libs"
 build_deps="zlib"
 
 before_build() {
+        go_src_dir
 	# Add animated PNG (apng) support
-	patch -p1 -i ${srcache}/libpng-${_apngver}-apng.patch
+	# We need to patch the patch
+	cp ${srcache}/libpng-${_apngver}-apng.patch .
+	patch -Np0 -i ${filedir}/adjust-apng-patch-for-libpng16-git-changes.patch
+	patch -p1 -i libpng-${_apngver}-apng.patch
 }
 
 BUILD_SYSTEM="autotools"

@@ -5,7 +5,7 @@ pkgbuild=1
 arch=('auto')
 
 shortdesc="ExtUtils::Depends (perl module)"
-source=("http://cpan.rinet.ru/authors/id/T/TS/TSCH/${downname}-${pkgver}.tar.gz")
+source=("http://www.cpan.org/authors/id/F/FL/FLORA/${downname}-${pkgver}.tar.gz")
 tags="develop dev-lang"
 build_deps="perl"
 adddep="perl"

@@ -4,10 +4,10 @@ pkgbuild=1
 arch=('auto')
 
 shortdesc="man (format and display the on-line manual pages)"
-source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.gz")
+source=("http://savannah.nongnu.org/download/man-db/$pkgname-$pkgver.tar.xz")
 patch_opts=("")
 tags="console sys-base"
-build_deps="gdbm zlib groff less gzip"
+build_deps="gdbm zlib groff less gzip libpipeline"
 provides="man"
 adddep="groff zlib gdbm"
 

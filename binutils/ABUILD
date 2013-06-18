@@ -71,4 +71,6 @@ build() {
 	rm -f ${pkgdir}/usr/man/man1/{dlltool,windres}.1
 	mkdir -p ${pkgdir}/usr/doc/binutils-${pkgver}
 
+	# Someone wants strings binary
+	ln -s strings-GNU ${pkgdir}/usr/bin/strings
 }

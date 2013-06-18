@@ -14,7 +14,6 @@ build_deps="glibc-solibs"
 
 before_build() {
   go_src_dir
-  cd unix
   sed -i 's/#define DUPTRAVERSE_MAX_DEPTH 500/#define DUPTRAVERSE_MAX_DEPTH 5000/' \
     generic/regc_nfa.c
 }

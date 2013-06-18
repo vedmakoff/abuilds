@@ -6,7 +6,7 @@ pkgbuild=1
 arch=("auto")
 shortdesc=("An open source JPEG 2000 codec")
 tags=("libs media-libs")
-build_deps="zlib"
+build_deps="zlib cmake"
 source=("http://openjpeg.googlecode.com/files/openjpeg-${pkgver}.tar.gz")
 
 BUILD_SYSTEM="cmake"

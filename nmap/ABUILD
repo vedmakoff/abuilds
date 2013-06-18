@@ -14,11 +14,21 @@ source=("http://nmap.org/dist/${pkgname}-${pkgver}.tar.bz2")
 
 build_deps="glibc-solibs lua openssl-solibs python libcap pcre"
 
-BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc"
-INSTALL_KEYS="DESTDIR=$pkgdir"
+build() {
+    go_src_dir
+    burn_patches
+    ./configure --prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc
+    sed -e "s/^LIBS = -ldl -lnl/LIBS = -ldl -lnl-3/" -i ncat/Makefile
+    sed "s|\$(LIBPCAPDIR)/libpcap.a|-lpcap|" -i nping/Makefile
+    make -j${numjobs}
+}
+
+#BUILD_SYSTEM="autotools"
+#BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc"
+#INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {
+  make DESTDIR=$pkgdir install
   go_src_dir
   rm "${pkgdir}"/usr/bin/uninstall_zenmap
 }

@@ -6,7 +6,7 @@ arch=('auto')
 shortdesc="An event notification library"
 longdesc=("LibEvent provides engine for calling callback-functions when some changed")
 
-source=("http://www.monkey.org/~provos/libevent-$pkgver-stable.tar.gz")
+source=("https://github.com/downloads/libevent/libevent/${pkgname}-$pkgver-stable.tar.gz")
 tags="dev-libs libs"
 build_deps="openssl python"
 

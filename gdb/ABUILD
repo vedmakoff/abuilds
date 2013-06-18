@@ -9,6 +9,7 @@ tags=("develop sys-devel")
 build_deps="ncurses expat python"
 adddep="python"
 
+
 source=("http://ftp.gnu.org/gnu/gdb/${pkgname}-${pkgver}.tar.bz2")
 config_files="etc/gdb/gdbinit"
 BUILD_SYSTEM="autotools"

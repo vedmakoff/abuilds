@@ -4,7 +4,7 @@ pkgbuild=1
 arch="auto"
 shortdesc=("OpenCORE Framework implementation of Adaptive Multi Rate Narrowband and Wideband speech codec")
 longdesc=("Library of OpenCORE Framework implementation of Adaptive Multi Rate Narrowband and Wideband speech codec")
-source=("http://downloads.sourceforge.net/project/opencore-amr/opencore-amr/${pkgver}/opencore-amr-${pkgver}.tar.gz")
+source=("http://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-${pkgver}.tar.gz")
 tags="libs media-libs"
 build_deps="glibc"
 

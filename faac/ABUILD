@@ -21,9 +21,7 @@ before_build() {
 }
 
 BUILD_SYSTEM="autotools"
-
 BUILD_WORD="./bootstrap && LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
 BUILD_KEYS="--prefix=/usr \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
 --disable-static \
@@ -33,10 +31,3 @@ BUILD_KEYS="--prefix=/usr \
 --with-mp4v2"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
-
-after_build()
-{
-    mv ${pkgdir}/usr/doc/${pkgname}-${pkgver}/docs/* ${pkgdir}/usr/doc/${pkgname}-${pkgver}/
-    rm -rf ${pkgdir}/usr/doc/${pkgname}-${pkgver}/docs
-    rm -f ${pkgdir}/usr/doc/${pkgname}-${pkgver}/faac.1
-}

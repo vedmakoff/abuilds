@@ -6,12 +6,11 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("Russian Linux man pages")
-longdesc=("Этот пакет включает man-страницы для многих системных программ на русском языке.")
 tags=("console app-i18n")
 source=("http://www.linuxshare.ru/projects/trans/manpages-ru-$pkgver.tar.bz2")
 build_deps="man"
 
-package() {
+build() {
   go_src_dir
   mkdir -p $pkgdir/usr/man/ru
   mv man* $pkgdir/usr/man/ru/

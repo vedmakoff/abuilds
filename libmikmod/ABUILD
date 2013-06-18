@@ -8,7 +8,7 @@ shortdesc="A portable sound library"
 #-ruler---|--------------------------------------------------------------------------|
 longdesc=("Mikmod is a module player and library supporting many formats, including mod, s3m, it, and xm. Originally a player for MS-DOS, MikMod has been ported to other platforms, such as Unix, Macintosh, BeOS, and Java(!!). Homepage: http://sourceforge.net/projects/mikmod/")
 
-source=("http://downloads.sourceforge.net/project/mikmod/libmikmod%20%28source%29/${pkgver}/${pkgname}-${pkgver}.tar.gz")
+source=("http://mikmod.shlomifish.org/files/${pkgname}-${pkgver}.tar.gz")
 tags="media-libs libs"
 build_deps="glibc alsa-lib"
 

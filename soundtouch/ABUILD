@@ -9,6 +9,11 @@ patch_opts=("")
 tags="libs media-libs"
 build_deps="gcc"
 
+before_build() {
+  go_src_dir
+  ./bootstrap
+}
+
 if [ "${ARCH}" == "x86_64" ]; then
     conf_opts="--with-pic"
 fi

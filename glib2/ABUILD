@@ -1,5 +1,5 @@
 pkgname=glib2
-pkgver=2.36.2
+pkgver=2.36.3
 pkgtree=`echo $pkgver | cut -d . -f 1-2`
 pkgbuild=1
 arch=('auto')
@@ -7,6 +7,14 @@ arch=('auto')
 shortdesc="Library of C routines"
 source=("http://ftp.gnome.org/pub/gnome/sources/glib/${pkgtree}/glib-${pkgver}.tar.xz")
 tags="libs dev-libs"
+build_deps="libffi pcre python pkg-config automake autoconf"
+
+before_build() {
+  go_src_dir
+  autoreconf
+}
+
+
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
 	--libdir=/usr/lib${LIBDIRSUFFIX} \
@@ -15,7 +23,7 @@ BUILD_KEYS="--prefix=/usr \
 	--disable-fam \
 	--mandir=/usr/man"
 INSTALL_KEYS="DESTDIR=${pkgdir} completiondir=/usr/share/bash-completion/completions"
-build_deps="libffi pcre python pkg-config"
+
 after_build() {
 	# Install profile scripts:
 	mkdir -p $pkgdir/etc/profile.d/

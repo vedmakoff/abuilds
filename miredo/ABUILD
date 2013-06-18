@@ -9,7 +9,7 @@ longdesc=("Miredo is an open-source Teredo IPv6 tunneling software, for Linux an
 "Home: http://www.remlab.net/miredo/"
 )
 
-source=("http://www.remlab.net/files/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("http://www.remlab.net/files/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 tags="network net-misc"
 build_deps="judy iproute2 libcap"
 

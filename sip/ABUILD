@@ -10,7 +10,7 @@ longdesc=("SIP is a tool that makes it very easy to create Python bindings for C
 
 tags=("dev-python libs")
 
-source=("http://www.riverbankcomputing.com/static/Downloads/sip4/${pkgname}-${pkgver}.tar.gz")
+source=("http://downloads.sourceforge.net/pyqt/${pkgname}-${pkgver}.tar.gz")
 build_deps="python"
 
 build() {

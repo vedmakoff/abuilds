@@ -29,3 +29,11 @@ BUILD_KEYS="--prefix=/usr \
 --program-suffix="
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build() {
+  rm -f "${pkgdir}/usr/man/man1"/{extract_dts,dtsdec}.1
+  ln -s dcadec.1.gz "${pkgdir}/usr/man/man1/dtsdec.1.gz"
+  ln -s extract_dca.1.gz "${pkgdir}/usr/man/man1/extract_dts.1.gz"
+  # remove dangling symlink
+  rm "${pkgdir}/usr/lib${LIBDIRSUFFIX}/libdts.a"
+}

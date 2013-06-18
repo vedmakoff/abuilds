@@ -10,7 +10,7 @@ source=("http://${pkgname}.seul.org/${pkgname}-${pkgver}.tar.bz2")
 
 tags="net-ftp network"
 
-build_deps="make gcc pkg-config gtk+"
+build_deps="make gcc pkg-config gtk+2 gettext ncurses readline openssl"
 
 adddep="readline"
 

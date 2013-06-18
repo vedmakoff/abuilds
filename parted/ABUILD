@@ -9,7 +9,7 @@ longdesc=('GNU Parted is a program for creating, destroying, resizing, checking 
 
 tags=('base sys-apps')
 
-source=('http://ftp.gnu.org/gnu/parted/${pkgname}-${pkgver}.tar.xz')
+source=("http://ftp.gnu.org/gnu/parted/${pkgname}-${pkgver}.tar.xz")
 
 build_deps='glibc-solibs util-linux-ng'
 

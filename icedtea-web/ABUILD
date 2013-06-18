@@ -12,6 +12,7 @@ tags="libs dev-java"
 
 pkglist="docs"
 
+
 build() {
 	go_src_dir
 	burn_patches
@@ -27,7 +28,6 @@ build() {
 	--with-jdk-home=${JAVA_HOME} \
 	--docdir=/usr/doc/$pkgname \
 	--datarootdir=/usr/share \
-
 
 
 	make -j$numjobs || echo "MAKE FAIL"

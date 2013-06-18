@@ -9,8 +9,8 @@ shortdesc=("Netscape Plugin API")
 
 tags=("develop net-misc")
 
-source=("https://cloud.github.com/downloads/mgorny/$pkgname/$pkgname-$pkgver.tar.bz2")
-build_deps="gcc"
+source=("https://bitbucket.org/mgorny/$pkgname/downloads/$pkgname-$pkgver.tar.bz2")
+build_deps="mkpkg"
 
 
 BUILD_SYSTEM="autotools"

@@ -16,7 +16,7 @@ source=("http://cairographics.org/releases/cairo-${pkgver}.tar.xz")
 custom_opts="no_copydoc"
 
 
-build_deps="libpng libXrender libXext fontconfig pixman glib2 mesa libgl lzo"
+build_deps="libpng libXrender libXext fontconfig pixman glib2 mesa libgl lzo glib2"
 
 
 before_build() {
@@ -38,6 +38,10 @@ BUILD_KEYS="--prefix=/usr \
 	--localstatedir=/var \
 	--disable-static \
 	--enable-tee \
+	--enable-svg \
+	--enable-ps \
+	--enable-pdf \
+	--enable-gobject \
 	--disable-xcb-xlib \
 	--docdir=/usr/doc \
 	--enable-gl \

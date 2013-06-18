@@ -7,11 +7,11 @@ shortdesc="Btrfs filesystem utilities"
 longdesc=("Btrfs is a new copy on write filesystem for Linux aimed at implementing advanced features while focusing on fault tolerance, repair and easy administration. Initially developed by Oracle, Btrfs is licensed under the GPL and open for contribution from anyone."
 )
 
-source=("git:git://git.kernel.org/pub/scm/linux/kernel/git/mason/${pkgname}.git#commit=7854c8b667")
+source=("git:git://git.kernel.org/pub/scm/linux/kernel/git/mason/${pkgname}.git")
 
 tags="base sys-fs"
 
-build_deps="e2fsprogs glibc-solibs"
+build_deps="e2fsprogs glibc-solibs git"
 
 build()
 {

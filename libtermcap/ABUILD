@@ -16,6 +16,11 @@ build_deps="glibc-solibs"
 
 build() {
   go_src_dir
+  burn_patches
+  ./configure --prefix=/usr
+
+  make -j${numjobs}
+
   gcc -fPIC -c "${pkgbase}.c" -o "${pkgbase}.o" \
     -DHAVE_STRING_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 || return 1
   gcc -shared -Wl,-soname,"${pkgname}.so" \
@@ -24,8 +29,8 @@ build() {
 
 after_build() {
   go_src_dir
-  install -D -m755 "${pkgname}.so.${pkgver}" "${pkgdir}/usr/lib/${pkgname}.so.${pkgver}"
-  for infofile in termcap.info*
-    do install -D -m644 "${infofile}" "${pkgdir}/usr/info/${infofile}"
-  done
+  make prefix=$pkgdir/usr libdir=$pkgdir/usr/lib${LIBDIRSUFFIX} oldincludedir=$pkgdir/usr/include install
+  install -D -m755 "${pkgname}.so.${pkgver}" "${pkgdir}/lib${LIBDIRSUFFIX}/${pkgname}.so.${pkgver}"
+  ln -s "/lib${LIBDIRSUFFIX}/${pkgname}.so.${pkgver}" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}.so.${pkgver}"
+  ln -s "${pkgname}.so.${pkgver}" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}.so"
 }

@@ -12,7 +12,7 @@ shortdesc=("Standard Ghostscript Type1 fonts from URW")
 longdesc=("These fonts are used by the GhostScript interpreter.")
 tags=("console media-fonts")
 source=("http://kojipkgs.fedoraproject.org/packages/${_realname}/${_fedoraver}/${_fedorarel}/src/${_realname}-${_fedoraver}-${_fedorarel}.src.rpm")
-build_deps=" fontconfig rpmextract libarchive" #xorg-font-utils
+build_deps=" fontconfig rpm libarchive" #xorg-font-utils
 conflicts="ghostscript-fonts-std"
 
 build() {

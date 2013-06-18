@@ -3,7 +3,7 @@ pkgver=0.19.5
 pkgbuild=1
 arch=('auto')
 shortdesc="A Free Implementation of the Unicode Bidirectional Algorithm"
-source=("http://fribidi.org/download/${pkgname}-${pkgver}.tar.gz")
+source=("http://fribidi.org/download/${pkgname}-${pkgver}.tar.bz2")
 tags="media-libs libs"
 build_deps="glibc"
 

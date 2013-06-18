@@ -1,19 +1,16 @@
 pkgname=libvpx
-pkgver=1.2.0
+pkgver=1.1.0
 pkgbuild=1
 arch=('auto')
 
 shortdesc="The VP8 Codec SDK"
-#-ruler---|--------------------------------------------------------------------------|
 longdesc=("VP8 is an open video codec, originally developed by On2 and released as open source by Google Inc. It is the successor of the VP3 codec, on which the Theora codec was based."
-	  ""
-	  "Homepage: http://www.webmproject.org/
-"
-)
+"Homepage: http://www.webmproject.org/")
 
 source=("http://webm.googlecode.com/files/${pkgname}-v${pkgver}.tar.bz2")
 tags="libs media-libs"
 build_deps="yasm"
+
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
@@ -23,12 +20,7 @@ BUILD_KEYS="--prefix=/usr \
 --enable-shared \
 --enable-postproc \
 --enable-pic \
---disable-install-docs"
+--disable-install-docs \
+--disable-install-srcs"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
-
-after_build()
-{
-cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-ln -s libvpx.so.1.0.0 libvpx.so.0
-}
