@@ -7,7 +7,7 @@ shortdesc="An audio processing library"
 source=("http://www.surina.net/soundtouch/${pkgname}-${pkgver}.tar.gz")
 patch_opts=("")
 tags="libs media-libs"
-build_deps="gcc"
+build_deps="gcc autoconf"
 
 before_build() {
   go_src_dir

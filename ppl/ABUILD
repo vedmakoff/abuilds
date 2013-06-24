@@ -32,7 +32,7 @@ BUILD_KEYS="--prefix=/usr \
 	--sysconfdir=/etc \
 	--localstatedir=/var \
 	--enable-ppl_lcdd \
-	--docdir=/usr/doc \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
 	--enable-ppl_lpsol \
 	--enable-interfaces='c,cxx' \
 	--enable-optimization=sspeed"

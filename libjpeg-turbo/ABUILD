@@ -16,6 +16,7 @@ BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
+--datadir=/usr/doc/$pkgname-$pkgver \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
 --disable-static \
 --mandir=/usr/man \

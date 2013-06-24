@@ -13,7 +13,7 @@ build_deps="xproto glibc util-macros"
 
 
 BUILD_SYSTEM='autotools'
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --infodir=/usr/info --mandir=/usr/man --disable-static"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --datarootdir=/usr --localstatedir=/var --infodir=/usr/info --mandir=/usr/man --disable-static"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 

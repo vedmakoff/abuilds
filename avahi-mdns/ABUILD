@@ -105,7 +105,7 @@ mv avahi-compat-libdns_sd.pc avhi-compat-libdns_sd.pc
 rm avahi*
 mv avhi-compat-libdns_sd.pc avahi-compat-libdns_sd.pc
 cd ..
-rm -r python2.6
+rm -r python2.7
 rm -r libavahi*
 # And now one more stuff!
 cd ${pkgdir}/usr/include

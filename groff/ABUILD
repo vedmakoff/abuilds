@@ -15,7 +15,10 @@ build_deps="perl"
 build() {
 	go_src_dir
 	burn_patches
-	CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCXXFLAGS" ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --without-x --docdir=/usr/doc
+	CFLAGS="$SLKCFLAGS" CXXFLAGS="$SLKCXXFLAGS" ./configure --prefix=/usr \
+	     --libdir=/usr/lib${LIBDIRSUFFIX} \
+	     --without-x \
+	     --docdir=/usr/doc/${pkgname}-${pkgver}
 	make -j${numjobs} 
 	make DESTDIR=${pkgdir} install
 	cd $pkgdir/usr/bin

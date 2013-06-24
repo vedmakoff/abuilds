@@ -5,7 +5,7 @@ shortdesc="Docbook SGML DTDs"
 arch="noarch"
 url="http://www.oasis-open.org/docbook/"
 adddep=('sgml-common')
-build_deps="infozip"
+build_deps="infozip sgml-common"
 tags=("app-text libs")
 # Pack all of this in one package
 source=("http://www.docbook.org/sgml/4.5/docbook-4.5.zip n"

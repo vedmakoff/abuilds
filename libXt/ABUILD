@@ -12,7 +12,7 @@ source=("http://xorg.freedesktop.org/archive/individual/lib/libXt-${pkgver}.tar.
 build_deps="libX11 libSM util-macros"
 
 BUILD_SYSTEM='autotools'
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --infodir=/usr/info --mandir=/usr/man --disable-static --with-appdefaultdir=/etc/X11/app-defaults"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --datarootdir=/usr --infodir=/usr/info --mandir=/usr/man --disable-static --with-appdefaultdir=/etc/X11/app-defaults"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 

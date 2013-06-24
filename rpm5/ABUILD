@@ -27,8 +27,8 @@ BUILD_KEYS="--prefix=/usr \
   --mandir=/usr/man \
   --sysconfdir=/etc \
   --with-python \
-  --with-python-inc-dir=/usr/include/python2.6 \
-  --with-python-lib-dir=/usr/lib/python2.6 \
+  --with-python-inc-dir=/usr/include/python2.7 \
+  --with-python-lib-dir=/usr/lib/python2.7 \
   --with-ruby=none \
   --without-selinux \
   --with-popt=/usr/lib$LIBDIRSUFFIX \

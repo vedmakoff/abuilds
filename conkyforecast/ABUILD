@@ -85,8 +85,8 @@ if [ ! -d ${pkgdir}/usr/doc/${pkgname}-${pkgver} ]; then
 fi
 
 if [[ ! -f "${pkgdir}/usr/doc/${pkgname}-${pkgver}/ABOUT" ]]; then
- if [[ -f "${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/${pkgname}-${pkgver}-py2.6.egg-info" ]]; then
-  mv -v ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/${pkgname}-${pkgver}-py2.6.egg-info \
+ if [[ -f "${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/${pkgname}-${pkgver}-py2.7.egg-info" ]]; then
+  mv -v ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/${pkgname}-${pkgver}-py2.7.egg-info \
 	${pkgdir}/usr/doc/${pkgname}-${pkgver}/ABOUT || exit 1
  fi 
 fi

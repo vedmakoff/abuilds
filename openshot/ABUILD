@@ -14,9 +14,9 @@ source=("http://launchpad.net/${pkgname}/1.4/${pkgver}/+download/${pkgname}-${pk
 
 tags="media-video xapps"
 
-build_deps="python=2.6.6"
+build_deps="python"
 
-adddep="python=2.6.6 mlt python-mlt pygoocanvas pil librsvg sdl pyxdg frei0r-plugins blender pycairo"
+adddep="python mlt python-mlt pygoocanvas pil librsvg sdl pyxdg frei0r-plugins blender pycairo"
 
 build() {
   go_src_dir

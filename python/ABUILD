@@ -1,8 +1,8 @@
 pkgname=python
-pkgver=2.6.8
+pkgver=2.7.5
 pkgbuild=1
 arch=("auto")
-_pybasever=2.6
+_pybasever=2.7
 
 shortdesc=("python (object-oriented interpreted programming language)")
 longdesc=("Python is an interpreted, interactive, object-oriented programming language that combines remarkable power with very clear syntax. Python's basic power can be extended with your own modules written in C or C++. Python is also adaptable as an extension language for existing applications.")

@@ -132,7 +132,7 @@ build() {
 		--enable-bootstrap \
 		--enable-languages=ada,c,c++,fortran,java,objc,go,lto,obj-c++ \
 		--with-system-zlib \
-		--with-python-dir=/lib$LIBDIRSUFFIX/python2.6/site-packages \
+		--with-python-dir=/lib$LIBDIRSUFFIX/python2.7/site-packages \
 		--enable-threads=posix \
 		--disable-libstdcxx-pch \
 		--disable-libunwind-exceptions \

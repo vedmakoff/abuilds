@@ -19,6 +19,6 @@ build() {
   
   # Removing unnecessary and old stuff, like old Editra. Newer version available
   # in repos
-  rm -rf $pkgdir/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/wx-2.8-gtk2-unicode/wx/tools/{Editra,XRCed}
+  rm -rf $pkgdir/usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/wx-2.8-gtk2-unicode/wx/tools/{Editra,XRCed}
   rm $pkgdir/usr/bin/{editra,xrced}
 }

@@ -31,8 +31,8 @@ build() {
 	DBUS_CFLAGS=' ' \
 	DBUS_LIBS=' ' \
 	--bindir=/bin \
-	--docdir=/usr/share/doc/${PF} \
-	--with-html-dir=/usr/share/doc/${PF}/html \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
+	--with-html-dir=/usr/doc/${pkgname}-${pkgver}/html \
 	--without-python \
 	--disable-bootchart \
 	--disable-audit \
@@ -100,7 +100,7 @@ after_build() {
 	# prune_libtool_files
 	find "${pkgdir}" -name '*.la' -delete
 	rm -f "${pkgdir}"/lib/udev/rules.d/99-systemd.rules
-	rm -rf "${pkgdir}"/usr/share/doc/${pkgname}-${pkgver}/LICENSE.*
+	rm -rf "${pkgdir}"/usr/doc/${pkgname}-${pkgver}/LICENSE.*
 
 	# make symlinks back to where stuff was before
 	# install udevd to /sbin and remove empty and redudant directory

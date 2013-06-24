@@ -7,7 +7,7 @@ shortdesc="A java-based build tool."
 
 source=("http://archive.apache.org/dist/ant/binaries/${pkgname}-${pkgver}-bin.tar.bz2")
 tags="develop dev-java"
-build_deps="jre apache-ant"
+build_deps="jdk apache-ant"
 add_dep="jre"
 
 build() {

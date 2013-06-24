@@ -70,7 +70,7 @@ build()
 {
 go_src_dir
 burn_patches
-_plug_dir=${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/eric4plugins
+_plug_dir=${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/eric4plugins
 mkdir -p ${_plug_dir}
 for _plug in `seq 0 $((${#loc_source_arr[@]}-1))`; do
 cd ${srcdir}

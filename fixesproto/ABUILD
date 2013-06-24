@@ -14,6 +14,6 @@ adddep="xproto xextproto"
 
 
 BUILD_SYSTEM='autotools'
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --infodir=/usr/info --mandir=/usr/man"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --sysconfdir=/etc --localstatedir=/var --datarootdir=/usr --infodir=/usr/info --mandir=/usr/man"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

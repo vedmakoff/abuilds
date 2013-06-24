@@ -10,7 +10,7 @@ longdesc=("The Django Debug Toolbar is a plug-in Django application that display
 
 source=("https://github.com/django-debug-toolbar/${pkgname}/tarball/${pkgver}")
 tags="develop dev-python"
-build_deps="python"
+build_deps="python pysetuptools"
 adddep="django"
 
 BUILD_SYSTEM="python"

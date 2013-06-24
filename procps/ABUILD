@@ -13,7 +13,7 @@ tags=("base sys-base")
 
 source=("http://gitorious.org/procps/procps/archive-tarball/v${pkgver}")
 
-build_deps="ncurses automake"
+build_deps="ncurses automake git"
 
 before_build() {
 	go_src_dir

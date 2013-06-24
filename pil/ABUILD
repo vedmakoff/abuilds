@@ -35,8 +35,8 @@ build() {
 	python setup.py build_ext
 	python setup.py install --root=$pkgdir
  
-	install -dm755 $pkgdir/usr/include/python2.6/
-	install -m644 -t $pkgdir/usr/include/python2.6/ libImaging/*.h 
+	install -dm755 $pkgdir/usr/include/python2.7/
+	install -m644 -t $pkgdir/usr/include/python2.7/ libImaging/*.h 
 
 	for f in pildriver pilprint pilconvert pilfile pilfont; do
 		mv $pkgdir/usr/bin/$f{.py,}

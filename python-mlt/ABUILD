@@ -11,7 +11,7 @@ source=("http://downloads.sourceforge.net/sourceforge/$pkgname/$pkgname-$pkgver.
 tags="develop dev-libs"
 pkglist="python_bindings"
 
-pyver=2.6
+pyver=2.7
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"

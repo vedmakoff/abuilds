@@ -3,9 +3,9 @@
 pkgname=virtualbox-kernel
 KERNEL=${KERNEL:-`uname -r`}
 KERNPKGVERSION=`echo $KERNEL | sed -e "s/-/_/g"`
-pkgver=4.2.12
+pkgver=4.2.14
 srcver=$pkgver
-pkgbuild=8
+pkgbuild=1
 arch=("auto")
 
 _boxbuild=84980

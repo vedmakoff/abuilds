@@ -163,7 +163,7 @@ evince_prep() {
 evolution_prep() {
 	set -e
 	make -C evolution install DESTDIR=${pkgdir}
-	./py-compile --destdir "${pkgdir}" --basedir /usr/lib$LIBDIRSUFFIX/python2.6/site-packages/gtk-2.0 evolution/__init__.py
+	./py-compile --destdir "${pkgdir}" --basedir /usr/lib$LIBDIRSUFFIX/python2.7/site-packages/gtk-2.0 evolution/__init__.py
 	install -m644 evolution/ecal.defs "${pkgdir}/usr/share/pygtk/2.0/defs"
 	set +e
 }

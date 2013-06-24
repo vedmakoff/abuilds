@@ -43,8 +43,8 @@ nm() {
 
 nm_prep() {
 	set -e
-	mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/blueman/plugins/applet
-	mv ${p_pkgdir}/usr/lib$LIBDIRSUFFIX/python2.6/site-packages/blueman/plugins/applet/NM* ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.6/site-packages/blueman/plugins/applet/
+	mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/blueman/plugins/applet
+	mv ${p_pkgdir}/usr/lib$LIBDIRSUFFIX/python2.7/site-packages/blueman/plugins/applet/NM* ${pkgdir}/usr/lib${LIBDIRSUFFIX}/python2.7/site-packages/blueman/plugins/applet/
 	set +e
 }
 

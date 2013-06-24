@@ -7,7 +7,7 @@ shortdesc="The library for xine-dvdnav plugin."
 source=("http://dvdnav.mplayerhq.hu/releases/${pkgname}-${pkgver}.tar.bz2")
 patch_opts=("")
 tags="libs media-libs"
-build_deps="libdvdcss"
+build_deps="libdvdcss autoconf"
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./autogen.sh"

@@ -1,5 +1,5 @@
 java_ver=7
-updatever=u21
+updatever=u25
 icedtea_ver=2.3.9
 
 pkgname=jdk-openjdk
@@ -31,7 +31,7 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${icedtea_ver}.tar
 
 pkglist="jre jdk jdk-source"
 
-build_deps="jdk-openjdk jre-openjdk make gcc gcc-g++ apache-ant libpng gtk+2 alsa-lib infozip cpio rhino"
+build_deps="jdk-openjdk jre-openjdk make gcc gcc-g++ apache-ant libpng gtk+2 alsa-lib infozip cpio rhino lcms2 libXtst"
 
 jvmdir=/usr/lib${LIBDIRSUFFIX}/jvm/java-${java_ver}-openjdk
 
@@ -67,10 +67,10 @@ build() {
  [ -f /etc/profile.d/jdk.sh ] && . /etc/profile.d/jdk.sh
  cp ${patchdir}/*.diff ${srcdir}/icedtea-${icedtea_ver}/patches
  export DISTRIBUTION_PATCHES="patches/fontconfig-paths.diff \
-                              01_fix_openjdk_cmds_path.diff \
-                              02_fix_corba_cmds_path.diff \
-                              patches/openjdk7_nonreparenting-wm.diff \
-                              patches/disable_Werror.diff"
+                              patches/openjdk7_nonreparenting-wm.diff"
+                              #01_fix_openjdk_cmds_path.diff \
+                              #02_fix_corba_cmds_path.diff \
+                              #patches/disable_Werror.diff
 
  ./configure \
         --disable-bootstrap \
