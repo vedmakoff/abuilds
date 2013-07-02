@@ -34,13 +34,12 @@ build() {
               --with-configdir=/etc/samba \
               --with-lockdir=/var/cache/samba \
               --with-piddir=/var/run \
-	      --with-logfilebase=/var/log/samba \
-	      --mandir=/usr/man \
-              --with-fhs \
+              --with-logfilebase=/var/log/samba \
+              --mandir=/usr/man \
+              --enable-fhs \
               --with-pam \
               --with-pam_smbpass \
               --with-pammodulesdir=/lib${LIBDIRSUFFIX}/security \
-	      --with-swatdir=/usr/share/swat \
 	      --with-privatedir=/etc/samba/private \
               --with-ads \
               --with-acl-support \

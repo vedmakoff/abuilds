@@ -38,13 +38,14 @@ BUILD_KEYS="-confirm-license -opensource \
 	-importdir /usr/lib$LIBDIRSUFFIX/qt/imports \
 	-translationdir /usr/share/qt/translations \
 	-datadir /usr/share/qt \
-	-docdir /usr/doc/qt \
-	-examplesdir /usr/doc/qt/examples \
-	-demosdir /usr/doc/qt/demos \
+	-docdir /usr/doc/qt-${pkgver} \
+	-examplesdir /usr/doc/qt-${pkgver}/examples \
+	-demosdir /usr/doc/qt-${pkgver}/demos \
 	-largefile \
 	-plugin-sql-{psql,mysql,sqlite,odbc} \
 	-system-sqlite \
 	-xmlpatterns \
+	-iconv \
 	-no-phonon \
 	-no-phonon-backend \
 	-svg \
@@ -107,5 +108,5 @@ qtdoc() {
 qtdoc_prep() {
 	# Move documentation to separate package:
 	mkdir -p ${pkgdir}/usr/doc
-	mv ${p_pkgdir}/usr/doc/qt ${pkgdir}/usr/doc/qt
+	mv ${p_pkgdir}/usr/doc/qt-${pkgdir} /usr/doc/qt-${pkgver}
 }

@@ -7,7 +7,7 @@ arch=('noarch')
 
 shortdesc="Utility to easily change settings in Makefiles and configuration files"
 
-source=("http://setconf.roboticoverlords.org/${pkgname}-${pkgver}.tbz2")
+source=("http://setconf.roboticoverlords.org/${pkgname}-${pkgver}.tar.xz")
 tags="dev-python libs"
 adddep="python"
 build_deps="mkpkg"

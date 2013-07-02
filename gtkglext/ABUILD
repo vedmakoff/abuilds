@@ -1,34 +1,21 @@
 pkgname=gtkglext
 pkgver=1.2.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="GtkGLExt (an OpenGL extension to GTK)"
 source=("http://downloads.sourceforge.net/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
 patch_opts=("gtk2.20.patch 1")
 tags="libs x11-libs"
-build_deps="gtk+2 mesa libXmu"
+build_deps="gtk+2 mesa libXmu pangox-compat"
 
-build()
-{
-  go_src_dir
-  burn_patches
-
-  LDFLAGS="$SLKLDFLAGS" \
-  CFLAGS="$SLKCFLAGS" \
-  CXXFLAGS="$SLKCFLAGS" \
-  ./configure \
-    --prefix=/usr \
-    --sysconfdir=/etc \
-    --localstatedir=/var \
-    --libdir=/usr/lib${LIBDIRSUFFIX} \
-    --disable-static \
-    --mandir=/usr/man \
-    --enable-gtk-doc \
-    --enable-debug=no \
-    --program-prefix= \
-    --program-suffix= || exit 1
-
-    make -j${numjobs} || exit 1
-    make install DESTDIR=$startdir/pkg || exit 1
-}
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man \
+  --enable-debug=no \
+  --program-prefix= \
+  --program-suffix="

@@ -8,7 +8,7 @@ shortdesc="Liquid Rescale Library"
 source=("http://liblqr.wdfiles.com/local--files/en%3Adownload-page/${pkgname}-1-${pkgver}.tar.bz2")
 tags="libs media-libs"
 build_deps="glib2 pkg-config"
-provides="liblqr-1"
+conflicts="liblqr-1"
 
 
 BUILD_SYSTEM="autotools"

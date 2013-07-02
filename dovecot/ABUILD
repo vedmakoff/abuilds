@@ -1,15 +1,14 @@
 pkgname=dovecot
-pkgver=2.2.2
+pkgver=2.2.4
 pkgbuild=1
 arch=('auto')
 
 shortdesc="open source IMAP and POP3 server"
 longdesc=("Dovecot is an open source IMAP and POP3 server for Linux/UNIX-like systems, written with security primarily in mind. Although it's written in C, it uses several coding techniques to avoid most of the common pitfalls."
 "Dovecot can work with standard mbox and Maildir formats and it's fully compatible with UW-IMAP and Courier IMAP servers' implementation of them, as well as mail clients accessing the mailboxes directly."
-"Builded without ldap and mysql support."
-)
+"Builded without ldap and mysql support.")
 
-source=("http://www.dovecot.org/releases/2.0/${pkgname}-${pkgver}.tar.gz")
+source=("http://www.dovecot.org/releases/${pkgver%.*}/${pkgname}-${pkgver}.tar.gz")
 
 tags="server net-mail"
 build_deps="openssl sqlite mysql linux-pam libcap openldap nss expat curl bzip2"

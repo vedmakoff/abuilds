@@ -17,16 +17,12 @@ tags="libs media-libs"
 build_deps="qt4 libjpeg"
 conflicts="libv4l"
 
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+	--sysconfdir=/etc \
+	--libdir=/usr/lib$LIBDIRSUFFIX"
 
-# Main build script
-build() {
-	set -e
-	go_src_dir
-	burn_patches
-	sed -i 's|CFLAGS :=|CFLAGS ?=|' Make.rules
-	make LIBDIR=/usr/lib$LIBDIRSUFFIX -j${numjobs}
-	make install PREFIX="/usr" LIBDIR=/usr/lib$LIBDIRSUFFIX DESTDIR="${pkgdir}/"
+after_build(){
 	rm ${pkgdir}/usr/bin/ivtv-ctl
-	set +e
 }
 

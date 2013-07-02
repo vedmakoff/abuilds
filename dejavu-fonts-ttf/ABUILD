@@ -9,7 +9,7 @@ source=("http://downloads.sourceforge.net/project/dejavu/dejavu/${pkgver}/dejavu
 	"http://downloads.sourceforge.net/project/dejavu/dejavu/${pkgver}/dejavu-lgc-fonts-ttf-${pkgver}.tar.bz2")
 
 tags="media-fonts xserver"
-build_deps="mkpkg"
+build_deps="mkpkg xorg-font-utils"
 
 build()
 {

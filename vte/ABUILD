@@ -39,7 +39,7 @@ build()
 		--disable-static \
 		--enable-introspection \
 		--with-gtk=2.0 \
-		--enable-gtk-doc
+		--disable-gtk-doc
 	make -j${numjobs}
 cd ..
 

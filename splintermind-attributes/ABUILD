@@ -13,7 +13,7 @@ build_deps="cxxlibs gcc glibc-solibs qt4"
 
 build() {
   go_src_dir
-  qmake-qt4 dwarftherapist.pro
+  qmake dwarftherapist.pro
   make -j${numjobs}
 }
 

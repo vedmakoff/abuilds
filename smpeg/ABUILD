@@ -1,5 +1,7 @@
+#This shit is broken or require sdl2.0
+
 pkgname=smpeg
-pkgver=0.4.5
+pkgver=0.4.4
 pkgbuild=1
 arch=('auto')
 
@@ -7,14 +9,14 @@ shortdesc="SDL MPEG Player Library"
 longdesc=("SMPEG is a free MPEG1 video player library with sound support. Video playback is based on the ubiquitous Berkeley MPEG player, mpeg_play. Audio is played through a slightly modified mpegsound library, part of Splay v0.8.2.  SMPEG supports MPEG audio (MP3), MPEG-1 video, and MPEG system streams."
 "Homepage: http://svn.icculus.org/smpeg/")
 
-source=("svn:svn://svn.icculus.org/smpeg/trunk")
+source=("http://mirrors.dotsrc.org/lokigames/open-source/smpeg/${pkgname}-${pkgver}.tar.gz")
 tags="libs media-libs"
 
 #dependencies only needed to build package
-build_deps="sdl mesa freeglut"
+build_deps="sdl mesa freeglut subversion gtk+"
 
 BUILD_SYSTEM="autotools"
-BUILD_WORD="./autogen.sh && LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
 BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
@@ -22,11 +24,12 @@ BUILD_KEYS="--prefix=/usr \
 --disable-static \
 --mandir=/usr/man \
 --program-prefix= \
---program-suffix="
+--program-suffix= \
+--disable-gtk-player"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 
 after_build()
 {
-sed -i "s#(AM_PATH_SMPEG#([AM_PATH_SMPEG]#" ${pkgdir}/usr/share/aclocal/smpeg.m4 || return 1
+  sed -i "s#(AM_PATH_SMPEG#([AM_PATH_SMPEG]#" ${pkgdir}/usr/share/aclocal/smpeg.m4 || return 1
 }

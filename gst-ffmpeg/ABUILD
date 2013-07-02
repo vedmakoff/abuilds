@@ -2,7 +2,7 @@
 #----------------------------- General vars --------------------------------------
 #------------------------- Основные переменные -----------------------------------
 pkgname=gst-ffmpeg
-pkgver=0.10.13
+pkgver=1.1.1
 pkgbuild=1
 arch=('auto')
 
@@ -15,7 +15,7 @@ longdesc=("GStreamer FFmpeg plug-in contains one plugin with a set of elements u
 	  "Homepage: http://gstreamer.freedesktop.org/modules/gst-ffmpeg.html"
 )
 
-source=("http://gstreamer.freedesktop.org/src/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
+source=("http://gstreamer.freedesktop.org/src/${pkgname}/${pkgname}-${pkgver}.tar.xz")
 
 patch_opts=("")
 

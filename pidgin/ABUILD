@@ -33,6 +33,7 @@ libpurple() {
 build()
 {
     go_src_dir
+    burn_patches
     ./configure --prefix=/usr \
 	--libdir=/usr/lib$LIBDIRSUFFIX \
 	--sysconfdir=/etc \
@@ -45,13 +46,14 @@ build()
 	--disable-doxygen \
 	--disable-nm \
 	--disable-vv \
-	--enable-gtkspell \
+	--disable-gtkspell \
+	--disable-gstreamer \
 	--with-extraversion=AgiliaLinux \
 	--with-system-ssl-certs=/usr/share/ca-certificates/ || exit 1
     make -j$numjobs || exit 1
 
-    # making pidgin
 
+    # making pidgin
     go_src_dir
     #for linking
     make -C libpurple DESTDIR="${pkgdir}" install-libLTLIBRARIES

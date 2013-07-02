@@ -16,7 +16,7 @@ build() {
   go_src_dir
 
   ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --with-gtk=2 --with-opengl --enable-unicode \
-    --enable-graphics_ctx --enable-mediactrl --with-regex=builtin \
+    --enable-graphics_ctx --enable-mediactrl --with-regex=builtin --disable-mediactrl \
     --with-libpng=sys --with-libxpm=sys --with-libjpeg=sys --with-libtiff=sys \
     --disable-precomp-headers
   make

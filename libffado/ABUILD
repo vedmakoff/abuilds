@@ -4,7 +4,7 @@ pkgbuild=1
 arch=('auto')
 
 shortdesc="Libffado (Free Firewire Audio Drivers)"
-source=("http://www.ffado.org/files/${pkgname}-${pkgver}.tar.gz")
+source=("http://www.ffado.org/files/${pkgname}-${pkgver}.tgz")
 tags="libs media-libs"
 build_deps="libiec61883 libavc1394 dbus libxml++ alsa-lib libsigc++ libconfig scons subversion python PyQt"
 

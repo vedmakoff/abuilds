@@ -13,11 +13,10 @@ build_deps="mkpkg"
 build()
 {
     go_src_dir
-    cd ..
     mkdir -p $pkgdir/usr/include/glm
-    mkdir -p $pkgdir/usr/share/doc
+    mkdir -p $pkgdir/usr/doc/${pkgname}-${pkgver}
     cp -r glm $pkgdir/usr/include
-    cp -r doc $pkgdir/usr/share/doc/glm
+    cp -r doc/. $pkgdir/usr/doc/${pkgname}-${pkgver}
     rm -f $pkgdir/usr/include/glm/CMakeLists.txt
     find $pkgdir -type f -exec chmod 644 {} \;
     find $pkgdir -type d -exec chmod 755 {} \;

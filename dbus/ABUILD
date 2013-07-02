@@ -12,8 +12,8 @@ tags=('base sys-apps')
 build_deps="expat coreutils libX11"
 source=("http://dbus.freedesktop.org/releases/dbus/dbus-${pkgver}.tar.gz")
 
-config_files="etc/dbus-1/system.conf \
-  etc/dbus-1/session.conf.new"
+config_files="etc/dbus-1/system.conf
+etc/dbus-1/session.conf"
 
 
 BUILD_SYSTEM="autotools"

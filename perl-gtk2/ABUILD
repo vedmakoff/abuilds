@@ -16,8 +16,7 @@ BUILD_KEYS="Makefile.PL \
     PREFIX=/usr \
     INSTALLDIRS=vendor \
     INSTALLVENDORMAN3DIR=/usr/man/man3
-    make
-    make test"
+    make"
 
 after_build()
 {

@@ -1,5 +1,5 @@
 pkgname=gtk+2
-pkgver=2.24.18
+pkgver=2.24.19
 tree=`echo $pkgver | cut -d . -f 1-2`
 pkgbuild=1
 arch=('auto')

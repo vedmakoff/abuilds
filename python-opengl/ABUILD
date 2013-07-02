@@ -3,14 +3,10 @@ pkgver=3.0.2
 pkgbuild=2
 arch=('auto')
 shortdesc="The cross platform Python binding to OpenGL and related APIs"
-source=("http://downloads.sourceforge.net/pyopengl/PyOpenGL-${pkgver}.tar.gz")
+source=("http://pypi.python.org/packages/source/P/PyOpenGL/PyOpenGL-${pkgver}.tar.gz")
 conflicts="pyopengl"
 tags="develop dev-python"
 build_deps="freeglut pysetuptools"
 adddep="freeglut"
 
-build()
-{
-    go_src_dir
-    python setup.py install --root=${pkgdir} || return 1
-}
+BUILD_SYSTEM="python"

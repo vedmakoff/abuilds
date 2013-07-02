@@ -15,7 +15,7 @@ build_deps="pkg-config glib glibc-solibs libpthread-stubs libX11 libXau libxcb l
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc \
 --disable-gtk \
---disable-gtktest
+--disable-gtktest \
 --enable-xv"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

@@ -1,5 +1,5 @@
 pkgname=dropbox
-pkgver=2.2.1
+pkgver=2.2.8
 pkgbuild=1
 arch=('auto')
 
@@ -19,10 +19,11 @@ build() {
 	set -e
 	mkdir -p $pkgdir/opt/$pkgname
 	cp -R $srcdir/.dropbox-dist/* $pkgdir/opt/dropbox
-	rm $pkgdir/opt/dropbox/libstdc++.so.6
+	find "$pkgdir/opt/dropbox/" -type f -exec chmod 644 {} \;
+	chmod 755 "$pkgdir/opt/dropbox/dropboxd"
+	chmod 755 "$pkgdir/opt/dropbox/dropbox"
 
 	mkdir -p $pkgdir/usr/bin
-	cd $pkgdir/usr/bin
-	ln -s ../../opt/dropbox/dropboxd dropboxd
+	ln -s "/opt/dropbox/dropboxd" "$pkgdir/usr/bin/dropboxd"
 	set +e
 }

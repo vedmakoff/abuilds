@@ -19,7 +19,9 @@ BUILD_KEYS="--prefix=/usr \
     --disable-static \
     --mandir=/usr/man \
     --enable-geanygendoc \
+    --disable-geanylua \
     --docdir=/usr/doc/${pkgname}-${pkgver} \
     --libexecdir=/usr/lib${LIBDIRSUFFIX}"
+# lua pluggin fails to build with lua5.2
 
 INSTALL_KEYS="DESTDIR=$pkgdir"

@@ -5,7 +5,7 @@ arch=('auto')
 
 shortdesc="LibASS (SSA/ASS subtitles rendering library)"
 
-source=("ftp://ftp.videolan.org/pub/videolan/contrib/libass-0.9.11.tar.bz2")
+source=("http://libass.googlecode.com/files/${pkgname}-${pkgver}.tar.xz")
 tags="libs media-libs"
 build_deps="enca fontconfig fribidi pkg-config"
 

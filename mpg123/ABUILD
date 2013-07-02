@@ -22,7 +22,7 @@ BUILD_KEYS="--prefix=/usr \
 --program-suffix= \
 --docdir=/usr/doc/${pkgname}-${pkgver} \
 --with-module-suffix=.so \
---with-audio='alsa oss sdl jack' \
+--with-audio='alsa oss sdl' \
 --enable-int-quality \
 --enable-debug=no \
 --enable-static=no"

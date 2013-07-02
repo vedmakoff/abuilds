@@ -2,7 +2,7 @@
 
 # Package metadata
 pkgname=gst-plugins-bad
-pkgver=0.10.22
+pkgver=1.1.1
 pkgbuild=1
 arch="auto"
 
@@ -11,7 +11,7 @@ shortdesc=("GStreamer plugins - bad ones")
 longdesc=("GStreamer plugins - bad ones")
 
 # Source URL
-source=("http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-${pkgver}.tar.bz2")
+source=("http://gstreamer.freedesktop.org/src/gst-plugins-bad/gst-plugins-bad-${pkgver}.tar.xz")
 
 # Tags
 tags="libs media-libs"

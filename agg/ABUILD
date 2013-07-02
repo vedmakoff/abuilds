@@ -12,6 +12,7 @@ build_deps="gcc freetype sdl"
 build() {
 	go_src_dir
 	burn_patches || exit 1
+	sed -i '/^AM_C_PROTOTYPES/d' configure.in || die
 	sh ./autogen.sh || exit 1
 	./configure --prefix=/usr --disable-static --libdir=/usr/lib$LIBDIRSUFFIX || exit 1
 	make -j${numjobs} || exit 1

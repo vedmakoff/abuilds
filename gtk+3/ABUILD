@@ -13,15 +13,15 @@ source=("http://ftp.gnome.org/pub/gnome/sources/gtk+/${pkgver%.*}/gtk+-${pkgver}
 tags="libs x11-libs"
 adddep="gtk-update-icon-cache"
 build_deps=("atk pango libXcursor libXinerama libXrandr libXi libXcomposite gtk-update-icon-cache
-	     cups libXdamage shared-mime-info cairo gdk-pixbuf gobject-introspection")
+	     cups libXdamage shared-mime-info cairo gdk-pixbuf gobject-introspection at-spi2-atk")
 
 before_build() {
-	cd "${srcdir}/gtk+-${pkgver}"
+	go_src_dir
 	burn_patches
 
 	# Autoconf changes linux to linux-gnu.
 	# Our host is $ARCH-slackware-linux not $ARCH-slackware-linux-gnu:
-	sed -i -e 's#linux|linux-gnu|#linux|linux|#' config.sub
+	sed -i -e 's#linux|linux-gnu|#linux|linux|#' build-aux/config.sub
 }
 
 

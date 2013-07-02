@@ -6,7 +6,7 @@ pkgbuild=1
 arch=("auto")
 
 shortdesc=("A library that provides automatic proxy configuration management")
-longdesc=("libproxy is a library that provides automatic proxy configuration management. libproxy has an extremely small core footprint, and allows dynamic adjustment to changing network topology in a standard way of dealing with proxy settings across all scenarios. Библиотека для автоматической настройки прокси")
+longdesc=("libproxy is a library that provides automatic proxy configuration management. libproxy has an extremely small core footprint, and allows dynamic adjustment to changing network topology in a standard way of dealing with proxy settings across all scenarios.")
 tags=("libs net-libs")
 source=("http://libproxy.googlecode.com/files/${pkgname}-${pkgver}.tar.gz")
 

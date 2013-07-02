@@ -15,15 +15,17 @@ build_deps="perl-gtk2 perl-libintl perl-locale-gettext"
 
 build()
 {
-    go_src_dir
-    burn_patches
-    sed '30s/install: uninstall/install:/' -i Makefile
-    make install DESTDIR=${pkgdir}/usr PREFIX=/usr
+  go_src_dir
+  cd trunk
+  burn_patches
+  sed '30s/install: uninstall/install:/' -i Makefile
+  make install DESTDIR=${pkgdir}/usr PREFIX=/usr
 }
 
 after_build()
 {
-    # Fix icon link in $pkgname.desktop file
-    sed -i 's#local/##' ${pkgdir}/usr/share/applications/${pkgname}.desktop
-    sed 's#/usr/local#/usr#' -i ${pkgdir}/usr/share/applications/$pkgname*.*
+  cd ${srcdir}/${pkgname}/trunk
+  # Fix icon link in $pkgname.desktop file
+  sed -i 's#local/##' ${pkgdir}/usr/share/applications/${pkgname}.desktop
+  sed 's#/usr/local#/usr#' -i ${pkgdir}/usr/share/applications/$pkgname*.*
 }

@@ -2,7 +2,7 @@
 
 pkgname=kernel
 # Kernel version may contain '-' symbol, so let's protect from it by using kernel_ver everywhere.
-pkgver=3.9.1
+pkgver=3.10.0
 
 kernel_ver=`echo $pkgver | sed -e s/_/-/g`
 if [ "$kernel_ver" = "`echo $kernel_ver | sed 's/\.0$//g'`" ] ; then
@@ -10,7 +10,7 @@ if [ "$kernel_ver" = "`echo $kernel_ver | sed 's/\.0$//g'`" ] ; then
 else 
 	srcver=`echo $kernel_ver | sed 's/\.0$//g'`
 fi
-kernel_base=${kernel_ver::3}
+kernel_base=${pkgver%.*}
 
 
 
@@ -23,6 +23,7 @@ longdesc=("This is a Linux kernel with built-in support for most disk controller
 
 tags=("base sys-kernel")
 adddep="linux-firmware"
+conflicts="kernel-modules"
 
 source=("ftp://ftp.kernel.org/pub/linux/kernel/v3.x/linux-${srcver}.tar.xz")
 

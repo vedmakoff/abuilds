@@ -9,7 +9,6 @@ tags="network net-fs"
 build_deps="glibc libtirpc pkg-config"
 conflicts="portmap"
 
-
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
 BUILD_KEYS="--prefix=/usr \
@@ -18,8 +17,9 @@ BUILD_KEYS="--prefix=/usr \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
 --disable-static \
 --mandir=/usr/man \
+--bindir=/sbin \
 --program-prefix= \
---program-suffix=
+--program-suffix= \
 --enable-warmstarts \
 --with-statedir=/var/run"
 

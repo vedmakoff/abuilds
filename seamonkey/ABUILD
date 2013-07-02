@@ -11,133 +11,95 @@ shortdesc=('open-source web browser suite')
 longdesc=("The SeaMonkey browser suite.  SeaMonkey features a state-of-the-art web browser and powerful email client, as well as a WYSIWYG web page composer and a feature-rich IRC chat client."
 "Visit the SeaMonkey project at this URL:  http://www.mozilla.org/projects/seamonkey/")
 
-source=("http://releases.mozilla.org/pub/mozilla.org/seamonkey/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.bz2")
+source=("http://ftp.mozilla.org/pub/mozilla.org/seamonkey/releases/${pkgver}/source/${pkgname}-${pkgver}.source.tar.bz2")
 tags=("xapps www-client")
 
 docs="LEGAL"
 
-BUILD_SYSTEM="autotools"
-LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib/seamonkey-$pkgver"
-#MAKE_WORD="make -j$numjobs -f client.mk build"
-BUILD_KEYS="--prefix=/usr \
-    --enable-optimize=-O2 \
-    --with-default-mozilla-five-home=/usr/lib${LIBDIRSUFFIX}/seamonkey-${VERSION} \
-    --enable-system-hunspell \
-    --enable-shared-js \
-    --enable-strip \
-    --enable-svg \
-    --enable-canvas \
-    --enable-extensions=default \
-    --enable-crypto \
+pkglist="devel"
 
-    --with-system-nss \
-    --with-system-nspr \
-    --with-system-zlib \
-    --with-system-jpeg \
-    --with-system-bz2 \
-    --with-system-mng \
-    --with-system-png \
-    --with-system-libvpx \
-    --enable-application=suite \
-    --enable-xft \
-    --disable-necko-wifi \
-    --enable-storage \
-    --enable-system-ffi \
-    --enable-system-sqlite \
-    --disable-gnomevfs \
-    --disable-crashreporter \
-    --disable-updater \
-    --disable-installer \
-    --disable-tests \
-    --disable-debug \
-    --disable-xprint \
-    --host=$ARCH-slackware-linux \
-    --target=$ARCH-slackware-linux \
-    --libdir=/usr/lib$LIBDIRSUFFIX"
+
+
 
 before_build() {
-    go_src_dir
-    # Fix a long standing bug that's prevented staying current on GTK+.
-    # Thanks to the BLFS folks.  :-)
-    cat >> mozilla/layout/build/Makefile.in << EOF
+  go_src_dir
+  sed "${filedir}/mozconfig" \
+    -e "s,%%LIBDIR%%,${LIBDIRSUFFIX},g" \
+    -e "s,%%VERSION%%,${pkgver},g" \
+    -e "s,%%ARCH%%,${ARCH},g" > ".mozconfig" || exit 1
+}
 
-ifdef MOZ_ENABLE_CANVAS
-EXTRA_DSO_LDOPTS += \$(XLDFLAGS) -lX11 -lXrender
-endif
-
-EOF
-
+build() {
+  go_src_dir
+  export LDFLAGS="$LDFLAGS -Wl,-rpath,/usr/lib${LIBDIRSUFFIX}/seamonkey-$pkgver"
+  make -j${numjobs} -f client.mk build
 }
 
 after_build() {
-    go_src_dir
-    mkdir -p ${pkgdir}/usr/include/seamonkey-${pkgver}/js
-    cp mozilla/js/src/*.tbl ${pkgdir}/usr/include/seamonkey-${pkgver}/js
-    cp mozilla/js/src/*.h ${pkgdir}/usr/include/seamonkey-${pkgver}/js
-    cp -L mozilla/dist/include/*.h ${pkgdir}/usr/include/seamonkey-${pkgver}
-    #cp -aL mozilla/dist/sdk/include/* ${pkgdir}/usr/include/seamonkey-${pkgver}
-    #( cd ${pkgdir}/usr/include/seamonkey-${pkgver}/plugin
-    #  for file in ../j*.h ; do
-    #    ln -sf $file .
-    #  done
-    #)
-    cp mozilla/js/src/libmozjs.so ${pkgdir}/usr/lib${LIBDIRSUFFIX}/seamonkey-${pkgver}/
-    chown -R root:root ${pkgdir}/usr/include/seamonkey-${pkgver}
-    find ${pkgdir}/usr/include/seamonkey-${pkgver} -name "*.h" -type f -exec chmod 644 {} \;
-    # Create a more generic include files symlink:
-    ( cd ${pkgdir}/usr/include
-	if [ ! -e seamonkey ]; then
-	    ln -sf seamonkey-${pkgver} seamonkey
-	fi
-    )
+  go_src_dir
 
-    # Install pkgconfig files:
-    mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-    for file in ${startdir}/files/pkgconfig/* ; do
-        cat $file \
-            | sed -e "s/@LIB@/lib${LIBDIRSUFFIX}/" \
-            -e "s/@VERSION@/$pkgver/" \
-            > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/$(basename $file)
-    done
+  make -f client.mk DESTDIR="$pkgdir" install
 
-    # Add symlinks for the pkgconfig files:
-    ( cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
-	ln -s seamonkey-js.pc js.pc
-	#ln -s seamonkey-nspr.pc nspr.pc
-	#ln -s seamonkey-nss.pc nss.pc
-	ln -s seamonkey-plugin.pc plugin.pc
-	ln -s seamonkey-xpcom.pc xpcom.pc
-    )
+  # This remains the standard plugin directory for all browsers.
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
 
-    # This remains the standard plugin directory for all browsers.
-    mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/mozilla/plugins
+  mkdir -p ${pkgdir}/usr/share/applications
+  cp -a ${filedir}/*.desktop ${pkgdir}/usr/share/applications
+  mkdir -p ${pkgdir}/usr/share/pixmaps
+  cp -a ${filedir}/*.png ${pkgdir}/usr/share/pixmaps
 
-    mkdir -p ${pkgdir}/usr/share/applications
-    cp -a ${startdir}/files/*.desktop ${pkgdir}/usr/share/applications
 
-    mkdir -p ${pkgdir}/usr/share/pixmaps
-    cp -a ${startdir}/files/*.png ${pkgdir}/usr/share/pixmaps
+  # Install russian langpack
+  ( cd ${pkgdir}/usr/lib/seamonkey-${pkgver}/distribution/extensions/
+    wget -c http://ftp.mozilla.org/pub/mozilla.org/${pkgname}/releases/${pkgver}/langpack/${pkgname}-${pkgver}.ru.langpack.xpi
+  )
 
-    zcat ${startdir}/doinst.sh.gz | sed -e "s#usr/lib#usr/lib${LIBDIRSUFFIX}#g" \
-     > ${pkgdir}/install/doinst.sh
+  # Install russian dictonaries & locale
+  ( cd ${pkgdir}/usr/lib/seamonkey-${pkgver}/
+    cp ${filedir}/ru.{aff,dic} ./dictionaries/
+    echo 'ru' > update.locale
+  )
+}
 
-    # Install russian langpack
-    (cd ${pkgdir}/usr/lib/seamonkey-${pkgver}/distribution/extensions/
-      wget -c http://releases.mozilla.org/pub/mozilla.org/${pkgname}/releases/${pkgver}/langpack/${pkgname}-${pkgver}.ru.langpack.xpi
-    #  chmod +x ${filedir}/mozilla-add-global-extension.sh
-    #  ${filedir}/mozilla-add-global-extension.sh \
-    #    -p ${pkgdir}/usr/lib/${pkgname}-${pkgver}/extensions/ \
-    #    -f ./${pkgname}-${pkgver}.ru.langpack.xpi || exit
-    )
-    #rm -rf xpilang
 
-    # Install russian dictonaries & locale
-    ( cd ${pkgdir}/usr/lib/seamonkey-${pkgver}/
-        cp ${filedir}/ru.{aff,dic} ./dictionaries/
-        echo 'ru' > update.locale
-    )
 
-    #( cd ${pkgdir}/usr/lib/${pkgname}-${pkgver}/defaults/pref/
-    #    sed -i -e 's|en-US|ru|;tc;b;:c;n;bc;' ./suite-l10n.js
-    #)
+devel() {
+  pkgname=seamonkey-devel
+  shortdesc="Development libs and headers from seamonkey package"
+  adddep="seamonkey"
+}
+
+devel_prep() {
+  go_src_dir
+
+  mkdir -p ${pkgdir}/usr/{include,lib${LIBDIRSUFFIX}/${pkgname}-${pkgver},share/idl}
+  mv ${p_pkgdir}/usr/include ${pkgdir}/usr/include
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}-${pkgver} \
+     ${pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}-${pkgver}
+  mv ${p_pkgdir}/usr/share/idl ${pkgdir}/usr/share/idl
+
+  # Create a more generic include files symlink:
+  ( cd ${pkgdir}/usr/include
+    if [ ! -e seamonkey ]; then
+      ln -sf seamonkey-${pkgver} seamonkey
+    fi
+  )
+
+  # Install pkgconfig files:
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
+  for file in ${filedir}/pkgconfig/* ; do
+    cat $file \
+      | sed -e "s/@LIB@/lib${LIBDIRSUFFIX}/" \
+      -e "s/@VERSION@/$pkgver/" \
+      > ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig/$(basename $file)
+  done
+
+
+  # Add symlinks for the pkgconfig files:
+  ( cd ${pkgdir}/usr/lib${LIBDIRSUFFIX}/pkgconfig
+    ln -s seamonkey-js.pc js.pc
+    ln -s seamonkey-plugin.pc plugin.pc
+    ln -s seamonkey-xpcom.pc xpcom.pc
+  )
+
 }

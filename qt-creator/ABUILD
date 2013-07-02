@@ -6,20 +6,20 @@ arch=('auto')
 shortdesc="Qt Creator is a cross-platform integrated development environment (IDE) tailored to the needs of Qt developers."
 
 source=("https://qt.gitorious.org/qt-creator/qt-creator/archive-tarball/v${pkgver}"
-"http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-${_qtver}.tar.gz")
+"http://releases.qt-project.org/qt4/source/qt-everywhere-opensource-src-${_qtver}.tar.gz"
+)
 tags="dev-util develop"
 build_deps="qt4"
 
-
 build() {
-  go_src_dir
+  cd ${srcdir}/${pkgname}-${pkgname}
   burn_patches
   [[ -d build ]] && rm -r build
   mkdir build && cd build
   cp -a /usr/include/Qt/qconfig.h ${startdir}/qt-creator.src/qt-everywhere-opensource-src-4.8.4/src/corelib/global/qconfig.h
   qmake ../qtcreator.pro \
       PREFIX=/usr -r \
-      "QT_PRIVATE_HEADERS=${startdir}/qt-creator.src/qt-everywhere-opensource-src-4.8.4/include" \
+      "QT_PRIVATE_HEADERS=${srcdir}/qt-creator.src/qt-everywhere-opensource-src-${_qtver}/include" \
       IDE_LIBRARY_BASENAME=lib${LIBDIRSUFFIX}
 
   make -j${numjobs}

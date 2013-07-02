@@ -6,7 +6,7 @@ arch=('auto')
 shortdesc=("pygobject (GObject bindings for Python)")
 longdesc=("This archive contains bindings for the GObject, to be used in Python. It is a fairly complete set of bindings, it's already rather useful, and is usable to write moderately complex programs. pygobject's home page: http://www.pygtk.org/")
 tags=('dev-python libs')
-source=("http://ftp.gnome.org/pub/GNOME/sources/pygobject/${pkgver::3}/pygobject-${pkgver}.tar.bz2")
+source=("http://ftp.gnome.org/pub/GNOME/sources/pygobject/${pkgver%.*}/pygobject-${pkgver}.tar.bz2")
 build_deps="python python-cairo glib2"
 
 

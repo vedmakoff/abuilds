@@ -11,7 +11,7 @@ longdesc=('Subversion is a version control system which allows you to keep old v
 tags=('dev-util develop')
 
 source=("http://www.sai.msu.su/apache/subversion/subversion-${pkgver}.tar.bz2")
-build_deps="swig db autoconf apr perl python"
+build_deps="swig db autoconf apr perl python serf"
 docs="BUGS CHANGES COMMITTERS COPYING* HACKING INSTALL README TRANSLATING doc/"
 
 before_build() {
@@ -26,16 +26,15 @@ BUILD_KEYS="--prefix=/usr \
   --docdir=/usr/doc/subversion-${pkgver} \
   --enable-shared \
   --disable-static \
-  --with-apr=/usr \
-  --with-apr-util=/usr \
+  --with-apr=/usr/bin/apr-1-config \
+  --with-apr-util=/usr/bin/apu-1-config \
   --with-apxs=/usr/sbin/apxs \
-  --with-neon=/usr \
-  --with-zlib=/usr \
+  --with-zlib \
   --with-pic \
-  --with-ssl \
   --build=$ARCH-slackware-linux"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
+
 after_build() {
 	go_src_dir
 	make install-docs DESTDIR=$pkgdir || exit 1
@@ -65,9 +64,9 @@ after_build() {
 	
 	rm -rf $pkgdir/usr/info
 	# Something doesn't honor --mandir
-	mv $pkgdir/usr/share/man/man3 $pkgdir/usr/man
-	gzip -9 $pkgdir/usr/man/man?/*
-	rmdir $pkgdir/usr/share/man
+	#mv $pkgdir/usr/share/man/man3 $pkgdir/usr/man
+	#gzip -9 $pkgdir/usr/man/man?/*
+	#rmdir $pkgdir/usr/share/man
 	
 	# What is this junk for?  Since I don't know, I'll erase it.  :-)
 	rm -rf $pkgdir/usr/build
