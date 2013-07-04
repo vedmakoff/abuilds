@@ -1,5 +1,5 @@
 pkgname=xorg-server
-pkgver=1.14.1
+pkgver=1.14.2
 pkgbuild=1
 arch=('auto')
 
@@ -109,6 +109,14 @@ build() {
 		rm -rf modules
 		ln -sf xorg/modules .
 	)
+
+	for dir in man1 man4 man5; do
+	  ( cd ${pkgdir}/usr/man/$dir;
+	    for file in *; do
+	      gzip -9 ${file}
+	    done
+	  )
+	done
 
 	# Install sane config files in /etc.
 	install -m755 -d "${pkgdir}/etc/X11/xorg.conf.d"

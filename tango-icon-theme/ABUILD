@@ -12,7 +12,7 @@ tags=("libs x11-themes")
 
 source=("http://tango.freedesktop.org/releases/tango-icon-theme-${pkgver}.tar.gz")
 
-build_deps="automake perl-xml-parser gettext intltool imagemagick"
+build_deps="automake perl-xml-parser gettext intltool imagemagick icon-naming-utils"
 custom_opts="skip_gendeps no_strip"
 
 BUILD_SYSTEM="autotools"

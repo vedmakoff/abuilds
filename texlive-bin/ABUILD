@@ -1,57 +1,36 @@
 pkgname=texlive-bin
-pkgver=2012.0
-_biber_ver=1.5 # for biblatex 2.5 only.
+pkgver=2013.30973
+_biber_ver=1.6 # for biblatex 2.5 only.
 pkgbuild=1
 arch=('auto')
 
 shortdesc="binaries of TexLive"
 longdesc=("TeX Live is an easy way to get up and running with the TeX document production system. It provides a comprehensive TeX system with binaries for most flavors of Unix, including GNU/Linux, and also Windows. It includes all the major TeX-related programs, macro packages, and fonts that are free software, including support for many languages around the world.")
 
-source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-20120623.tar.xz"
-"http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-texmf-20120623.tar.xz"
+source=("http://mirrors.kernel.org/archlinux/other/texlive/texlive-bin-source-${pkgver}.tar.xz"
 "http://downloads.sourceforge.net/project/biblatex-biber/biblatex-biber/${_biber_ver}/binaries/Linux/biber-linux_x86_64.tar.gz n"
 "http://downloads.sourceforge.net/project/biblatex-biber/biblatex-biber/${_biber_ver}/binaries/Linux/biber-linux_x86_32.tar.gz n")
 tags="app-text tex"
-build_deps="clisp libsigsegv t1lib poppler ffcall t1lib gd poppler libpng libjpeg"
-
-config_files='etc/texmf/web2c/texmf.cnf
-	etc/texmf/chktex/chktexrc
-	etc/texmf/web2c/mktex.cnf
-	etc/texmf/web2c/updmap.cfg class=generated
-	etc/texmf/tex/generic/config/language.dat
-	etc/texmf/tex/generic/config/language.def
-	etc/texmf/tex/generic/config/pdftexconfig.tex
-	etc/texmf/ttf2pk/ttf2pk.cfg
-	etc/texmf/dvips/config/config.ps
-	etc/texmf/dvipdfmx/dvipdfmx.cfg
-	etc/texmf/dvipdfm/config/config
-	etc/texmf/xdvi/XDvi'
-
-
-before_build()
-{
-if [ "${ARCH}" = "x86_64" ]; then
-	export CFLAGS="${CFLAGS} -fPIC"
-	export CXXFLAGS="${CXXFLAGS} -fPIC"
-fi
-}
+build_deps="cairo pixman perl clisp libsigsegv ffcall t1lib gd poppler libpng libjpeg freetype harfbuzz icu4c"
 
 build()
 {
-  go_src_dir
+  cd "$srcdir"
+
   if [ "${ARCH}" = "x86_64" ]; then
     export CFLAGS="${CFLAGS} -fPIC"
     export CXXFLAGS="${CXXFLAGS} -fPIC"
-    tar xf biber-linux_x86_64.tar.gz
+    tar xf ${srcache}/biber-linux_x86_64.tar.gz
   else
-    tar xf biber-linux_x86_32.tar.gz
+    tar xf ${srcache}/biber-linux_x86_32.tar.gz
   fi
 
-  burn_patches
-  # t4ht expects to be un /usr/share/texmf/bin/t4ht (FS#27251)
-  sed -i s/SELFAUTOPARENT/TEXMFROOT/ source/texk/tex4htk/t4ht.c
-
   cd source
+  burn_patches
+
+  # t4ht expects to be un /usr/share/texmf/bin/t4ht (FS#27251)
+  sed -i s/SELFAUTOPARENT/TEXMFROOT/ texk/tex4htk/t4ht.c
+
   ## prevent compiling Xdvi with libXp
   sed -i~ 's|-lXp ||' texk/xdvik/configure
   test ! -d Work && mkdir Work
@@ -60,7 +39,6 @@ build()
   echo "--> Initial configuration..."
   # we use temporary prefix to avoid messing the existing
   # $pkgdir/usr/share/texmf tree
-  # system zlib is disabled due to issues with zlib 1.2.6 (FS#28221)
   ../configure --prefix=/usr -C \
     --sysconfdir=/etc \
     --datarootdir=/usr/share \
@@ -76,7 +54,6 @@ build()
     --disable-bibtexu \
     --disable-xz \
     --with-system-zlib \
-    --with-system-zziplib \
     --with-system-pnglib \
     --with-system-ncurses \
     --with-system-t1lib \
@@ -84,7 +61,11 @@ build()
     --with-system-poppler \
     --with-system-xpdf \
     --with-system-freetype2 \
-    --without-system-graphite \
+    --with-system-pixman \
+    --with-system-cairo \
+    --with-system-harfbuzz \
+    --with-system-graphite \
+    --with-system-icu \
     --with-freetype2-libdir=/usr/lib${LIBDIRSUFFIX} \
     --with-freetype2-include=/usr/include/freetype2 \
     --with-xdvi-x-toolkit=xaw \
@@ -95,136 +76,113 @@ build()
     --without-x \
     --enable-xindy --disable-xindy-rules --disable-xindy-docs
 
-    make -j${numjobs}
+    LC_ALL=en_US.UTF-8 make -j${numjobs}
 }
 
 
 after_build()
 {
   # there is an crazy magic. Don't tell me about optimization, bro!
-  cd $srcdir
-  install -m755 -d $pkgdir/usr/share
-  cp -r texmf $pkgdir/usr/share/
-  install -d -m755 $pkgdir/etc/texmf/web2c
-  install -d -m755 $pkgdir/etc/texmf/chktex
-  install -d -m755 $pkgdir/etc/texmf/dvips/config
-  install -d -m755 $pkgdir/etc/texmf/dvipdfm/config
-  install -d -m755 $pkgdir/etc/texmf/dvipdfmx
-  install -d -m755 $pkgdir/etc/texmf/tex/generic/config
-  install -d -m755 $pkgdir/etc/texmf/ttf2pk
-  install -d -m755 $pkgdir/etc/texmf/xdvi
-  install -d -m755 $pkgdir/etc/fonts/conf.avail
-  install -m644 $filedir/09-texlive-fonts.conf $pkgdir/etc/fonts/conf.avail/
-
-  # move man files to /usr/man
-  for i in 1 5; do
-    install -d -m755 $pkgdir/usr/man/man$i
-    mv $pkgdir/usr/share/texmf/doc/man/man$i/*.$i $pkgdir/usr/man/man$i/
-  done
-
-  # move info files to /usr/share/info
-  install -d -m755 $pkgdir/usr/share/info
-  mv $pkgdir/usr/share/texmf/doc/info/*.info $pkgdir/usr/share/info/
-  rm -rf $pkgdir/usr/share/texmf/doc/{man,info}
-
-  # copy config files to $TEXMFCONFIG tree
-  cp -a $pkgdir/usr/share/texmf/chktex/chktexrc \
-    $pkgdir/etc/texmf/chktex/
-  cp -a $pkgdir/usr/share/texmf/web2c/mktex.cnf \
-    $pkgdir/etc/texmf/web2c/
-  cp -a $pkgdir/usr/share/texmf/web2c/updmap.cfg \
-    $pkgdir/etc/texmf/web2c/
-  cp -a $pkgdir/usr/share/texmf/web2c/fmtutil.cnf \
-    $pkgdir/etc/texmf/web2c/
-  cp -a $pkgdir/usr/share/texmf/dvips/config/config.ps \
-    $pkgdir/etc/texmf/dvips/config/
-  cp -a $pkgdir/usr/share/texmf/dvipdfm/config/config \
-    $pkgdir/etc/texmf/dvipdfm/config/
-  cp -a $pkgdir/usr/share/texmf/dvipdfmx/dvipdfmx.cfg \
-    $pkgdir/etc/texmf/dvipdfmx/
-  cp -a $pkgdir/usr/share/texmf/tex/generic/config/pdftexconfig.tex \
-    $pkgdir/etc/texmf/tex/generic/config/
-  cp -a $pkgdir/usr/share/texmf/tex/generic/config/language.dat \
-    $pkgdir/etc/texmf/tex/generic/config/
-  cp -a $pkgdir/usr/share/texmf/tex/generic/config/language.def \
-    $pkgdir/etc/texmf/tex/generic/config/
-  cp -a $pkgdir/usr/share/texmf/ttf2pk/ttf2pk.cfg \
-    $pkgdir/etc/texmf/ttf2pk/
-  cp -a $pkgdir/usr/share/texmf/xdvi/XDvi \
-    $pkgdir/etc/texmf/xdvi/
-
-  # remove TL specific warnings in the language.{dat,def} files:
-  sed -i -e '/DO NOT EDIT/,+3 d' $pkgdir/etc/texmf/tex/generic/config/language.*
-  # clean updmap.cfg
-  sed -i '/^\(Map\|MixedMap\)/d' $pkgdir/etc/texmf/web2c/updmap.cfg
-  sed -i '/^#! \(Map\|MixedMap\)/d' $pkgdir/etc/texmf/web2c/updmap.cfg
-
-  cd source
+  cd $srcdir/source
   # fixes for xindy
   if [ "$ARCH" = "x86_64" ] ; then
-    find utils/xindy -name Makefile -exec sed -i -e "s|^prefix =.\+$|prefix = $pkgdir/usr|" -e "s|^libdir =.\+$|libdir = \${prefix}/lib64|"  -e "s|^mandir =.\+$|mandir = \${prefix}/share/man|" -e "s|^datadir =.\+$|datadir = \${datarootdir}/texmf|" -e "s|^docdir =.\+$|docdir = \${datadir}/doc/xindy|" '{}' \;
+    find utils/xindy -name Makefile -exec sed -i \
+      -e "s|^prefix =.\+$|prefix = $pkgdir/usr|" \
+      -e "s|^libdir =.\+$|libdir = \${prefix}/lib64|" \
+      -e "s|^mandir =.\+$|mandir = \${prefix}/man|" \
+      -e "s|^datadir =.\+$|datadir = \${datarootdir}/texmf|" \
+      -e "s|^docdir =.\+$|docdir = \${datadir}/doc/xindy|" '{}' \;
   else
-    find utils/xindy -name Makefile -exec sed -i -e "s|^prefix =.\+$|prefix = $pkgdir/usr|" -e "s|^libdir =.\+$|libdir = \${prefix}/lib|"  -e "s|^mandir =.\+$|mandir = \${prefix}/share/man|" -e "s|^datadir =.\+$|datadir = \${datarootdir}/texmf|" -e "s|^docdir =.\+$|docdir = \${datadir}/doc/xindy|" '{}' \;
+    find utils/xindy -name Makefile -exec sed -i \
+      -e "s|^prefix =.\+$|prefix = $pkgdir/usr|" \
+      -e "s|^libdir =.\+$|libdir = \${prefix}/lib|" \
+      -e "s|^mandir =.\+$|mandir = \${prefix}/man|" \
+      -e "s|^datadir =.\+$|datadir = \${datarootdir}/texmf|" \
+      -e "s|^docdir =.\+$|docdir = \${datadir}/doc/xindy|" '{}' \;
   fi
 
-
   cd Work
-  make prefix=$srcdir/inst/usr texmf=$pkgdir/usr/share/texmf install
+  make DESTDIR="${pkgdir}" texmf="$pkgdir"/usr/share/texmf install
   rm -rf "${pkgdir}"/usr/{texmf,share/texmf-dist}
 
-  # replace upstream texmf.cnf with Arch's one
-  rm -f $pkgdir/usr/share/texmf/web2c/texmf.cnf
-  install -m644 $filedir/texmf.cnf $pkgdir/etc/texmf/web2c/texmf.cnf
-  # since the location of texmf.cnf is hard-wired to be under /usr/share/texmf/web2c
-  # we make a symlink from /etc/texmf/web2c/texmf.cnf to the latter
-  ln -s /etc/texmf/web2c/texmf.cnf $pkgdir/usr/share/texmf/web2c/texmf.cnf
-  # fix location of TEXMFCACHE for luatools
-  sed -i 's#texlive2010#texlive#' $pkgdir/usr/share/texmf/web2c/texmfcnf.lua
-  ## remove aleph from fmtutil.cnf
-  sed -i -e '/aleph/d' $pkgdir/usr/share/texmf/web2c/fmtutil.cnf
+  ## install Perl libraries
+  mkdir -p "$pkgdir"/usr/share/tlpkg/TeXLive
+  install -m644 "${srcdir}"/source/utils/biber/TeXLive/*.pm "${pkgdir}/usr/share/tlpkg/TeXLive"
+
+  # symlink engines by hand. texlinks has moved to texlive-core...
+  mkdir -p ${pkgdir}/usr/bin
+  for name in platex uplatex dvilualatex dviluatex lualatex pdfcsplain \
+    amstex cslatex csplain eplain etex jadetex latex mex mllatex mltex pdfetex \
+    pdfjadetex pdflatex pdfmex pdfxmltex texsis utf8mex xmltex xelatex; do
+      ln -s eptex ${pkgdir}/usr/bin/$name
+  done
 
   ## install Perl libraries
   mkdir -p "$pkgdir"/usr/share/tlpkg/TeXLive
   install -m755 "${srcdir}/biber" "${pkgdir}/usr/bin/biber"
   install -m644 "${srcdir}"/source/utils/biber/TeXLive/*.pm "${pkgdir}/usr/share/tlpkg/TeXLive"
 
-  # create symlinks for formats 
-  PATH="$PATH:${pkgdir}/usr/bin" texlinks -f $pkgdir/usr/share/texmf/web2c/fmtutil.cnf $pkgdir/usr/bin/
-
   _bibtexextra_scripts="
 bibexport
 listbib
+multibibliography
 urlbst
 "
   _core_scripts="
+a2ping
+a5toa4
+adhocfilelist
 afm2afm
+allcm
+allec
+allneeded
+arara
 arlatex
 autoinst
 bundledoc
 checkcites
-cmap2enc
+chkweb
+context
 ctanify
 ctanupload
+ctxtools
 de-macro
+deweb
 dosepsbin
+dtxgen
+dvi2fax
 dviasm
+dvired
+e2pall
 epstopdf
 findhyph
-font2afm
+fmtutil
+fmtutil-sys
+fontinst
 fragmaster
 installfont-tl
+kpsepath
+kpsetool
+kpsewhere
+kpsexpand
 latex2man
 latexdiff
 latexdiff-vc
 latexfileversion
 latexmk
+latexpand
 latexrevise
 listings-ext.sh
+ltxfileinfo
+lua2dox_filter
+luaotfload-tool
+luatools
 match_parens
 mf2pt1
 mkjobtexmf
 mkluatexfontdb
 mkt1font
+mktexfmt
 mptopdf
 ot2kpx
 pdf180
@@ -241,27 +199,49 @@ pdfjam-slides6up
 pdfjoin
 pdfnup
 pdfpun
-pfm2kpx
+pfarrei
 pkfix
 pkfix-helper
+ps2eps
+ps2frag
+pslatex
+pstopdf
 purifyeps
 repstopdf
 rpdfcrop
-showglyphs
+rungs
+simpdftex
 sty2dtx
+texconfig
+texconfig-dialog
+texconfig-sys
 texcount
 texdef
 texdiff
 texdirflatten
+texdoc
+texdoctk
+texexec
+texindy
+texlinks
 texliveonfly
 texloganalyser
-typeoutfileinfo
+texmfstart
 thumbpdf
+typeoutfileinfo
+updmap
+updmap-sys
 vpl2ovp
 vpl2vpl
+xindy
 "
   _htmlxml_scripts="ht htcontext htlatex htmex httex httexi htxelatex htxetex mk4ht"
-  _langcjk_scripts="convbkmk updmap-setup-kanji"
+  _langcyrillic_scripts="rubibtex rumakeindex"
+  _langcjk_scripts="convbkmk ptex2pdf 
+kanji-fontmap-creator
+kanji-config-updmap
+kanji-config-updmap-sys
+"
   _langextra_scripts="ebong"
   _langgreek_scripts="mkgrkindex"
   _latexextra_scripts="
@@ -270,7 +250,6 @@ exceltex
 makeglossaries
 pdfannotextractor
 perltex
-ppower4
 ps4pdf
 splitindex
 svn-multi
@@ -285,6 +264,7 @@ vpe"
         ${_core_scripts}       \
         ${_htmlxml_scripts}    \
         ${_langcjk_scripts}    \
+        ${_langcyrillic_scripts} \
         ${_langextra_scripts}  \
         ${_langgreek_scripts}  \
         ${_latexextra_scripts} \
@@ -293,23 +273,7 @@ vpe"
         ${_pstricks_scripts}   \
         ${_science_scripts}    \
         tlmgr; do
-    rm -f "$pkgdir"/usr/bin/$s
+    ! readlink -e "$pkgdir"/usr/bin/$s && rm "$pkgdir"/usr/bin/$s
   done
-
-# restore install location of bin/lib/include
-#mv -f $srcdir/inst/usr/bin $pkgdir/usr/bin
-#mv -f $srcdir/inst/usr/lib${LIBDIRSUFFIX} $pkgdir/usr/lib${LIBDIRSUFFIX}
-#mv -f $srcdir/inst/usr/include $pkgdir/usr/include
-# add symlinks to manpages since they are not included in the original texmf tree
-#for m in $srcdir/inst/usr/share/man/man1/*; do
-#	bm=$(basename $m)
-#	test -f $pkgdir/usr/share/man/man1/$bm || mv -f $m $pkgdir/usr/share/man/man1/
-#done
-
-### install luatex binary
-#install -m755 $srcdir/luatex-beta-${luatexver}/build/texk/web2c/luatex $pkgdir/usr/bin/
-#cd $pkgdir/usr/bin
-#/bin/ln -s luatex texlua
-#/bin/ln -s luatex texluac
 
 }

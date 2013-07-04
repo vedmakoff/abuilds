@@ -9,13 +9,12 @@ url="http://xorg.freedesktop.org/releases/individual/font/"
 source=("${url}/font-adobe-utopia-type1-1.0.4.tar.bz2"
 	"${url}/font-bh-type1-${pkgver}.tar.bz2"
 	"${url}/font-bitstream-type1-${pkgver}.tar.bz2"
-	"${url}/font-bitstream-ibm-${pkgver}.tar.bz2"
+	"${url}/font-ibm-type1-${pkgver}.tar.bz2"
 	"${url}/font-xfree86-type1-1.0.4.tar.bz2")
 
 tags="xserver x11-fonts"
 build_deps="encodings font-alias xorg-font-utils fontconfig"
-provides="font-adobe-utopia-type1 font-bh-type1 font-bitstream-type1 font-ibm-type1 font-xfree86-type1"
-conflicts=""
+conflicts="font-adobe-utopia-type1 font-bh-type1 font-bitstream-type1 font-ibm-type1 font-xfree86-type1"
 
 adddep="xorg-font-utils"
 

@@ -19,6 +19,7 @@ BUILD_KEYS="--prefix=/usr \
   --with-glib \
   --with-freetype \
   --with-cairo \
-  --with-icu"
+  --with-icu \
+  --with-graphite2"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

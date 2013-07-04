@@ -13,8 +13,7 @@ source=("${url}/font-cronyx-cyrillic-${pkgver}.tar.bz2"
 
 tags="xserver x11-fonts"
 build_deps="encodings font-alias xorg-font-utils fontconfig"
-provides="font-cronyx-cyrillic font-misc-cyrillic font-screen-cyrillic font-winitzki-cyrillic"
-conflicts=""
+conflicts="font-cronyx-cyrillic font-misc-cyrillic font-screen-cyrillic font-winitzki-cyrillic"
 
 adddep="xorg-font-utils"
 

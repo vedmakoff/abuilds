@@ -14,8 +14,7 @@ source=("${url}/font-adobe-100dpi-1.0.3.tar.bz2"
 
 tags="xserver x11-fonts"
 build_deps="encodings font-alias xorg-font-utils fontconfig"
-provides="font-adobe-100dpi font-adobe-utopia-100dpi font-bh-100dpi font-bh-lucidatypewriter-100dpi font-bitstream-100dpi"
-conflicts=""
+conflicts="font-adobe-100dpi font-adobe-utopia-100dpi font-bh-100dpi font-bh-lucidatypewriter-100dpi font-bitstream-100dpi"
 
 adddep="xorg-font-utils"
 

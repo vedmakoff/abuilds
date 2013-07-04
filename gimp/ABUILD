@@ -1,7 +1,7 @@
 #ABUILD created by: medved, medved55rus at gmail.com 
 pkgname=gimp
-pkgver=2.8.4
-pkgbuild=2
+pkgver=2.8.6
+pkgbuild=1
 arch=('auto')
 
 shortdesc="GNU Image Manipulation Program."

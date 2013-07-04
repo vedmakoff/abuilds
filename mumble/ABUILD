@@ -1,6 +1,6 @@
 pkgname=mumble
-pkgver=1.2.3
-pkgbuild=2
+pkgver=1.2.4
+pkgbuild=1
 arch=('auto')
 shortdesc="Low latency VoIP client"
 source=("http://downloads.sourceforge.net/mumble/$pkgname-$pkgver.tar.gz")
@@ -12,7 +12,7 @@ build() {
     go_src_dir
     # Building mumble
     qmake main.pro \
-      CONFIG+="bundled-celt no-bundled-speex no-speechd no-g15 no-xevie no-server \
+      CONFIG+="no-bundled-celt no-bundled-speex no-speechd no-g15 no-xevie no-server \
       no-embed-qt-translations no-update-packaged no-pulseaudio no-bonjour" \
       DEFINES+="PLUGIN_PATH=/usr/lib${LIBDIRSUFFIX}/mumble"
     #no-bundled-celt
@@ -32,7 +32,7 @@ after_build() {
     ln -s libmumble.so.$pkgver $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/libmumble.so.1
     ln -s libmumble.so.$pkgver $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/libmumble.so.1.2
     install -m755 -D ./release/plugins/liblink.so $pkgdir/usr/lib${LIBDIRSUFFIX}/mumble/
-    #install -m755 -D ./release/libcelt* $pkgdir/usr/lib$LIBDIRSUFFIX/mumble/
+    install -m755 -D ./release/libcelt* $pkgdir/usr/lib$LIBDIRSUFFIX/mumble/
     install -m755 -d $pkgdir/usr/share/applications
     install -m644 -D ./scripts/mumble.desktop $pkgdir/usr/share/applications/mumble.desktop
     install -m644 -D $filedir/mumble11x.desktop $pkgdir/usr/share/applications/mumble11x.desktop

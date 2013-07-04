@@ -39,6 +39,6 @@ after_build() {
   install -Dm644 xpdf/xpdfIcon.xpm "${pkgdir}/usr/share/pixmaps/xpdf.xpm"
   # stuff provided by poppler
   for tool in pdfdetach pdffonts pdfimages pdfinfo pdftoppm pdftops pdftotext; do
-    rm "${pkgdir}/usr/bin/${tool}" "${pkgdir}/usr/share/man/man1/${tool}.1"
+    rm "${pkgdir}/usr/bin/${tool}" "${pkgdir}/usr/man/man1/${tool}.1"
   done
 }

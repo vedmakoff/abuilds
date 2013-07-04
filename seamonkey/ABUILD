@@ -2,7 +2,7 @@
 
 # Package metadata
 pkgname=seamonkey
-pkgver=2.17.1
+pkgver=2.19
 pkgbuild=1
 arch=("auto")
 build_deps=('pkg-config python yasm mesa autoconf nss nspr sqlite gtk+2 libnotify infozip infozip libvpx')
@@ -72,11 +72,11 @@ devel() {
 devel_prep() {
   go_src_dir
 
-  mkdir -p ${pkgdir}/usr/{include,lib${LIBDIRSUFFIX}/${pkgname}-${pkgver},share/idl}
-  mv ${p_pkgdir}/usr/include ${pkgdir}/usr/include
+  mkdir -p ${pkgdir}/usr/{lib${LIBDIRSUFFIX},share}
+  mv ${p_pkgdir}/usr/include ${pkgdir}/usr/
   mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}-${pkgver} \
-     ${pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}-${pkgver}
-  mv ${p_pkgdir}/usr/share/idl ${pkgdir}/usr/share/idl
+     ${pkgdir}/usr/lib${LIBDIRSUFFIX}/
+  mv ${p_pkgdir}/usr/share/idl ${pkgdir}/usr/share/
 
   # Create a more generic include files symlink:
   ( cd ${pkgdir}/usr/include

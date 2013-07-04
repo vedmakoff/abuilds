@@ -10,7 +10,7 @@ longdesc=("FLAC stands for Free Lossless Audio Codec. Grossly oversimplified, FL
 
 tags=("console media-libs")
 
-source=("http://downloads.sf.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.gz")
+source=("http://downloads.xiph.org/releases/flac/${pkgname}-${pkgver}.tar.xz")
 build_deps="nasm doxygen"
 
 BUILD_SYSTEM="autotools"

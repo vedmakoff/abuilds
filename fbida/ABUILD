@@ -24,7 +24,8 @@ build()
 {
 	go_src_dir
 	burn_patches
-	sed -i 's/ungif/gif/' GNUmakefile
+	sed -e 's:DGifOpenFileName,ungif:DGifOpenFileName,gif:' \
+	    -e 's:-lungif:-lgif:' -i GNUmakefile
 	make config prefix=/usr
 	make prefix=/usr
 	make STRIP="" prefix=/usr DESTDIR=${pkgdir} install

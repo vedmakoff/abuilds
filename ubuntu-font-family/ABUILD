@@ -12,9 +12,12 @@ docs=*.txt
 build()
 {
   go_src_dir
-  install -dm755 ${pkgdir}/usr/share/fonts/TTF
-  for file in * ; do
+  install -dm755 ${pkgdir}/usr/{share/{fonts/TTF,licenses/$pkgname},doc/$pkgname-$pkgver}
+  for file in *.ttf; do
     install -m644 ${file} ${pkgdir}/usr/share/fonts/TTF
   done
-  install -D -m644 .txt "${pkgdir}/usr/share/licenses/${pkgname}/LICENCE"
+  for doc in *.txt; do
+    install -m644 ${doc} ${pkgdir}/usr/doc/$pkgname-$pkgver
+  done
+  mv ${pkgdir}/usr/doc/$pkgname-$pkgver/LICENCE.txt ${pkgdir}/usr/share/licenses/${pkgname}
 }
