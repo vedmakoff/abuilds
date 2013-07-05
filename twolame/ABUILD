@@ -21,11 +21,3 @@ BUILD_KEYS="--prefix=/usr \
 --program-suffix="
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
-
-after_build()
-{
-echo ""
-mkdir -p $pkgdir/usr/doc/${pkgname}-${pkgver}
-cp -a $pkgdir/usr/share/doc/${pkgname}/* $pkgdir/usr/doc/${pkgname}-${pkgver}/
-rm -rf $pkgdir/usr/share ${pkgdir}/usr/doc/${pkgname}-${pkgver}/doc
-}

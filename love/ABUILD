@@ -10,12 +10,10 @@ tags=("develop games-util")
 
 source=("https://bitbucket.org/rude/love/downloads/love-${pkgver}-linux-src.tar.gz")
 
-build_deps="physfs freetype devil mpg123 openal libvorbis libmodplug sdl shared-mime-info hicolor-icon-theme desktop-file-utils"
-
-
+build_deps="physfs freetype devil mpg123 openal libvorbis libmodplug sdl shared-mime-info hicolor-icon-theme desktop-file-utils luajit"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --with-luajit"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {

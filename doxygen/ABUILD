@@ -10,11 +10,25 @@ tags=("develop app-doc")
 
 source=("http://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz")
 
-build_deps="fontconfig glibc-solibs python qt4 graphviz flex ghostscript texlive-core"
+build_deps="fontconfig glibc-solibs python qt4 graphviz flex ghostscript"
 
+before_build() {
+  go_src_dir
+  # fix final DESTDIR issue
+  sed -i.orig -e "s:\$(INSTALL):\$(DESTDIR)/\$(INSTALL):g" \
+              addon/doxywizard/Makefile.in || die
+}
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="QTDIR=/usr ./configure"
-DBUILD_KEYS="--prefix /usr --with-sqlite3 --with-doxywizard"
-INSTALL_KEYS="DESTDIR=$pkgdir install_docs"
+BUILD_KEYS="--prefix /usr --with-doxywizard"
+INSTALL_KEYS="DESTDIR=${pkgdir} all"
 
+after_build() {
+  go_src_dir  
+  sed -i.orig -e "s/GENERATE_LATEX    = YES/GENERATE_LATEX    = NO/" doc/Doxyfile
+  sed -i.orig -e "s/@epstopdf/# @epstopdf/" -e "s/@cp Makefile.latex/# @cp Makefile.latex/" \
+              -e "s/@sed/# @sed/" doc/Makefile
+  make docs
+  cp -r html ${pkgdir}/usr/doc/${pkgname}-${pkgver}
+}

@@ -2,7 +2,7 @@
 #http://aur.archlinux.org/packages/virtualbox_bin/virtualbox_bin/PKGBUILD
 
 pkgname=virtualbox
-pkgver=4.2.14
+pkgver=4.2.16
 pkgbuild=1
 arch=('auto')
 

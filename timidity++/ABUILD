@@ -24,16 +24,16 @@ BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc \
     --with-default-path=/etc/timidity++/ \
     --enable-server --enable-alsaseq --enable-spectrogram --enable-network --enable-xft \
-    --enable-audio=alsa,oss,ao,vorbis,flac,jack \
+    --enable-audio=alsa,oss,ao,vorbis,flac \
     --enable-dynamic=ncurses,tcltk,vt100,gtk"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {
-  go_src_dir
+  cd ${srcdir}
   #install freepats
-  tar xf freepats-${freepats_ver}.tar.bz2
-    install -d ${pkgdir}/usr/share/timidity/freepats/{Drum,Tone}_000/
+  tar xf ${srcache}/freepats-${freepats_ver}.tar.bz2
+  install -d ${pkgdir}/usr/share/timidity/freepats/{Drum,Tone}_000/
   install -m644 ${srcdir}/freepats/Drum_000/*.pat \
       ${pkgdir}/usr/share/timidity/freepats/Drum_000/
   install -m644 ${srcdir}/freepats/Drum_000/*.txt \
@@ -44,6 +44,6 @@ after_build() {
       ${pkgdir}/usr/share/timidity/freepats/Tone_000/
   install -Dm644 ${srcdir}/freepats/crude.cfg \
       ${pkgdir}/etc/timidity++/freepats/freepats.cfg
-  install -m644 ${srcdir}/timidity-freepats.cfg \
+  install -m644 ${filedir}/timidity-freepats.cfg \
       ${pkgdir}/etc/timidity++/
 }
