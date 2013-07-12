@@ -13,5 +13,5 @@ source=("http://downloads.xiph.org/releases/ao/${pkgname}-${pkgver}.tar.gz")
 build_deps="glibc-solibs audiofile"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --enable-alsa-mmap"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --docdir=/usr/doc/${pkgname}-${pkgver} --enable-alsa-mmap"
 INSTALL_KEYS="DESTDIR=$pkgdir"

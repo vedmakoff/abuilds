@@ -1,6 +1,6 @@
 pkgname=libXft
 pkgver=2.3.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('FreeType-based font drawing library for X')

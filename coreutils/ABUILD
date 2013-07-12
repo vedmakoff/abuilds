@@ -24,7 +24,7 @@ build() {
 	CFLAGS="$SLKCFLAGS" \
 		./configure \
 		--prefix=/usr \
-		--enable-no-install-program=hostname,kill,uptime \
+		--enable-no-install-program=groups,hostname,kill,uptime \
 		--bindir=/bin \
 		--mandir=/usr/man \
 		--infodir=/usr/info \

@@ -1,6 +1,6 @@
 pkgname=qjoypad
 pkgver=4.1.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Joystick Configuration Utility"

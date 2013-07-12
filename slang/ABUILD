@@ -19,6 +19,6 @@ config_files="etc/slsh.rc"
 numjobs=1
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --docdir=/usr/doc/${pkgname}-${pkgver}"
 INSTALL_KEYS="DESTDIR=$pkgdir install-all"
 

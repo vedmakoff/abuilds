@@ -13,6 +13,6 @@ build_deps="glibc-solibs libogg libvorbis"
 
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --enable-shared --disable-static"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --docdir=/usr/doc/${pkgname}-${pkgver} --sysconfdir=/etc --enable-shared --disable-static"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

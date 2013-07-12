@@ -9,6 +9,7 @@ shortdesc=("Merging locate/updatedb implementation")
 tags=("base sys-apps")
 source=("https://fedorahosted.org/releases/m/l/mlocate/mlocate-${pkgver}.tar.xz")
 build_deps="gcc"
+conflicts="slocate"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --localstatedir=/var/lib"

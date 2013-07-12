@@ -1,7 +1,7 @@
 
 pkgname=flash-player
-pkgver=11.2.202.285
-pkgbuild=1
+pkgver=11.2.202.291
+pkgbuild=2
 arch=('auto')
 
 shortdesc="flash-player plugin"

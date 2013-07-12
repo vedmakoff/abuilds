@@ -30,6 +30,7 @@ before_build() {
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
 	--libdir=/usr/lib$LIBDIRSUFFIX \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
 	--mandir=/usr/man \
 	--sysconfdir=/etc \
 	--enable-shared \

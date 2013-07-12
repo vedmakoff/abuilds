@@ -11,6 +11,7 @@ tags=("sys-kernel base")
 
 source=("git:git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git")
 build_deps="mkpkg"
+conflicts="kernel-firmware"
 
 build() {
 	set -e

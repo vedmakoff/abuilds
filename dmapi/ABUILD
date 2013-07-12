@@ -23,7 +23,7 @@ build() {
   export INSTALL_GROUP=root
   export DEBUG=-DNDEBUG
   autoconf
-  ./configure --prefix=/usr --libexecdir=/usr/lib
+  ./configure --prefix=/usr --libexecdir=/usr/lib$LIBDIRSUFFIX --docdir=/usr/doc/${pkgname}-${pkgver}
   make
 }
 

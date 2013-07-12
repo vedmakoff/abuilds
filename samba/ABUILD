@@ -30,6 +30,7 @@ build() {
 	_samba4_auth_modules=auth_unix,auth_wbc,auth_server,auth_netlogond,auth_script,auth_samba4
 	./configure --prefix=/usr \
               --libdir=/usr/lib$LIBDIRSUFFIX/ \
+              --docdir=/usr/doc/${pkgname}-${pkgver} \
               --localstatedir=/var \
               --with-configdir=/etc/samba \
               --with-lockdir=/var/cache/samba \

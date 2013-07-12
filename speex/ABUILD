@@ -12,6 +12,6 @@ source=("http://downloads.us.xiph.org/releases/$pkgname/$pkgname-$pkgver.tar.gz"
 build_deps="glibc-solibs libogg"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --localstatedir=/var"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --docdir=/usr/doc/${pkgname}-${pkgver} --localstatedir=/var"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

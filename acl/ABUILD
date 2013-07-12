@@ -14,7 +14,7 @@ build_deps="attr"
 
 BUILD_SYSTEM="autotools"
 #--datarootdir=/usr --localedir=/usr/share/locale
-BUILD_KEYS="--prefix=/usr --libdir=/lib${LIBDIRSUFFIX} --libexecdir=/usr/lib${LIBDIRSUFFIX}"
+BUILD_KEYS="--prefix=/usr --libdir=/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver} --libexecdir=/usr/lib${LIBDIRSUFFIX}"
 INSTALL_KEYS="DIST_ROOT=${pkgdir} install-lib install-dev"
 
 after_build() {

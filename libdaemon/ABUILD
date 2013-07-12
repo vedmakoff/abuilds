@@ -12,5 +12,5 @@ source=("http://0pointer.de/lennart/projects/libdaemon/${pkgname}-${pkgver}.tar.
 build_deps="glibc-solibs"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --disable-lynx --disable-static"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --docdir=/usr/doc/${pkgname}-${pkgver} --disable-lynx --disable-static"
 INSTALL_KEYS="DESTDIR=$pkgdir"

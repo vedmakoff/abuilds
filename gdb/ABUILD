@@ -26,8 +26,9 @@ after_build() {
 	touch $pkgdir/etc/gdb/gdbinit
 
 	# resolve conflicts with binutils
-	rm ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat}.h
-	rm ${pkgdir}/usr/lib${LIBDIRSUFFIX}/{libbfd,libiberty,libopcodes}.a
-	rm ${pkgdir}/usr/share/info/{bfd,configure,standards}.info
+	rm -f ${pkgdir}/usr/include/{ansidecl,bfd,bfdlink,dis-asm,symcat}.h
+	rm -f ${pkgdir}/usr/lib${LIBDIRSUFFIX}/{libbfd,libiberty,libopcodes}.a
+	rm -f ${pkgdir}/usr/lib${LIBDIRSUFFIX}/{libbfd,libiberty,libopcodes}.la
+	rm -f ${pkgdir}/usr/share/info/{bfd,configure,standards}.info
 	set +e
 }

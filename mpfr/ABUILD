@@ -15,7 +15,7 @@ build_deps="gmp"
 source=("http://www.mpfr.org/mpfr-current/mpfr-${pkgver}.tar.xz")
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --enable-thread-safe --enable-shared"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver} --enable-thread-safe --enable-shared"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {

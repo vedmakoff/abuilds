@@ -16,6 +16,7 @@ build_deps="gtk+2 pangomm atkmm"
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
+--docdir=/usr/doc/${pkgname}-${pkgver} \
 --mandir=/usr/man \
 --sysconfdir=/etc \
 --localstatedir=/var"

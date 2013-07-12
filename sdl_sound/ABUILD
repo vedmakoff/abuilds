@@ -2,7 +2,7 @@
 
 pkgname=sdl_sound
 pkgver=1.0.3
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("A library to decode several popular sound file formats, such as .WAV and .MP3")

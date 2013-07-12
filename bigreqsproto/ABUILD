@@ -1,6 +1,6 @@
 pkgname=bigreqsproto
 pkgver=1.1.2
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('bigreqsproto')

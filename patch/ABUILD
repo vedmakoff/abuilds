@@ -2,7 +2,7 @@
 
 pkgname=patch
 pkgver=2.7.1
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("patch (apply a diff file to an original file or files)")

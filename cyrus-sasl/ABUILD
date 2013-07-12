@@ -14,7 +14,7 @@ tags=('dev-libs network')
 source=("ftp://ftp.cyrusimap.org/cyrus-sasl/cyrus-sasl-${pkgver}.tar.gz")
 config_files="etc/conf.d/saslauthd"
 
-build_deps='openssl-solibs glibc-solibs'
+build_deps='openssl-solibs glibc-solibs sqlite'
 
 CFLAGS="$CFLAGS -fPIC"
 BUILD_SYSTEM='autotools'
@@ -41,8 +41,11 @@ BUILD_KEYS="--prefix=/usr \
 	--enable-ntlm \
 	--disable-passdss \
 	--enable-sql \
+	--with-sqlite3=/usr/lib${LIBDIRSUFFIX} \
 	--with-devrandom=/dev/urandom \
 	--without-ldap \
+	--without-pgsql \
+	--without-mysql \
 	--with-saslauthd \
 	--with-gdbm \
 	--with-dblib=gdbm"

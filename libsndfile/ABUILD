@@ -13,6 +13,6 @@ source=("http://www.mega-nerd.com/libsndfile/files/${pkgname}-${pkgver}.tar.gz")
 build_deps="alsa-lib flac libvorbis"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX}"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver}"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

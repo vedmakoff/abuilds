@@ -1,7 +1,7 @@
 #ABUILD created by: NK, nk-man at yandex.ru 
 pkgname=ctpl
 pkgver=0.3.3
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="C Template (Parser) Library"

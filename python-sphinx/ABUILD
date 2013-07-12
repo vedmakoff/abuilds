@@ -7,7 +7,7 @@ shortdesc="Python documentation generator"
 
 source=("http://bitbucket.org/birkenfeld/sphinx/get/${pkgver}.tar.bz2")
 tags="utils dev-python"
-build_deps="python pysetuptools python-docutils pygments python-docutils"
+build_deps="python pysetuptools python-docutils"
 adddep="python jinja pygments"
 
 BUILD_SYSTEM="python"

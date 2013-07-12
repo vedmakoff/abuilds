@@ -1,5 +1,5 @@
 pkgname=dracut
-pkgver=023
+pkgver=029
 pkgbuild=1
 arch=('auto')
 
@@ -9,8 +9,8 @@ source=("http://www.kernel.org/pub/linux/utils/boot/dracut/dracut-$pkgver.tar.bz
 
 tags="base sys-kernel"
 
-adddep="dash kernel fakeroot fakechroot gzip cpio bash util-linux-ng linuxdoc-tools"
-build_deps="dash asciidoc"
+adddep="kernel fakeroot fakechroot gzip cpio bash util-linux-ng"
+build_deps="asciidoc libxslt docbook-xml docbook-xsl"
 
 config_files="etc/dracut.conf"
 

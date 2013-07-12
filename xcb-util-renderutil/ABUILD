@@ -1,6 +1,6 @@
 pkgname=xcb-util-renderutil
 pkgver=0.3.8
-pkgbuild=2
+pkgbuild=3
 arch=('auto')
 
 shortdesc=("Utility libraries for XC Binding - Convenience functions for the Render extension")

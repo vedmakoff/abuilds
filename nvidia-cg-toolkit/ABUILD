@@ -3,7 +3,7 @@
 pkgname=nvidia-cg-toolkit
 pkgver=3.1
 date="April2012"
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="NVIDIA Cg libraries"

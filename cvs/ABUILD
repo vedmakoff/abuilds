@@ -2,7 +2,7 @@
 
 pkgname=cvs
 pkgver=1.11.23
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("cvs (Concurrent Versions System)")

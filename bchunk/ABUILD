@@ -1,7 +1,7 @@
 #ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=bchunk
 pkgver=1.2.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A Tool to Convert *.raw *.bin files to an ISO file"

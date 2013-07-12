@@ -19,8 +19,9 @@ BUILD_KEYS="--prefix=/usr \
 --mandir=/usr/man \
 --program-prefix= \
 --program-suffix= \
---with-docdir=/usr/doc/sane \
+--with-docdir=/usr/doc/$pkgname-${pkgver} \
 --enable-avahi \
+--disable-latex \
 --disable-locking"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"

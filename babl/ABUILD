@@ -1,7 +1,7 @@
 #ABUILD created by: medved, medved55rus at gmail.com 
 pkgname=babl
 pkgver=0.1.10
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 shortdesc="Dynamic, any to any, pixel format translation library."
 source=("ftp://ftp.gimp.org/pub/babl/${pkgver%.*}/${pkgname}-${pkgver}.tar.bz2")

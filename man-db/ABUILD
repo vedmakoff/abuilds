@@ -15,7 +15,7 @@ build()
 {
   cd ${srcdir}/${pkgname}-${pkgver}
 
-  ./configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib${LIBDIRSUFFIX} \
+  ./configure --prefix=/usr --sysconfdir=/etc --libexecdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver} \
         --with-db=gdbm --disable-setuid --enable-mandirs=GNU \
         --with-sections="1 n l 8 3 0 2 5 4 9 6 7"
   make || exit 1

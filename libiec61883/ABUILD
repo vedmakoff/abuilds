@@ -1,6 +1,6 @@
 pkgname=libiec61883
 pkgver=1.2.0
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="A higher level API for streaming DV, MPEG-2 and audio over Linux IEEE 1394"

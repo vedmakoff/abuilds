@@ -1,7 +1,7 @@
 pkgname=xmpppy
 pkgver=0.5.0rc1
 downver=0.5.0-rc1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Python xmpp ibrary"

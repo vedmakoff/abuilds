@@ -1,6 +1,6 @@
 pkgname=agg
 pkgver=2.5
-pkgbuild=1
+pkgbuild=2
 shortdesc="A High Quality Rendering Engine for C++"
 longdesc="A High Quality Rendering Engine for C++"
 arch=('auto')

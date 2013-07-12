@@ -2,7 +2,7 @@
 
 pkgname=a52dec
 pkgver=0.7.4
-pkgbuild=2
+pkgbuild=3
 arch=('auto')
 
 shortdesc="A free library for decoding ATSC A/52 streams"

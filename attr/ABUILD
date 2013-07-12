@@ -18,7 +18,7 @@ build() {
 		include/builddefs.in
 
 	autoconf
-	CFLAGS="$SLKCFLAGS" ./configure --prefix=/usr --enable-lib64
+	CFLAGS="$SLKCFLAGS" ./configure --prefix=/usr --docdir=/usr/doc/${pkgname}-${pkgver} --enable-lib64
 	sed -i -e 's/man2//g' man/Makefile
 	make -j${numjobs}
 

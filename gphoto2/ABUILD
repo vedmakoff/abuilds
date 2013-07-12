@@ -14,6 +14,6 @@ build_deps="libgphoto2 popt readline"
 source=("http://downloads.sourceforge.net/gphoto/${pkgname}-${pkgver}.tar.bz2")
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX}"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver}"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

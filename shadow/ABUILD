@@ -54,10 +54,28 @@ build() {
 	make -j${numjobs} || make
 	make install DESTDIR=${pkgdir}
 
-	# Remove su - using su from coreutils instead
-	#rm -v "$pkgdir/bin/su"
-	#find "$pkgdir/usr/man" -name 'su.1' -exec rm -v {} \;
-	#set +e
+	# Remove system utils, it is provided by another packages
+	
+	# /bin/
+	for file in login su; do
+	  rm -v "$pkgdir/bin/"$file
+	  find "$pkgdir/usr/man" -name "$file.1" -exec rm -v {} \;
+	done
+	
+	
+	# /usr/bin
+	for file in chfn chsh newgrp; do
+	  rm -v "$pkgdir/usr/bin/"$file
+	  find "$pkgdir/usr/man" -name "$file.1" -exec rm -v {} \;
+	done
+	
+	# /usr/sbin
+	for file in vigr vipw; do
+	  rm -v "$pkgdir/usr/sbin/"$file
+	  find "$pkgdir/usr/man" -name "$file.8" -exec rm -v {} \;
+	done
+
+	set +e
 
 	# 
 	# Our custom adduser script
@@ -83,6 +101,7 @@ build() {
 	# Remove static libs, since they are internal-only
 	rm -f ${pkgdir}/{,usr}/lib${LIBDIRSUFFIX}/lib{misc,shadow}.{a,la}
 
+	#rm -r ${pkgdir}/lib${LIBDIRSUFFIX}
 
 }
 

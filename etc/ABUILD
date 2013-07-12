@@ -22,6 +22,9 @@ build() {
 		mv -v $dir ${pkgdir}/
 	done
 
+	# remove adduser, it is in shadow
+	rm "$pkgdir/usr/sbin/adduser"
+	find "$pkgdir/usr/share/locale" -name "adduser.mo" -exec rm -v {} \;
 
 }
 

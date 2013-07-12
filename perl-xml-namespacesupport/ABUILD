@@ -1,12 +1,13 @@
-pkgname=perl-XML-NamespaceSupport
+pkgname=perl-xml-namespacesupport
 pkgver=1.11
-pkgbuild=3
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Generic namespace helpers (ported from SAX2)"
 source=("http://www.cpan.org/authors/id/P/PE/PERIGRIN/XML-NamespaceSupport-${pkgver}.tar.gz")
 tags="libs dev-libs"
 build_deps="perl"
+conflicts="perl-XML-NamespaceSupport"
 build() {
 	go_src_dir
 	burn_patches

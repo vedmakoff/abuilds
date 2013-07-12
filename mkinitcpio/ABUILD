@@ -9,6 +9,7 @@ source=("ftp://ftp.archlinux.org/other/$pkgname/$pkgname-$pkgver.tar.gz")
 build_deps="gawk mkinitcpio-busybox kmod util-linux-ng libarchive coreutils findutils grep xz bzip2"
 add_dep="gawk mkinitcpio-busybox kmod util-linux-ng libarchive coreutils findutils grep xz bzip2"
 
+
 build() {
   go_src_dir
   make DESTDIR="$pkgdir" install

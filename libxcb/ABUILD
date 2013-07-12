@@ -12,6 +12,6 @@ source=("http://xcb.freedesktop.org/dist/libxcb-${pkgver}.tar.bz2")
 build_deps='glibc-solibs libXau libXdmcp'
 
 BUILD_SYSTEM='autotools'
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --enable-xinput"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --docdir=/usr/doc/${pkgname}-${pkgver} --enable-xinput"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

@@ -1,6 +1,6 @@
 pkgname=winetricks
-pkgver=20130629
-pkgbuild=1
+pkgver=20130707
+pkgbuild=2
 arch=('noarch')
 shortdesc="Script to install various redistributable runtime libraries in wine mostly without needness for Windows license"
 source=("http://www.kegel.com/wine/winetricks")

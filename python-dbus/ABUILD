@@ -15,6 +15,6 @@ build_deps="python-docutils dbus-glib python"
 conflicts="dbus-python"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX}"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver}"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

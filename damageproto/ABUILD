@@ -1,6 +1,6 @@
 pkgname=damageproto
 pkgver=1.2.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('damageproto')

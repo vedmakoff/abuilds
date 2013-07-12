@@ -47,7 +47,13 @@ build() {
 	patch -p1 -i ${filedir}/Linux-PAM-1.1.6-destdir.patch
 	patch -p1 -i ${filedir}/fix-namespace.patch
 	#patch -p1 -i ${filedir}/pam_namespace-build-1.1.6.patch
-	./configure --sysconfdir=/etc --enable-sconfigdir=/etc/security DESTDIR=$pkgdir --libdir=/lib${LIBDIRSUFFIX} --disable-prelude --disable-nis 
+	./configure DESTDIR=$pkgdir --sysconfdir=/etc \
+	  --enable-sconfigdir=/etc/security \
+	  --libdir=/lib${LIBDIRSUFFIX} \
+	  --disable-prelude \
+	  --docdir=/usr/doc/${pkgname}-${pkgver} \
+	  --disable-nis
+
 	make -j${numjobs} || make
 	make INSTALL=/bin/install DESTDIR=$pkgdir install
 	

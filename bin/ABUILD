@@ -2,7 +2,7 @@
 
 pkgname=bin
 pkgver=11.1
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("bin (some command-line utilities)")

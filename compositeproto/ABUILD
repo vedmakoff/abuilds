@@ -1,6 +1,6 @@
 pkgname=compositeproto
 pkgver=0.4.2
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('compositeproto')

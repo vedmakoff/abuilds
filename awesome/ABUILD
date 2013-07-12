@@ -16,6 +16,7 @@ BUILD_KEYS="-DCMAKE_INSTALL_PREFIX=/usr \
 	-DCMAKE_BUILD_TYPE=RELEASE \
 	-DLIB_SUFFIX=${LIBDIRSUFFIX} \
 	-DSYSCONFDIR=/etc \
+	-DDOCDIR=/usr/doc/${pkgname}-${pkgver} \
 	-DLUA_LIBRARY=/usr/lib/liblua.so.5.2"
 
 

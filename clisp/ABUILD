@@ -13,9 +13,9 @@ build()
 {
   go_src_dir
   unset CFLAGS CXXFLAGS
-  ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --with-readline --with-ffcall src
+  ./configure --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver} --with-readline --with-ffcall src
   cd src
-  ./makemake --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --with-readline --with-ffcall --with-dynamic-ffi > Makefile
+  ./makemake --prefix=/usr --libdir=/usr/lib${LIBDIRSUFFIX} --docdir=/usr/doc/${pkgname}-${pkgver} --with-readline --with-ffcall --with-dynamic-ffi > Makefile
   make || return 1
   sed -i 's,http://www.lisp.org/HyperSpec/,http://www.lispworks.com/reference/HyperSpec/,g' config.lisp
   make || return 1

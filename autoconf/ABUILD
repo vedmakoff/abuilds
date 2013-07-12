@@ -21,6 +21,6 @@ INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {
 	# conflict with bintuils
-	rm -f ${pkgdir}/usr/share/info/standards.info
+	rm -f ${pkgdir}/usr/info/standards.info
 }
 

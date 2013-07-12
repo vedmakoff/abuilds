@@ -24,7 +24,7 @@ else
 fi
 
 source=("http://download.nvidia.com/XFree86/Linux-${TARGET}/${pkgver}/NVIDIA-Linux-${TARGET}-${pkgver}.run n")
-adddep="mesa xorg-server libXvMC libgl-nvidia libglx-nvidia"
+adddep="mesa xorg-server libXvMC libgl libglx"
 build_deps='glibc-solibs libfontenc libXfont libXv pixman xorg-server libXvMC'
 removedep="nvidia-driver-legacy"
 

@@ -1,6 +1,6 @@
 pkgname=gccmakedep
 pkgver=1.0.2
-pkgbuild=10
+pkgbuild=11
 arch=('auto')
 
 shortdesc=('gccmakedep')

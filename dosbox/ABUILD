@@ -1,7 +1,7 @@
 #ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=dosbox
 pkgver=0.74
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Emulator with builtin DOS for running DOS Games"

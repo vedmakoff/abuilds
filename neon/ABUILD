@@ -2,7 +2,7 @@
 
 pkgname=neon
 pkgver=0.29.6
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("neon (HTTP and WebDAV client library)")

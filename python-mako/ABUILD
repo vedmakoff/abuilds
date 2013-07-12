@@ -11,7 +11,7 @@ tags=("dev-python develop")
 
 source=("http://www.makotemplates.org/downloads/Mako-$pkgver.tar.gz")
 
-build_deps="python pysetuptools python-markupsafe python-beaker"
+build_deps="python pysetuptools"
 adddep="python-markupsafe python-beaker"
 provides="mako"
 

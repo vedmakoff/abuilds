@@ -1,6 +1,6 @@
 pkgname=dropbox-cli
 pkgver=1
-pkgbuild=2
+pkgbuild=3
 arch=('noarch')
 
 shortdesc="Dropbox Linux CLI"
@@ -17,5 +17,5 @@ adddep="python dropbox"
 
 build()
 {
-install -D -m 755 ${srcache}/dropbox.py ${pkgdir}/usr/bin/dropbox
+  install -D -m 755 ${srcache}/dropbox.py ${pkgdir}/usr/bin/dropbox
 }

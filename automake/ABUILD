@@ -14,7 +14,8 @@ BUILD_SYSTEM="autotools"
 
 BUILD_KEYS="--prefix=/usr \
 	--sysconfdir=/etc \
-	--mandir=/usr/man"
+	--mandir=/usr/man \
+	--docdir=/usr/doc/${pkgname}-${pkgver}"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
 

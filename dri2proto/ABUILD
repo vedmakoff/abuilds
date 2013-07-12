@@ -1,6 +1,6 @@
 pkgname=dri2proto
 pkgver=2.8
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('dri2proto')

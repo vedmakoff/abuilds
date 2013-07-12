@@ -8,7 +8,7 @@ arch=("noarch")
 shortdesc=("module-init-tools to kmod transition package")
 
 tags=("virtual sys-base")
-build_deps="kmod"
+build_deps="mkpkg"
 adddep="kmod"
 
 

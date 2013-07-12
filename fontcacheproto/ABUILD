@@ -1,6 +1,6 @@
 pkgname=fontcacheproto
 pkgver=0.1.3
-pkgbuild=10
+pkgbuild=11
 arch=('auto')
 
 shortdesc=('fontcacheproto')

@@ -43,5 +43,7 @@ build() {
 	rm -f man1/diff.1
 	# this is included in xf86-input-mouse
 	rm -f man4/mouse.4
+	# this is included in quota
+	rm -f man2/quotactl.2
 	set +e
 }

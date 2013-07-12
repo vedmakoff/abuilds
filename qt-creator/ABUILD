@@ -1,6 +1,6 @@
 pkgname=qt-creator
-pkgver=2.7.1
-_qtver=4.8.4
+pkgver=2.8.0
+_qtver=4.8.5
 pkgbuild=1
 arch=('auto')
 shortdesc="Qt Creator is a cross-platform integrated development environment (IDE) tailored to the needs of Qt developers."
@@ -16,7 +16,7 @@ build() {
   burn_patches
   [[ -d build ]] && rm -r build
   mkdir build && cd build
-  cp -a /usr/include/Qt/qconfig.h ${startdir}/qt-creator.src/qt-everywhere-opensource-src-4.8.4/src/corelib/global/qconfig.h
+  cp -a /usr/include/Qt/qconfig.h ${startdir}/qt-creator.src/qt-everywhere-opensource-src-${_qtver}/src/corelib/global/qconfig.h
   qmake ../qtcreator.pro \
       PREFIX=/usr -r \
       "QT_PRIVATE_HEADERS=${srcdir}/qt-creator.src/qt-everywhere-opensource-src-${_qtver}/include" \

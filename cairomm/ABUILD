@@ -26,6 +26,7 @@ BUILD_KEYS="--prefix=/usr \
 --libdir=/usr/lib${LIBDIRSUFFIX} \
 --mandir=/usr/man \
 --sysconfdir=/etc \
+--docdir=/usr/doc/${pkgname}-${pkgver} \
 --localstatedir=/var"
 
 

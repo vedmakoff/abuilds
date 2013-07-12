@@ -15,7 +15,7 @@ build_deps="libcap-ng gcc"
 
 config_files="etc/smartd.conf"
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --enable-drivedb --with-libcap-ng=yes"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --docdir=/usr/doc/${pkgname}-${pkgver} --mandir=/usr/man --sysconfdir=/etc --enable-drivedb --with-libcap-ng=yes"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {

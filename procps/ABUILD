@@ -23,7 +23,7 @@ before_build() {
 
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --exec-prefix=/"
+BUILD_KEYS="--prefix=/usr --libdir=/usr/lib$LIBDIRSUFFIX --mandir=/usr/man --sysconfdir=/etc --exec-prefix=/ --docdir=/usr/doc/${pkgname}-ng-${pkgver}"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {

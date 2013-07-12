@@ -9,7 +9,7 @@ source=("http://downloads.sourceforge.net/project/matplotlib/${pkgname}/${pkgnam
 
 tags="dev-python libs"
 build_deps="python numpy PyQt tk python-cairo python-gobject pygtk ghostscript"
-adddep="python numpy PyQt cairo pycairo pygtk"
+adddep="python numpy PyQt cairo python-cairo pygtk"
 docs="license/ PKG-INFO"
 
 BUILD_SYSTEM="python"

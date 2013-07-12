@@ -15,7 +15,15 @@ build() {
 	go_src_dir
 	burn_patches
 	set -e
-	udevscriptdir=/lib/udev ./configure --prefix=/usr --with-drivers=all --without-hal --with-libexif=auto --disable-static --disable-rpath --libdir=/usr/lib$LIBDIRSUFFIX
+	udevscriptdir=/lib/udev ./configure --prefix=/usr \
+	  --with-drivers=all \
+	  --without-hal \
+	  --with-libexif=auto \
+	  --disable-static \
+	  --disable-rpath \
+	  --libdir=/usr/lib$LIBDIRSUFFIX \
+	  --docdir=/usr/doc/${pkgname}-${pkgver}
+ 
 	LD_PRELOAD="" make -j${numjobs}
 	make DESTDIR="${pkgdir}" install
 

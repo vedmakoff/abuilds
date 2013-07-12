@@ -1,5 +1,5 @@
 pkgname=xf86-input-evdev
-pkgver=2.8.0
+pkgver=2.8.1
 pkgbuild=1
 arch=('auto')
 

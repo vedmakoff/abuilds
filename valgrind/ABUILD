@@ -20,6 +20,7 @@ build()
     --sysconfdir=/etc \
     --localstatedir=/var \
     --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --docdir=/usr/doc/${pkgname}-${pkgver} \
     --disable-static \
     --mandir=/usr/man \
     --program-prefix= \

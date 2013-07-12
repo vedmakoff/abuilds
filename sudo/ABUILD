@@ -21,6 +21,7 @@ BUILD_KEYS="--prefix=/usr \
 	--mandir=/usr/man \
 	--sysconfdir=/etc \
 	--libexecdir=/usr/lib${LIBDIRSUFFIX} \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
 	--with-logfac=auth \
 	--with-pam \
 	--with-env-editor \

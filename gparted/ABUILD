@@ -1,7 +1,7 @@
 # GParted ABUILD.
 pkgname=gparted
 pkgver=0.16.1
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Partition table editor, frontend to GNU Parted"

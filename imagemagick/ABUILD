@@ -1,79 +1,58 @@
 pkgname=imagemagick
-pkgver=6.8.5.8
-pkgbuild=3
+pkgver=6.8.6.2
+pkgbuild=1
 arch=('auto')
 
 shortdesc="A software suite to create, edit, compose, or convert bitmap images."
 source=("ftp://sunsite.icm.edu.pl/packages/ImageMagick/ImageMagick-${pkgver%.*}-${pkgver##*.}.tar.xz")
 tags="xapps media-gfx"
 build_deps=("libtool lcms2 libXt fontconfig libXext ghostscript openexr libwmf librsvg libxml2 jasper liblqr perl")
-
+pkglist="imagemagick-doc"
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
+BUILD_KEYS="--prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --docdir=/usr/doc/${p_pkgname}-${pkgver} \
+  --disable-static \
+  --mandir=/usr/man \
+  --program-prefix= \
+  --program-suffix= \
+  --with-modules \
+  --with-perl \
+  --with-x \
+  --with-threads \
+  --with-magick_plus_plus \
+  --with-gslib \
+  --with-wmf \
+  --with-lcms \
+  --with-lqr \
+  --with-rsvg \
+  --with-xml \
+  --with-perl-options="INSTALLDIRS=vendor" \
+  --without-dps \
+  --without-included-ltdl"
 
-build() 
-{
-go_src_dir
-burn_patches
+after_build() {
+  # fix weird perl Magick.so permissions
+  chmod 755 ${pkgdir}/usr/lib${LIBDIRSUFFIX}/perl5/vendor_perl/auto/Image/Magick/Magick.so
 
-
-sed -i 's/libltdl.la/libltdl.so/g' configure
-
-
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix= \
---with-modules \
---with-perl \
---with-x \
---with-threads \
---with-magick_plus_plus \
---with-gslib \
---with-wmf \
---with-lcms \
---with-lqr \
---with-rsvg \
---with-xml \
---with-perl-options="INSTALLDIRS=vendor" \
---without-dps \
---without-included-ltdl
-
-# Disable rpath
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
-
-
-make -j${numjob}
-make install DESTDIR=${pkgdir}
-
-}
-
-after_build()
-{
-
-# fix weird perl Magick.so permissions
-chmod 755 ${pkgdir}/usr/lib${LIBDIRSUFFIX}/perl5/vendor_perl/auto/Image/Magick/Magick.so
-
-find ${pkgdir} -name "*.bs" |xargs rm -f
-find ${pkgdir} -name ".packlist" |xargs rm -f
-find ${pkgdir} -name "perllocal.pod" |xargs rm -f
-
+  find ${pkgdir} -name "*.bs" |xargs rm -f
+  find ${pkgdir} -name ".packlist" |xargs rm -f
+  find ${pkgdir} -name "perllocal.pod" |xargs rm -f
 }
 
 imagemagick-doc()
 {
-pkgname=imagemagick-doc
-arch=('noarch')
+  pkgname=imagemagick-doc
+  arch=('noarch')
 }
 
 imagemagick-doc_prep()
 {
-mkdir -p ${pkgdir}/usr/doc/${p_pkgname}-${pkgver}
-mv ${p_pkgdir}/usr/share/doc/ImageMagick/* ${pkgdir}/usr/doc/${p_pkgname}-${pkgver}
+  mkdir -p ${pkgdir}/usr/doc/${p_pkgname}-${pkgver}
+  mv ${p_pkgdir}/usr/share/doc/ImageMagick-${pkgver%%.*}/* ${pkgdir}/usr/doc/${p_pkgname}-${pkgver}
+  rm -f ${p_pkgdir}/usr/share/doc/${p_pkgname}-${pkgver}/{ChangeLog,LICENSE,NEWS.txt}
 }

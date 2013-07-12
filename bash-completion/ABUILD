@@ -18,5 +18,24 @@ BUILD_KEYS="--prefix=/usr --sysconfdir=/etc"
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
 after_build() {
-	chmod 755 ${pkgdir}/etc/profile.d/bash_completion.sh
+  chmod 755 ${pkgdir}/etc/profile.d/bash_completion.sh
+
+  # provided by networkmanager
+  rm "${pkgdir}/usr/share/bash-completion/completions/nmcli"
+
+  # provided by util-linux
+  rm "${pkgdir}/usr/share/bash-completion/completions/cal"
+  rm "${pkgdir}/usr/share/bash-completion/completions/chsh"
+  rm "${pkgdir}/usr/share/bash-completion/completions/dmesg"
+  rm "${pkgdir}/usr/share/bash-completion/completions/eject"
+  rm "${pkgdir}/usr/share/bash-completion/completions/hd"
+  rm "${pkgdir}/usr/share/bash-completion/completions/hexdump"
+  rm "${pkgdir}/usr/share/bash-completion/completions/hwclock"
+  rm "${pkgdir}/usr/share/bash-completion/completions/ionice"
+  rm "${pkgdir}/usr/share/bash-completion/completions/look"
+  rm "${pkgdir}/usr/share/bash-completion/completions/ncal"
+  rm "${pkgdir}/usr/share/bash-completion/completions/newgrp"
+  rm "${pkgdir}/usr/share/bash-completion/completions/renice"
+  rm "${pkgdir}/usr/share/bash-completion/completions/rtcwake"
+  rm "${pkgdir}/usr/share/bash-completion/completions/su"
 }

@@ -29,7 +29,7 @@ BUILD_KEYS="--libdir=/usr/lib${LIBDIRSUFFIX} \
 	--enable-openssl=no \
 	--enable-gnutls=yes \
 	--enable-cdsassl=no \
-	--docdir=/usr/doc \
+	--docdir=/usr/doc/${pkgname}-${pkgver} \
 	--mandir=/usr/man \
 	--with-php=/usr/bin/php\
 	--enable-pam=yes \
