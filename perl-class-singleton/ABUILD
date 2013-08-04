@@ -1,13 +1,13 @@
 #ABUILD created by/создан: khvalera, khvalera at narod.ru 
 
-pkgname=perl-extutils-makemaker
-pkgver=6.64
+pkgname=perl-class-singleton
+pkgver=1.4
 pkgbuild=1
 arch=('noarch')
 
-shortdesc="Perl module for making makefiles"
+shortdesc="Implementation of a singleton class"
 
-source=("http://search.cpan.org/CPAN/authors/id/M/MS/MSCHWERN/ExtUtils-MakeMaker-${pkgver}.tar.gz")
+source=("http://www.cpan.org/authors/id/A/AB/ABW/Class-Singleton-${pkgver}.tar.gz")
 
 tags="libs dev-perl"
 
