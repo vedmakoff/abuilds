@@ -1,6 +1,6 @@
 pkgname=cups
-pkgver=1.6.2
-pkgbuild=2
+pkgver=1.6.3
+pkgbuild=1
 arch=('auto')
 
 shortdesc=('CUPS (Common UNIX Printing System)')
