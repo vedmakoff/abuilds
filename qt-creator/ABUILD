@@ -1,7 +1,7 @@
 pkgname=qt-creator
 pkgver=2.8.0
 _qtver=4.8.5
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 shortdesc="Qt Creator is a cross-platform integrated development environment (IDE) tailored to the needs of Qt developers."
 
