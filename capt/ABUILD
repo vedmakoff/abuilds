@@ -23,9 +23,17 @@ build() {
 		rpmextract ${srcdir}/${foldername}/32-bit_Driver/RPM/cndrvcups-capt-${pkgver}-1.i386.rpm #2> /dev/null
 		rpmextract ${srcdir}/${foldername}/32-bit_Driver/RPM/cndrvcups-common-${pkgver}-1.i386.rpm #2> /dev/null
 	fi
+	
+	# Move everything from /usr/local
 	cp -r ${pkgdir}/usr/local/* ${pkgdir}/usr/
 	rm -rf ${pkgdir}/usr/local
+	
+	# Make dirs
 	mkdir -p ${pkgdir}/var/ccpd
+	#mkfifo -m 600 ${D}/var/ccpd/fifo0
+	chown lp:lp ${pkgdir}/var/ccpd
 	mkdir -p ${pkgdir}/var/captmon
+	chown lp:lp ${pkgdir}/var/captmon
+	
 	install -D -m644 ${srcdir}/${foldername}/Doc/LICENSE-captdrv-${pkgver}E.txt ${pkgdir}/usr/share/licenses/${pkgname}/LICENSE-captdrv-${pkgver}E.txt
 }
