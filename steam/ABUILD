@@ -2,7 +2,7 @@
 #----------------------------- General vars --------------------------------------
 pkgname=steam
 pkgver=1.0.0.39
-pkgbuild=3
+pkgbuild=4
 arch=('auto')
 
 shortdesc="Digital distribution client - bootstrap package"
@@ -42,7 +42,7 @@ bootstrap(){
 
 #----------------------------- Make PKG --------------------------------------
 build(){
-  bootstrap
+  #bootstrap
 
   cd ${srcdir}/steam
   burn_patches
@@ -52,8 +52,8 @@ build(){
   # blank steamdeps because apt-get
   ln -sf /bin/true "${pkgdir}/usr/bin/steamdeps"
 
-  install -Dm755 "${filedir}/steam-glibc.sh" "${pkgdir}/usr/bin/steam-glibc.sh"
-  if [ "${ARCH}" = "i686" ]; then
-     sed -i 's|glibc32|glibc|g' "${pkgdir}/usr/bin/steam-glibc.sh"
-  fi
+  #install -Dm755 "${filedir}/steam-glibc.sh" "${pkgdir}/usr/bin/steam-glibc.sh"
+  #if [ "${ARCH}" = "i686" ]; then
+  #    sed -i 's|glibc32|glibc|g' "${pkgdir}/usr/bin/steam-glibc.sh"
+  #fi
 }

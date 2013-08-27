@@ -28,7 +28,7 @@ INSTALL_KEYS="DESTDIR=$pkgdir"
 after_build()
 {
     mkdir -p ${pkgdir}/etc/conf.d/
-    mkdir -p ${pkgdir}/etc/init.d/    
+    mkdir -p ${pkgdir}/etc/init.d/
     cat ${filedir}/memcached.conf > ${pkgdir}/etc/conf.d/memcached.new
     install -m 755 ${filedir}/memcached.init ${pkgdir}/etc/init.d/memcached
     install -D -m 755 scripts/memcached-tool "$pkgdir"/usr/bin/memcached-tool

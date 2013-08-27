@@ -1,5 +1,5 @@
 pkgname=phpmyadmin
-pkgver=4.0.2
+pkgver=4.0.5
 pkgbuild=1
 arch=('noarch')
 
@@ -7,7 +7,7 @@ shortdesc="phpmyadmin (MySQL administration over the web)"
 source=("http://downloads.sourceforge.net/${pkgname}/phpMyAdmin-${pkgver}-all-languages.tar.bz2")
 tags="network dev-db"
 build_deps="bash"
-adddep="mysql php"
+adddep="mysql php php-mysql"
 
 build()
 {
