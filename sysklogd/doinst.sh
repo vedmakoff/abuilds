@@ -10,6 +10,7 @@ config() {
   # Otherwise, we leave the .new copy for the admin to consider...
 }
 # Don't move it to config_files, since these ones are placeholders
+config var/log/auth.new
 config var/log/cron.new
 config var/log/debug.new
 config var/log/mail.log.new
@@ -19,6 +20,7 @@ config var/log/spooler.new
 config var/log/syslog.new
 
 # Remove any leftover empty files:
+rm -f var/log/auth.new
 rm -f var/log/cron.new
 rm -f var/log/debug.new
 rm -f var/log/mail.log.new

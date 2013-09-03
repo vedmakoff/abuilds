@@ -1,7 +1,7 @@
 #ABUILD created by: SirAnthony, anthony at adsorbtion.org 
 pkgname=memcached
 pkgver=1.4.15
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Object caching system"
