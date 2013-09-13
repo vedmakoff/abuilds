@@ -1,6 +1,6 @@
 #ABUILD created by: Unnamed_Hero, sorry at email.hide 
 pkgname=eric4
-pkgver=4.5.11
+pkgver=4.5.14
 pkgbuild=1
 arch=('auto')
 
