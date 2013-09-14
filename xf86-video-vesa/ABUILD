@@ -1,6 +1,6 @@
 pkgname=xf86-video-vesa
-pkgver=2.3.2
-pkgbuild=2
+pkgver=2.3.3
+pkgbuild=1
 arch=('auto')
 
 shortdesc=('xf86-video-vesa: generic X11 driver for VESA-compatible cards.')

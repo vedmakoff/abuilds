@@ -1,6 +1,6 @@
 pkgname=xrdb
-pkgver=1.0.9
-pkgbuild=2
+pkgver=1.1.0
+pkgbuild=1
 arch=('auto')
 
 shortdesc=('xrdb')

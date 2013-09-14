@@ -15,6 +15,7 @@ source=("http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-
 
 # Tags
 tags="libs media-libs"
+build_deps="gst-plugins-base-libs libdvdread lame libmpeg2 a52dec libmad libsidplay libcdio x264 opencore-amr"
 
 before_build() {
 	go_src_dir

@@ -1,5 +1,5 @@
 pkgname=xfindproxy
-pkgver=1.0.2
+pkgver=1.0.3
 pkgbuild=1
 arch=('auto')
 

@@ -1,5 +1,5 @@
 pkgname=libtorrent
-pkgver=0.13.3
+pkgver=0.13.2
 pkgbuild=1
 arch=('auto')
 

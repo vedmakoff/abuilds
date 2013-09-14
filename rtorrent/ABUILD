@@ -1,12 +1,12 @@
 pkgname=rtorrent
-pkgver=0.9.3
+pkgver=0.9.2
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Ncurses BitTorrent client based on libTorrent"
 source=("http://libtorrent.rakshasa.no/downloads/${pkgname}-${pkgver}.tar.gz")
 tags="console net-p2p"
-build_deps="libtorrent=0.13.3 curl xmlrpc-c libsigc++"
+build_deps="libtorrent=0.13.2 curl xmlrpc-c libsigc++"
 
 BUILD_SYSTEM="autotools"
 
