@@ -1,6 +1,6 @@
 #ABUILD created by Ben, ivan29m at rambler.ru 
 pkgname=hplip
-pkgver=3.13.7
+pkgver=3.13.8
 pkgbuild=1
 arch=('auto')
 
