@@ -32,7 +32,7 @@ custom_opts="skip_gendeps no_strip skip_validate"
 skip_gendeps=1
 
 # Explicitly specify gcc as build_deps, since the order matters
-build_deps="gcc bc"
+build_deps="gcc bc diffutils"
 
 pkglist=("headers firmware sources")
 
