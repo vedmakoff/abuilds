@@ -6,7 +6,7 @@ shortdesc="Simple API for XML"
 source=("http://www.cpan.org/authors/id/G/GR/GRANTM/XML-SAX-$pkgver.tar.gz")
 tags="libs dev-libs"
 adddep="perl-xml-namespacesupport perl-xml-sax-base"
-build_deps="perl"
+build_deps="perl perl-xml-sax-base"
 conflicts="perl-XML-SAX"
 
 build() {

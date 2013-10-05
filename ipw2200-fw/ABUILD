@@ -8,7 +8,7 @@ arch=("fw")
 shortdesc=("Intel ipw2200 wireless firmware")
 tags=("network net-wireless")
 
-source=("http://bughost.org/firmware/${pkgname}-${pkgver}.tgz")
+source=("http://ftp.yandex.ru/gentoo-distfiles/distfiles/${pkgname}-${pkgver}.tgz")
 
 build_deps="mkpkg"
 

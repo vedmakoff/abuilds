@@ -23,7 +23,7 @@ after_build() {
   go_src_dir
   install -D -m0644 ${filedir}/quota.rc ${pkgdir}/etc/init.d/quota
   install -D -m0644 ${filedir}/quota.confd ${pkgdir}/etc/conf.d/quota
-  install -D -m0644 ${filedir}/rpc.quotad.initd ${pkgdir}/etc/init.d/rpc.quotad
+  install -D -m0644 ${filedir}/rpc.rquotad.initd ${pkgdir}/etc/init.d/rpc.quotad
 
   # remove conflicts with glibc
   rm "${pkgdir}"/usr/include/rpcsvc/rquota.{h,x}
