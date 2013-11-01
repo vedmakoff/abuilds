@@ -1,5 +1,5 @@
 pkgname=imagemagick
-pkgver=6.8.6.7
+pkgver=6.8.7.4
 pkgbuild=1
 arch=('auto')
 
@@ -7,7 +7,7 @@ shortdesc="A software suite to create, edit, compose, or convert bitmap images."
 source=("ftp://sunsite.icm.edu.pl/packages/ImageMagick/ImageMagick-${pkgver%.*}-${pkgver##*.}.tar.xz")
 tags="xapps media-gfx"
 build_deps=("libtool lcms2 libXt fontconfig libXext ghostscript openexr libwmf librsvg libxml2 jasper liblqr perl")
-pkglist="imagemagick-doc"
+pkglist="imagemagick_doc"
 
 BUILD_SYSTEM="autotools"
 BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
@@ -44,13 +44,13 @@ after_build() {
   find ${pkgdir} -name "perllocal.pod" |xargs rm -f
 }
 
-imagemagick-doc()
+imagemagick_doc()
 {
   pkgname=imagemagick-doc
   arch=('noarch')
 }
 
-imagemagick-doc_prep()
+imagemagick_doc_prep()
 {
   mkdir -p ${pkgdir}/usr/doc/${p_pkgname}-${pkgver}
   mv ${p_pkgdir}/usr/share/doc/ImageMagick-${pkgver%%.*}/* ${pkgdir}/usr/doc/${p_pkgname}-${pkgver}

@@ -9,96 +9,90 @@ source=("http://download.librdf.org/source/$pkgname-$pkgver.tar.gz")
 
 tags="dev-libs libs"
 
-pkglist=("storage-mysql storage-postgresql storage-virtuoso storage-sqlite")
+pkglist=("storage_mysql storage_postgresql storage_virtuoso storage_sqlite")
 build_deps="rasqal raptor2 db postgresql libmysqlclient unixodbc sqlite"
 
 
-storage-mysql() {
+storage_mysql() {
  pkgname=redland-storage-mysql
  shortdesc="MySQL storage support for Redland"
  tags=('dev-libs libs')
  adddep=(redland)
-
 }
 
-storage-postgresql() {
+storage_postgresql() {
  pkgname=redland-storage-postgresql
  shortdesc="PostgreSQL storage support for Redland"
  tags=('dev-libs libs')
  adddep=(redland)
 }
 
-storage-virtuoso() {
+storage_virtuoso() {
  pkgname=redland-storage-virtuoso
  shortdesc="Virtuoso storage support for Redland"
  tags=('dev-libs libs')
-adddep=(redland db)
+ adddep=(redland db)
 }
 
-storage-sqlite() {
+storage_sqlite() {
  pkgname=redland-storage-sqlite
  shirtdesc="SQLite storage support for Redland"
  tags=('dev-libs libs')
-adddep=(redland sqlite db)
- 
+ adddep=(redland sqlite db)
 }
-
-
-
-
 
 
 build()
 {
-go_src_dir
+  go_src_dir
 
   ./configure --prefix=/usr \
---enable-release \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---with-included-ltdl=no \
---docdir=/usr/doc \
---mandir=/usr/man \
---disable-static \
---with-raptor=system \
---with-rasqal=system \
---with-bdb-lib=/usr/lib${LIBDIRSUFFIX} \
---with-threads \
---localstatedir=/var \
---sysconfdir=/etc \
---with-mysql=yes \
---with-postgresql=yes \
---with-virtuoso=yes \
---with-sqlite=3
+    --enable-release \
+    --libdir=/usr/lib${LIBDIRSUFFIX} \
+    --with-included-ltdl=no \
+    --docdir=/usr/doc \
+    --mandir=/usr/man \
+    --disable-static \
+    --with-raptor=system \
+    --with-rasqal=system \
+    --with-bdb-lib=/usr/lib${LIBDIRSUFFIX} \
+    --with-threads \
+    --localstatedir=/var \
+    --sysconfdir=/etc \
+    --with-mysql=yes \
+    --with-postgresql=yes \
+    --with-virtuoso=yes \
+    --with-sqlite=3
 
-# Prevent error "No rule to make target `-lltdl', needed by `librdf.la'
-sed -i -e 's# -lltdl$# #' -e '/^LIBS =/s# = # = -lltdl #' src/Makefile
+  # Prevent error "No rule to make target `-lltdl', needed by `librdf.la'
+  sed -i -e 's# -lltdl$# #' -e '/^LIBS =/s# = # = -lltdl #' src/Makefile
 
-  
-make -j${numjobs}
-make DESTDIR="${pkgdir}" install
-rm -rf "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
-
+  make -j${numjobs}
+  make DESTDIR="${pkgdir}" install
+  rm -rf "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
 }
 
 
 
-storage-mysql_prep() {
-go_src_dir
-install -dm755 "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
-install -m755 src/.libs/librdf_storage_mysql.so "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland/librdf_storage_mysql.so"
+storage_mysql_prep() {
+  go_src_dir
+  install -dm755 "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
+  install -m755 src/.libs/librdf_storage_mysql.so "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland/librdf_storage_mysql.so"
 }
-storage-postgresql_prep() {
-go_src_dir
+storage_postgresql_prep() {
+  go_src_dir
   install -dm755 "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
   install -m755 src/.libs/librdf_storage_postgresql.so "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland/"
 }
-storage-virtuoso_prep() {
-go_src_dir
+
+storage_virtuoso_prep() {
+  go_src_dir
   install -dm755 "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
   install -m755 src/.libs/librdf_storage_virtuoso.so "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland/"
 }
-storage-sqlite_prep() {
-go_src_dir
+
+storage_sqlite_prep() {
+  go_src_dir
   install -dm755 "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland"
   install -m755 src/.libs/librdf_storage_sqlite.so "${pkgdir}/usr/lib${LIBDIRSUFFIX}/redland/"
 }

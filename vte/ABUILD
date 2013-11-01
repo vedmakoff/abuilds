@@ -11,14 +11,14 @@ tags="libs x11-libs"
 build_deps="gtk+2 gtk+3 pygtk intltool gobject-introspection"
 adddep="vte-common=$pkgver"
 
-pkglist="vte3 vte-common"
+pkglist="vte3 vte_common"
 vte3()
 {
 	pkgname=vte3
 	shortdesc="GTK+3 vte widget"
 }
 
-vte-common()
+vte_common()
 {
 	pkgname=vte-common
 	shortdesc="Common VTE files"
@@ -73,7 +73,7 @@ vte3_prep()
   rm $pkgdir/usr/libexec/vte/gnome-pty-helper
 }
 
-vte-common_prep()
+vte_common_prep()
 {
   go_src_dir
   cd build-gtk3

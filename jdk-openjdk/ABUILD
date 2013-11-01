@@ -29,7 +29,7 @@ source=("http://icedtea.classpath.org/download/source/icedtea-${icedtea_ver}.tar
         "${_url}/langtools/archive/${LANGTOOLS_CHANGESET}.tar.gz n" # langtools.tar.gz
         "${_url}/hotspot/archive/${HOTSPOT_CHANGESET}.tar.gz n")    # hotspot.tar.gz
 
-pkglist="jre jdk jdk-source"
+pkglist="jre jdk jdk_source"
 
 build_deps="jdk-openjdk jre-openjdk make gcc gcc-g++ apache-ant libpng gtk+2 alsa-lib infozip cpio rhino lcms2 libXtst"
 
@@ -49,7 +49,7 @@ jdk() {
 }
 
 #=========================================================
-jdk-source() {
+jdk_source() {
   pkgname=jdk-openjdk-source
   arch=('noarch')
   shortdesc="OpenJDK source package"
@@ -198,7 +198,7 @@ jdk_prep(){
 }
 
 #=========================================================
-jdk-source_prep() {
+jdk_source_prep() {
   go_src_dir
   install -Dm644 openjdk.build/j2sdk-image/src.zip ${pkgdir}/usr/share/${pkgname}/${pkgname}-${pkgver}-${pkgbuild}.zip
 }
