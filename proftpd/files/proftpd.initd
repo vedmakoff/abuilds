@@ -1,9 +1,9 @@
 #!/sbin/runscript
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-ftp/proftpd/files/proftpd.initd,v 1.1 2010/02/17 12:28:25 voyageur Exp $
+# $Header: /var/cvsroot/gentoo-x86/net-ftp/proftpd/files/proftpd.initd,v 1.5 2013/01/14 02:58:52 floppym Exp $
 
-opts="reload"
+extra_started_commands="reload"
 
 depend() {
 	need net
@@ -12,21 +12,26 @@ depend() {
 
 check_configuration() {
 	if [ ! -e /etc/proftpd.conf ] ; then
-		eerror "To execute the ProFTPD server you need a /etc/proftpd/proftpd.conf configuration"
-		eerror "file. In /etc/proftpd you can find a sample configuration."
+		eerror "To execute the ProFTPD server you need a /etc/proftpd.conf configuration"
+		eerror "file. In /usr/doc/proftpd-* you can find a sample configuration."
 		return 1
 	fi
-	ebegin "Checking ProFTPD configuration"
-	/usr/sbin/proftpd -t
-	eend $? "A configuration error was found. You have to fix your configuration file."
+	/usr/sbin/proftpd -t &>/dev/null
+	if [ $? -ne 0 ] ; then
+		eerror "The ProFTPD configuration file /etc/proftpd.conf is invalid! You have to"
+		eerror "fix your configuration in order to run the ProFTPD server. For more information"
+		eerror "you may execute the ProFTPD configuration check '/usr/sbin/proftpd -t'."
+		return 2
+	fi
 }
 
 start() {
+	checkpath -d /var/run/proftpd
 	[ "${RC_CMD}" = "restart" ] || check_configuration || return 1
 	ebegin "Starting ProFTPD"
 	start-stop-daemon --start --quiet \
 		--exec /usr/sbin/proftpd \
-		--pidfile /var/run/proftpd.pid
+		--pidfile /var/run/proftpd/proftpd.pid
 	eend $?
 }
 
@@ -34,17 +39,14 @@ stop() {
 	[ "${RC_CMD}" != "restart" ] || check_configuration || return 1
 	ebegin "Stopping ProFTPD"
 	start-stop-daemon --stop --quiet --retry 20 \
-		--pidfile /var/run/proftpd.pid
+		--pidfile /var/run/proftpd/proftpd.pid
 	eend $?
 }
 
 reload() {
-	if [ ! -f /var/run/proftpd.pid ] ; then
-		eerror "ProFTPD is not running."
-		return 1
-	fi
 	check_configuration || return 1
 	ebegin "Reloading ProFTPD"
-	kill -HUP `cat /var/run/proftpd.pid` &>/dev/null
+	start-stop-daemon --quiet --signal HUP \
+		--pidfile /var/run/proftpd/proftpd.pid
 	eend $?
 }
