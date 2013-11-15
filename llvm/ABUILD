@@ -183,6 +183,9 @@ clang_prep() {
 	cd "$srcdir/llvm-$pkgver.src/tools/clang"
 	make DESTDIR="$pkgdir" install
 
+	cp -r $pkgdir/usr/{lib/*,lib$LIBDIRSUFFIX/}
+	rm -r $pkgdir/usr/lib/
+
 	# Fix permissions of static libs
 	chmod -x "$pkgdir"/usr/lib${LIBDIRSUFFIX}/llvm/*.a
 
