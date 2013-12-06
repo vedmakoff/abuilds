@@ -1,6 +1,6 @@
 # Package metadata
 pkgname=xf86-video-nouveau
-pkgver=1.0.1
+pkgver=1.0.10
 pkgbuild=1
 arch="auto"
 
@@ -14,6 +14,8 @@ source=("http://nouveau.freedesktop.org/release/xf86-video-nouveau-$pkgver.tar.b
 # Tags
 tags="xserver x11-drivers"
 adddep="nouveau-dri"
+build_deps="libdrm udev xorg-server resourceproto scrnsaverproto"
+
 # Build system
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \

@@ -1,13 +1,12 @@
 pkgname=xf86-input-synaptics
-pkgver=1.6.2
+pkgver=1.7.1
 pkgbuild=1
 arch=('auto')
 
 shortdesc=('xf86-input-synaptics')
 longdesc=('xf86-input-synaptics is part of X11. For more information about the X.Org Foundation (the providers of the X.Org implementation of the X Window System), see their website: http://www.x.org')
-
 tags=('x11-drivers xserver')
-
+build_deps="libXtst mtdev libXi libX11 resourceproto scrnsaverproto xorg-server"
 source=("http://xorg.freedesktop.org/archive/individual/driver/xf86-input-synaptics-${pkgver}.tar.bz2")
 
 BUILD_SYSTEM='autotools'
