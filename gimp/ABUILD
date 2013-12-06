@@ -1,6 +1,6 @@
 #ABUILD created by: medved, medved55rus at gmail.com 
 pkgname=gimp
-pkgver=2.8.6
+pkgver=2.8.10
 pkgbuild=1
 arch=('auto')
 

@@ -1,6 +1,6 @@
 #----------------------------- General vars --------------------------------------
 pkgname=django
-pkgver=1.5.1
+pkgver=1.5.4
 pkgbuild=1
 arch=('auto')
 

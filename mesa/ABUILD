@@ -1,6 +1,6 @@
 # ABUILD for mesa package
 pkgname=mesa
-pkgver=9.2.0
+pkgver=10.0.0
 _git=false
 pkgbuild=1
 arch=('auto')

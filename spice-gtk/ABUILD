@@ -1,6 +1,6 @@
 
 pkgname=spice-gtk
-pkgver=0.20
+pkgver=0.21
 pkgbuild=1
 arch=("auto")
 

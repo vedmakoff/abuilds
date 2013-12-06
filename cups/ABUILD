@@ -1,5 +1,5 @@
 pkgname=cups
-pkgver=1.6.3
+pkgver=1.7.0
 pkgbuild=1
 arch=('auto')
 

@@ -1,5 +1,5 @@
 pkgname=dropbox
-pkgver=2.2.8
+pkgver=2.4.8
 pkgbuild=1
 arch=('auto')
 

@@ -1,6 +1,6 @@
 pkgname=glew
 pkgver=1.10.0
-pkgbuild=0
+pkgbuild=1
 arch=('auto')
 
 shortdesc="The OpenGL Extension Wrangler Library"

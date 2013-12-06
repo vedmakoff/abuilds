@@ -1,5 +1,5 @@
 pkgname=man-pages
-pkgver=3.51
+pkgver=3.54
 _posixver=2003-a
 pkgbuild=1
 arch=("noarch")
