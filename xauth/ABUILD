@@ -1,6 +1,6 @@
 pkgname=xauth
-pkgver=1.0.7
-pkgbuild=2
+pkgver=1.0.8
+pkgbuild=1
 arch=('auto')
 
 shortdesc=('xauth')

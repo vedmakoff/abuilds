@@ -1,5 +1,5 @@
 pkgname=tzdata
-pkgver=2013d
+pkgver=2013h
 pkgbuild=1
 shortdesc="Sources for time zone and daylight saving time data"
 arch=("noarch")

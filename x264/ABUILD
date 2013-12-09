@@ -1,5 +1,5 @@
 pkgname=x264
-pkgver=20130731
+pkgver=20130912
 pkgbuild=1
 arch=('auto')
 

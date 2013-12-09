@@ -1,5 +1,5 @@
 pkgname=shared-mime-info
-pkgver=1.1
+pkgver=1.2
 arch=('auto')
 pkgbuild=1
 shortdesc="Freedesktop.org Shared MIME Info"

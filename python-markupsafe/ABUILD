@@ -1,5 +1,5 @@
 pkgname=python-markupsafe
-pkgver=0.15
+pkgver=0.18
 pkgbuild=1
 arch='auto'
 shortdesc='Implements a XML/HTML/XHTML Markup safe string for Python'

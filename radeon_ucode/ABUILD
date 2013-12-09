@@ -1,5 +1,5 @@
 pkgname=radeon_ucode
-pkgver=20110627
+pkgver=20131111
 pkgbuild=1
 shortdesc="Radeon ucode firmware files"
 longdesc="Radeon ucode firmware files"

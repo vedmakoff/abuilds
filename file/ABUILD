@@ -1,6 +1,6 @@
 pkgname=file
-pkgver=5.14
-pkgbuild=2
+pkgver=5.16
+pkgbuild=1
 arch=('auto')
 
 shortdesc="A utility to determine file type"

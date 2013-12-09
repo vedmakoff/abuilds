@@ -1,5 +1,5 @@
 pkgname=valgrind
-pkgver=3.8.1
+pkgver=3.9.0
 pkgbuild=1
 arch=('any')
 shortdesc="An instrumentation framework for building dynamic analysis tools."

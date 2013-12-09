@@ -1,6 +1,6 @@
 pkgname=cppunit
-pkgver=1.13.1
-pkgbuild=2
+pkgver=1.13.2
+pkgbuild=1
 arch=('auto')
 
 shortdesc="cppunit (C++ unit testing framework)"

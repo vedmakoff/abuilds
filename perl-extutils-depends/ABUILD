@@ -1,6 +1,6 @@
 pkgname=perl-extutils-depends
 downname=ExtUtils-Depends
-pkgver=0.304
+pkgver=0.305
 pkgbuild=1
 arch=('auto')
 

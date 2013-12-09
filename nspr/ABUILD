@@ -1,6 +1,6 @@
 #----------------------------- General vars --------------------------------------
 pkgname=nspr
-pkgver=4.9.6
+pkgver=4.10.2
 pkgbuild=1
 arch=('auto')
 

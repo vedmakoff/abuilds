@@ -1,6 +1,6 @@
 pkgname=lm_sensors
-pkgver=3.3.3
-pkgbuild=4
+pkgver=3.3.4
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Lm_sensors - Linux hardware monitoring"

@@ -1,7 +1,7 @@
 #ABUILD created by: NK, nk-man at yandex.ru 
 pkgname=mpg123
-pkgver=1.15.4
-pkgbuild=2
+pkgver=1.16.0
+pkgbuild=1
 arch=('auto')
 
 shortdesc="Fast console MPEG Audio Player and decoder library"

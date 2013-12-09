@@ -1,5 +1,5 @@
 pkgname=util-macros
-pkgver=1.17.1
+pkgver=1.18.0
 pkgbuild=1
 arch=('auto')
 
