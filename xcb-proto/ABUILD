@@ -1,6 +1,6 @@
 # xcb-proto
 pkgname=xcb-proto
-pkgver=1.9
+pkgver=1.10
 pkgbuild=1
 arch=('auto')
 
