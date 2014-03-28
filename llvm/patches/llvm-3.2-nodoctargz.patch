@@ -1,5 +1,5 @@
---- docs/Makefile.orig	2012-04-30 17:00:01.000000000 +0200
-+++ docs/Makefile	2012-04-30 17:15:52.000000000 +0200
+--- a/docs/Makefile.orig	2012-04-30 17:00:01.000000000 +0200
++++ b/docs/Makefile	2012-04-30 17:15:52.000000000 +0200
 @@ -52,11 +52,10 @@
  # 'make generated BUILD_FOR_WEBSITE=1'
  generated:: $(generated_targets)

@@ -46,6 +46,7 @@ ac_add_options --disable-mochitest
 ac_add_options --disable-debug
 ac_add_options --disable-installer
 ac_add_options --disable-pedantic
+ac_add_options --disable-gstreamer
 
 ac_add_options --enable-gio
 ac_add_options --disable-gnomevfs

@@ -51,6 +51,7 @@ ac_add_options --disable-tests
 ac_add_options --disable-debug
 ac_add_options --disable-xprint
 ac_add_options --disable-necko-wifi
+ac_add_options --disable-gstreamer
 
 export MOZ_JEMALLOC=1
 export MOZILLA_OFFICIAL=1

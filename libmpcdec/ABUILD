@@ -2,7 +2,7 @@
 
 pkgname=libmpcdec
 pkgver=1.2.6
-pkgbuild=2
+pkgbuild=3
 arch=("auto")
 
 shortdesc=("Portable Musepack decoder library")
