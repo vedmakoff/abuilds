@@ -2,7 +2,7 @@
 
 pkgname=llvm
 pkgver=3.4
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 _gcc_ver=4.7.3
 shortdesc="Low Level Virtual Machine"
@@ -15,28 +15,35 @@ source=("http://llvm.org/releases/$pkgver/llvm-$pkgver.src.tar.gz"
 	"http://llvm.org/releases/$pkgver/compiler-rt-$pkgver.src.tar.gz")
 
 build_deps="libffi python ocaml python-sphinx"
-pkglist="clang llvm_ocaml clang_analyzer clang_tools_extra"
+pkglist="llvm_libs clang clang_libs llvm_ocaml clang_analyzer"
 adddep="perl"
 
 fix_make() {
+	local sub_files=(
+	    Makefile.config.in
+	    Makefile.rules
+	    tools/llvm-config/llvm-config.cpp
+	    tools/llvm-config/Makefile
+	    tools/clang/lib/Driver/Tools.cpp
+	    tools/clang/tools/scan-build/scan-build
+	)
+
 	# unfortunately ./configure won't listen to --mandir and the-like, so take
 	# care of this.
-	sed -e 's,^PROJ_docsdir.*,PROJ_docsdir := $(PROJ_prefix)/doc/'${pkgname}-${pkgver}, \
-	    -e 's,^PROJ_mandir.*,PROJ_mandir := $(PROJ_prefix)/man/', \
-	    -e 's,^PROJ_etcdir.*,PROJ_etcdir := /etc/llvm,' \
-	    -e 's,^PROJ_libdir.*,PROJ_libdir := $(PROJ_prefix)/'lib${LIBDIRSUFFIX}/${pkgname}, \
-	    -i Makefile.config.in || die "Makefile.config sed failed"
-	
-	sed -e "/ActiveLibDir = ActivePrefix/s/lib/lib${LIBDIRSUFFIX}\/${pkgname}/" \
-	    -i tools/llvm-config/llvm-config.cpp || die "llvm-config sed failed"
-	
-	# Fixing rpath and CFLAGS
-	sed -e 's,\$(RPATH) -Wl\,\$(\(ToolDir\|LibDir\)),$(RPATH) -Wl\,'/usr/lib${LIBDIRSUFFIX}/${pkgname}, \
-	    -e '/OmitFramePointer/s/-fomit-frame-pointer//' \
-	    -i Makefile.rules || die "rpath sed failed"
+	sed -e "s,@libdir@,lib${LIBDIRSUFFIX}/${pkgname},g" \
+		-e "s,@PF@,${pkgname}-${pkgver},g" \
+		-i "${sub_files[@]}" \
+		|| die "install paths sed failed"
 
-	sed -e "/NO_INSTALL = 1/s/^/#/" -i utils/FileCheck/Makefile \
-	    || die "FileCheck Makefile sed failed"
+	sed -i \
+	    -e "/ActiveLibDir/s|/lib\"|/lib${LIBDIRSUFFIX}/${pkgname}\"|g" \
+	    -e "/ActiveLibDir/s|/lib/|/lib${LIBDIRSUFFIX}/${pkgname}/|g" \
+	    tools/llvm-config/llvm-config.cpp || exit 1
+
+	sed -i 's:$(RPATH) -Wl,$(\(ToolDir\|LibDir\|ExmplDir\))::g' Makefile.rules
+
+	sed -i "s|/lib /usr/lib \$lt_ld_extra|/lib${LIBDIRSUFFIX} /usr/lib${LIBDIRSUFFIX} \$lt_ld_extra|" \
+	  ./configure
 }
 
 build() {
@@ -48,8 +55,8 @@ build() {
 	mv "$srcdir/clang-tools-extra-$pkgver" tools/clang/tools/extra
 	mv "$srcdir/compiler-rt-$pkgver" projects/compiler-rt
 
-	fix_make
 	burn_patches
+	fix_make
 
 	# Include location of libffi headers in CPPFLAGS
 	export CPPFLAGS="$SLKCXXFLAGS $SLKCPPFLAGS $(pkg-config --cflags libffi)"
@@ -72,7 +79,8 @@ build() {
 
 	./configure \
 		--prefix=/usr \
-		--libdir=/usr/lib${LIBDIRSUFFIX}/llvm \
+		--libdir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
+		--datadir=/usr/lib${LIBDIRSUFFIX}/${pkgname} \
 		--sysconfdir=/etc \
 		--mandir=/usr/man \
 		--enable-shared \
@@ -97,10 +105,7 @@ build() {
 
 
 after_build() {
-
-	cd "$srcdir/llvm-$pkgver"
-
-       	# We move the clang directory out of the tree so it won't get installed and
+	# We move the clang directory out of the tree so it won't get installed and
 	# then we bring it back in for the clang package
 	mv tools/clang "$srcdir"
 
@@ -108,15 +113,12 @@ after_build() {
 	make -j1 DESTDIR="$pkgdir" install
 	mv "$srcdir/clang" tools
 
+	# Remove static libs
+	find "$pkgdir/usr/lib${LIBDIRSUFFIX}/${pkgname}/" -name "*.a" -exec rm -f {} \;
+
 	# OCaml bindings go to a separate package
 	rm -rf "$srcdir"/{ocaml,ocamldoc}
 	mv "$pkgdir"/usr/{lib${LIBDIRSUFFIX}/ocaml,doc/llvm-${pkgver}/ocamldoc} "$srcdir"
-
-	# Remove duplicate files installed by the OCaml bindings
-	#rm "$pkgdir"/usr/{lib${LIBDIRSUFFIX}/llvm/libllvm*,doc/llvm-${pkgver}/ocamldoc.tar.gz}
-
-	# Fix permissions of static libs
-	chmod -x "$pkgdir"/usr/lib${LIBDIRSUFFIX}/llvm/*.a
 
 	# Get rid of example Hello transformation
 	rm "$pkgdir"/usr/lib${LIBDIRSUFFIX}/llvm/*LLVMHello.*
@@ -125,6 +127,11 @@ after_build() {
 	# (https://bugs.archlinux.org/task/28479)
 	#install -d "$pkgdir/usr/lib${LIBDIRSUFFIX}/bfd-plugins"
 	#ln -s ../LLVMgold.so "$pkgdir/usr/lib${LIBDIRSUFFIX}/bfd-plugins/LLVMgold.so"
+
+	# Install ld.conf
+	mkdir -p ${pkgdir}/etc/ld.so.conf.d
+	sed -e "s,@LIBDIRSUFFIX@,${LIBDIRSUFFIX},g" ${filedir}/llvm.conf > \
+	    ${pkgdir}/etc/ld.so.conf.d/llvm-${ARCH}.conf
 
 	if [[ $ARCH == x86_64 ]]; then
 	    # Needed for multilib (https://bugs.archlinux.org/task/29951)
@@ -147,10 +154,33 @@ after_build() {
 	install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
 
+llvm_libs() {
+	pkgname=llvm-libs
+	shortdesc="Static libs of LLVM"
+	adddep="llvm=${pkgver}"
+}
+
+llvm_libs_prep() {
+	go_src_dir
+	mv tools/clang "$srcdir"
+
+	# -j1 is due to race conditions during the installation of the OCaml bindings
+	make -j1 DESTDIR="$pkgdir" install
+	mv "$srcdir/clang" tools
+
+	# Remove non-static stuff
+	rm -rf $pkgdir/usr/{bin,doc,include,man,share,lib${LIBDIRSUFFIX}/{clang,ocaml}}
+	find "$pkgdir/usr/lib${LIBDIRSUFFIX}/${p_pkgname}/" -name "*.so" -exec rm -f {} \;
+
+	# Remove execute bit from static libraries
+	chmod -x "$pkgdir"/usr/lib${LIBDIRSUFFIX}/${p_pkgname}/*.a
+	install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/llvm-libs/LICENSE"
+}
+
 llvm_ocaml() {
 	pkgname=llvm-ocaml
 	shortdesc="OCaml bindings for LLVM"
-	adddep="ocaml llvm=${pkgver}"
+	adddep="ocaml llvm=${pkgver} llvm-libs=${pkgver}"
 }
 
 llvm_ocaml_prep() {
@@ -180,10 +210,6 @@ clang() {
 }
 
 clang_prep() {
-	# Fix installation path for clang docs
-	#sed -i 's:$(PROJ_prefix)/doc/llvm-${pkgver}:$(PROJ_prefix)/doc/clang-${pkgver}:' \
-	#   "$srcdir/llvm-$pkgver/Makefile.config" 
-
 	cd "$srcdir/llvm-$pkgver/tools/clang"
 	make DESTDIR="$pkgdir" install
 
@@ -192,8 +218,9 @@ clang_prep() {
 	    rm -r $pkgdir/usr/lib/
 	fi
 
-	# Fix permissions of static libs
-	chmod -x "$pkgdir"/usr/lib${LIBDIRSUFFIX}/llvm/*.a
+	# Remove static llvm libs
+	find "$pkgdir/usr/lib${LIBDIRSUFFIX}/" -name "*.a" -exec rm -f {} \;
+	find $pkgdir/usr/lib${LIBDIRSUFFIX}/ -type d -empty -delete
 
 	# Just move it. Why using sed?
 	mv $pkgdir/usr/doc/llvm-${pkgver} $pkgdir/usr/doc/clang-${pkgver}
@@ -202,6 +229,31 @@ clang_prep() {
 	cp -r docs/_build/html/* "$pkgdir/usr/doc/$pkgname-${pkgver}/html/"
 	rm -r "$pkgdir/usr/doc/$pkgname-${pkgver}/html/_sources"
 	install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/clang/LICENSE"
+}
+
+clang_libs() {
+	pkgname=clang-libs
+	shortdesc="Static libs for clang"
+	adddep="clang=${pkgver}"
+}
+
+clang_libs_prep() {
+	cd "$srcdir/llvm-$pkgver/tools/clang"
+	make DESTDIR="$pkgdir" install
+
+	if [ ! -z "$LIBDIRSUFFIX" ] ; then
+	    cp -r $pkgdir/usr/{lib/*,lib$LIBDIRSUFFIX/}
+	    rm -r $pkgdir/usr/lib/
+	fi
+
+	# Remove other stuff
+	rm -r $pkgdir/usr/{bin,doc,include,man,lib${LIBDIRSUFFIX}/clang/$pkgver/include}
+	find "$pkgdir/usr/lib${LIBDIRSUFFIX}/" -name "*.so" -exec rm -f {} \;
+	find $pkgdir/usr/lib${LIBDIRSUFFIX}/ -type d -empty -delete
+
+	# Fix permissions of static libs
+	chmod -x "$pkgdir"/usr/lib${LIBDIRSUFFIX}/llvm/*.a
+	install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/clang-libs/LICENSE"
 }
 
 clang_analyzer() {
@@ -232,21 +284,4 @@ clang_analyzer_prep() {
 	python -O -m compileall "$pkgdir/usr/lib${LIBDIRSUFFIX}/clang-analyzer"
 
 	install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/clang-analyzer/LICENSE"
-}
-
-clang_tools_extra() {
-	pkgname=clang-tools-extra
-	shortdesc="Extra tools built using Clang's tooling APIs"
-	adddep="clang=${pkgver}"
-}
-
-clang_tools_extra_prep() {
-	cd "$srcdir/llvm-$pkgver/tools/clang/tools/extra"
-
-	make DESTDIR="$pkgdir" install
-
-	# Fix permissions of static libs
-	chmod -x "$pkgdir"/usr/lib$LIBDIRSUFFIX/llvm/*.a
-
-	install -Dm644 LICENSE.TXT "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
