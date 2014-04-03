@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -36,27 +35,25 @@ int au_do_open_nondir(struct file *file, int flags)
 
 	FiMustWriteLock(file);
 
+	err = 0;
 	dentry = file->f_dentry;
-	err = au_d_alive(dentry);
-	if (unlikely(err))
-		goto out;
-
 	finfo = au_fi(file);
 	memset(&finfo->fi_htop, 0, sizeof(finfo->fi_htop));
 	atomic_set(&finfo->fi_mmapped, 0);
 	bindex = au_dbstart(dentry);
-	h_file = au_h_open(dentry, bindex, flags, file);
+	h_file = au_h_open(dentry, bindex, flags, file, /*force_wr*/0);
 	if (IS_ERR(h_file))
 		err = PTR_ERR(h_file);
 	else {
 		au_set_fbstart(file, bindex);
 		au_set_h_fptr(file, bindex, h_file);
 		au_update_figen(file);
+		finfo->fi_file = file;
+		au_sphl_add(&finfo->fi_hlist, &au_sbi(dentry->d_sb)->si_files);
 		/* todo: necessary? */
 		/* file->f_ra = h_file->f_ra; */
 	}
 
-out:
 	return err;
 }
 
@@ -66,9 +63,8 @@ static int aufs_open_nondir(struct inode *inode __maybe_unused,
 	int err;
 	struct super_block *sb;
 
-	AuDbg("%.*s, f_flags 0x%x, f_mode 0x%x\n",
-	      AuDLNPair(file->f_dentry), vfsub_file_flags(file),
-	      file->f_mode);
+	AuDbg("%pD, f_flags 0x%x, f_mode 0x%x\n",
+	      file, vfsub_file_flags(file), file->f_mode);
 
 	sb = file->f_dentry->d_sb;
 	si_read_lock(sb, AuLock_FLUSH);
@@ -83,6 +79,7 @@ int aufs_release_nondir(struct inode *inode __maybe_unused, struct file *file)
 	aufs_bindex_t bindex;
 
 	finfo = au_fi(file);
+	au_sphl_del(&finfo->fi_hlist, &au_sbi(file->f_dentry->d_sb)->si_files);
 	bindex = finfo->fi_btop;
 	if (bindex >= 0)
 		au_set_h_fptr(file, bindex, NULL);
@@ -438,7 +435,7 @@ out:
  * It means that when aufs acquires si_rwsem for write, the process should never
  * acquire mmap_sem.
  *
- * Actually aufs_readdir() holds [fdi]i_rwsem before mmap_sem, but this is not a
+ * Actually aufs_iterate() holds [fdi]i_rwsem before mmap_sem, but this is not a
  * problem either since any directory is not able to be mmap-ed.
  * The similar scenario is applied to aufs_readlink() too.
  */
@@ -622,7 +619,7 @@ static int aufs_aio_fsync_nondir(struct kiocb *kio, int datasync)
 
 	err = -ENOSYS;
 	h_file = au_hf_top(file);
-	if (h_file->f_op && h_file->f_op->aio_fsync) {
+	if (h_file->f_op->aio_fsync) {
 		struct mutex *h_mtx;
 
 		h_mtx = &file_inode(h_file)->i_mutex;
@@ -665,7 +662,7 @@ static int aufs_fasync(int fd, struct file *file, int flag)
 		goto out;
 
 	h_file = au_hf_top(file);
-	if (h_file->f_op && h_file->f_op->fasync)
+	if (h_file->f_op->fasync)
 		err = h_file->f_op->fasync(fd, h_file, flag);
 
 	di_read_unlock(dentry, AuLock_IR);
@@ -702,7 +699,7 @@ const struct file_operations aufs_file_fop = {
 #endif
 	.unlocked_ioctl	= aufs_ioctl_nondir,
 #ifdef CONFIG_COMPAT
-	.compat_ioctl	= aufs_ioctl_nondir, /* same */
+	.compat_ioctl	= aufs_compat_ioctl_nondir,
 #endif
 	.mmap		= aufs_mmap,
 	.open		= aufs_open_nondir,

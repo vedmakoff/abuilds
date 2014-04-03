@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -68,6 +67,18 @@ struct au_br_hfsnotify {
 };
 #endif
 
+/* sysfs entries */
+struct au_brsysfs {
+	char			name[16];
+	struct attribute	attr;
+};
+
+enum {
+	AuBrSysfs_BR,
+	AuBrSysfs_BRID,
+	AuBrSysfs_Last
+};
+
 /* protected by superblock rwsem */
 struct au_branch {
 	struct au_xino_file	br_xino;
@@ -84,7 +95,6 @@ struct au_branch {
 	struct au_wbr		*br_wbr;
 
 	/* xino truncation */
-	blkcnt_t		br_xino_upper;	/* watermark in blocks */
 	atomic_t		br_xino_running;
 
 #ifdef CONFIG_AUFS_HFSNOTIFY
@@ -92,9 +102,8 @@ struct au_branch {
 #endif
 
 #ifdef CONFIG_SYSFS
-	/* an entry under sysfs per mount-point */
-	char			br_name[8];
-	struct attribute	br_attr;
+	/* entries under sysfs per mount-point */
+	struct au_brsysfs	br_sysfs[AuBrSysfs_Last];
 #endif
 };
 

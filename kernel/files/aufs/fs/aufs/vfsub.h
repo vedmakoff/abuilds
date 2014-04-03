@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -32,40 +31,8 @@
 
 /* copied from linux/fs/internal.h */
 /* todo: BAD approach!! */
-extern struct lglock vfsmount_lock;
 extern void __mnt_drop_write(struct vfsmount *);
 extern spinlock_t inode_sb_list_lock;
-
-/* copied from linux/fs/file_table.c */
-extern struct lglock files_lglock;
-#ifdef CONFIG_SMP
-/*
- * These macros iterate all files on all CPUs for a given superblock.
- * files_lglock must be held globally.
- */
-#define do_file_list_for_each_entry(__sb, __file)		\
-{								\
-	int i;							\
-	for_each_possible_cpu(i) {				\
-		struct list_head *list;				\
-		list = per_cpu_ptr((__sb)->s_files, i);		\
-		list_for_each_entry((__file), list, f_u.fu_list)
-
-#define while_file_list_for_each_entry				\
-	}							\
-}
-
-#else
-
-#define do_file_list_for_each_entry(__sb, __file)		\
-{								\
-	struct list_head *list;					\
-	list = &(sb)->s_files;					\
-	list_for_each_entry((__file), list, f_u.fu_list)
-
-#define while_file_list_for_each_entry				\
-}
-#endif
 
 /* ---------------------------------------------------------------------- */
 
@@ -73,7 +40,7 @@ extern struct lglock files_lglock;
 /* default MAX_LOCKDEP_SUBCLASSES(8) is not enough */
 /* reduce? gave up. */
 enum {
-	AuLsc_I_Begin = I_MUTEX_QUOTA, /* 4 */
+	AuLsc_I_Begin = I_MUTEX_NONDIR2, /* 4 */
 	AuLsc_I_PARENT,		/* lower inode, parent first */
 	AuLsc_I_PARENT2,	/* copyup dirs */
 	AuLsc_I_PARENT3,	/* copyup wh */
@@ -99,6 +66,14 @@ static inline void vfsub_dead_dir(struct inode *inode)
 	AuDebugOn(!S_ISDIR(inode->i_mode));
 	inode->i_flags |= S_DEAD;
 	clear_nlink(inode);
+}
+
+static inline int vfsub_native_ro(struct inode *inode)
+{
+	return (inode->i_sb->s_flags & MS_RDONLY)
+		|| IS_RDONLY(inode)
+		/* || IS_APPEND(inode) */
+		|| IS_IMMUTABLE(inode);
 }
 
 /* ---------------------------------------------------------------------- */
@@ -164,9 +139,10 @@ int vfsub_symlink(struct inode *dir, struct path *path,
 		  const char *symname);
 int vfsub_mknod(struct inode *dir, struct path *path, int mode, dev_t dev);
 int vfsub_link(struct dentry *src_dentry, struct inode *dir,
-	       struct path *path);
+	       struct path *path, struct inode **delegated_inode);
 int vfsub_rename(struct inode *src_hdir, struct dentry *src_dentry,
-		 struct inode *hdir, struct path *path);
+		 struct inode *hdir, struct path *path,
+		 struct inode **delegated_inode);
 int vfsub_mkdir(struct inode *dir, struct path *path, int mode);
 int vfsub_rmdir(struct inode *dir, struct path *path);
 
@@ -181,7 +157,16 @@ ssize_t vfsub_write_u(struct file *file, const char __user *ubuf, size_t count,
 ssize_t vfsub_write_k(struct file *file, void *kbuf, size_t count,
 		      loff_t *ppos);
 int vfsub_flush(struct file *file, fl_owner_t id);
-int vfsub_readdir(struct file *file, filldir_t filldir, void *arg);
+int vfsub_iterate_dir(struct file *file, struct dir_context *ctx);
+
+/* just for type-check */
+static inline filldir_t au_diractor(int (*func)(struct dir_context *,
+						const char *, int, loff_t, u64,
+						unsigned))
+{
+	return (filldir_t)func;
+}
+
 
 static inline loff_t vfsub_f_size_read(struct file *file)
 {
@@ -286,9 +271,12 @@ static inline fmode_t vfsub_uint_to_fmode(unsigned int ui)
 
 int vfsub_sio_mkdir(struct inode *dir, struct path *path, int mode);
 int vfsub_sio_rmdir(struct inode *dir, struct path *path);
-int vfsub_sio_notify_change(struct path *path, struct iattr *ia);
-int vfsub_notify_change(struct path *path, struct iattr *ia);
-int vfsub_unlink(struct inode *dir, struct path *path, int force);
+int vfsub_sio_notify_change(struct path *path, struct iattr *ia,
+			    struct inode **delegated_inode);
+int vfsub_notify_change(struct path *path, struct iattr *ia,
+			struct inode **delegated_inode);
+int vfsub_unlink(struct inode *dir, struct path *path,
+		 struct inode **delegated_inode, int force);
 
 #endif /* __KERNEL__ */
 #endif /* __AUFS_VFSUB_H__ */

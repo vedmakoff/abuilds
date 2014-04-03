@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -87,8 +86,8 @@ int au_wh_test(struct dentry *h_parent, struct qstr *wh_name,
 		goto out_wh; /* success */
 
 	err = -EIO;
-	AuIOErr("%.*s Invalid whiteout entry type 0%o.\n",
-		AuDLNPair(wh_dentry), wh_dentry->d_inode->i_mode);
+	AuIOErr("%pd Invalid whiteout entry type 0%o.\n",
+		wh_dentry, wh_dentry->d_inode->i_mode);
 
 out_wh:
 	dput(wh_dentry);
@@ -176,7 +175,7 @@ int au_whtmp_ren(struct dentry *h_dentry, struct au_branch *br)
 	struct path h_path = {
 		.mnt = au_br_mnt(br)
 	};
-	struct inode *h_dir;
+	struct inode *h_dir, *delegated;
 	struct dentry *h_parent;
 
 	h_parent = h_dentry->d_parent; /* dir inode is locked */
@@ -189,8 +188,14 @@ int au_whtmp_ren(struct dentry *h_dentry, struct au_branch *br)
 		goto out;
 
 	/* under the same dir, no need to lock_rename() */
-	err = vfsub_rename(h_dir, h_dentry, h_dir, &h_path);
+	delegated = NULL;
+	err = vfsub_rename(h_dir, h_dentry, h_dir, &h_path, &delegated);
 	AuTraceErr(err);
+	if (unlikely(err == -EWOULDBLOCK)) {
+		pr_warn("cannot retry for NFSv4 delegation"
+			" for an internal rename\n");
+		iput(delegated);
+	}
 	dput(h_path.dentry);
 
 out:
@@ -205,7 +210,8 @@ out:
 
 static int do_unlink_wh(struct inode *h_dir, struct path *h_path)
 {
-	int force;
+	int err, force;
+	struct inode *delegated;
 
 	/*
 	 * forces superio when the dir has a sticky bit.
@@ -213,7 +219,14 @@ static int do_unlink_wh(struct inode *h_dir, struct path *h_path)
 	 */
 	force = (h_dir->i_mode & S_ISVTX)
 		&& !uid_eq(current_fsuid(), h_path->dentry->d_inode->i_uid);
-	return vfsub_unlink(h_dir, h_path, force);
+	delegated = NULL;
+	err = vfsub_unlink(h_dir, h_path, &delegated, force);
+	if (unlikely(err == -EWOULDBLOCK)) {
+		pr_warn("cannot retry for NFSv4 delegation"
+			" for an internal unlink\n");
+		iput(delegated);
+	}
+	return err;
 }
 
 int au_wh_unlink_dentry(struct inode *h_dir, struct path *h_path,
@@ -259,17 +272,25 @@ static void au_wh_clean(struct inode *h_dir, struct path *whpath,
 			const int isdir)
 {
 	int err;
+	struct inode *delegated;
 
 	if (!whpath->dentry->d_inode)
 		return;
 
 	if (isdir)
 		err = vfsub_rmdir(h_dir, whpath);
-	else
-		err = vfsub_unlink(h_dir, whpath, /*force*/0);
+	else {
+		delegated = NULL;
+		err = vfsub_unlink(h_dir, whpath, &delegated, /*force*/0);
+		if (unlikely(err == -EWOULDBLOCK)) {
+			pr_warn("cannot retry for NFSv4 delegation"
+				" for an internal unlink\n");
+			iput(delegated);
+		}
+	}
 	if (unlikely(err))
-		pr_warn("failed removing %.*s (%d), ignored.\n",
-			AuDLNPair(whpath->dentry), err);
+		pr_warn("failed removing %pd (%d), ignored.\n",
+			whpath->dentry, err);
 }
 
 static int test_linkable(struct dentry *h_root)
@@ -279,8 +300,8 @@ static int test_linkable(struct dentry *h_root)
 	if (h_dir->i_op->link)
 		return 0;
 
-	pr_err("%.*s (%s) doesn't support link(2), use noplink and rw+nolwh\n",
-	       AuDLNPair(h_root), au_sbtype(h_root->d_sb));
+	pr_err("%pd (%s) doesn't support link(2), use noplink and rw+nolwh\n",
+	       h_root, au_sbtype(h_root->d_sb));
 	return -ENOSYS;
 }
 
@@ -299,7 +320,7 @@ static int au_whdir(struct inode *h_dir, struct path *path)
 	} else if (S_ISDIR(path->dentry->d_inode->i_mode))
 		err = 0;
 	else
-		pr_err("unknown %.*s exists\n", AuDLNPair(path->dentry));
+		pr_err("unknown %pd exists\n", path->dentry);
 
 	return err;
 }
@@ -394,8 +415,7 @@ static int au_wh_init_rw(struct dentry *h_root, struct au_wbr *wbr,
 	} else if (S_ISREG(base[AuBrWh_BASE].dentry->d_inode->i_mode))
 		err = 0;
 	else
-		pr_err("unknown %.*s/%.*s exists\n",
-		       AuDLNPair(h_root), AuDLNPair(base[AuBrWh_BASE].dentry));
+		pr_err("unknown %pd2 exists\n", base[AuBrWh_BASE].dentry);
 	if (unlikely(err))
 		goto out;
 
@@ -498,8 +518,8 @@ int au_wh_init(struct au_branch *br, struct super_block *sb)
 	goto out; /* success */
 
 out_err:
-	pr_err("an error(%d) on the writable branch %.*s(%s)\n",
-	       err, AuDLNPair(h_root), au_sbtype(h_root->d_sb));
+	pr_err("an error(%d) on the writable branch %pd(%s)\n",
+	       err, h_root, au_sbtype(h_root->d_sb));
 out:
 	for (i = 0; i < AuBrWh_Last; i++)
 		dput(base[i].dentry);
@@ -525,7 +545,7 @@ static void reinit_br_wh(void *arg)
 	struct path h_path;
 	struct reinit_br_wh *a = arg;
 	struct au_wbr *wbr;
-	struct inode *dir;
+	struct inode *dir, *delegated;
 	struct dentry *h_root;
 	struct au_hinode *hdir;
 
@@ -552,10 +572,16 @@ static void reinit_br_wh(void *arg)
 	if (!err) {
 		h_path.dentry = wbr->wbr_whbase;
 		h_path.mnt = au_br_mnt(a->br);
-		err = vfsub_unlink(hdir->hi_inode, &h_path, /*force*/0);
+		delegated = NULL;
+		err = vfsub_unlink(hdir->hi_inode, &h_path, &delegated,
+				   /*force*/0);
+		if (unlikely(err == -EWOULDBLOCK)) {
+			pr_warn("cannot retry for NFSv4 delegation"
+				" for an internal unlink\n");
+			iput(delegated);
+		}
 	} else {
-		pr_warn("%.*s is moved, ignored\n",
-			AuDLNPair(wbr->wbr_whbase));
+		pr_warn("%pd is moved, ignored\n", wbr->wbr_whbase);
 		err = 0;
 	}
 	dput(wbr->wbr_whbase);
@@ -625,7 +651,7 @@ static int link_or_create_wh(struct super_block *sb, aufs_bindex_t bindex,
 	struct au_branch *br;
 	struct au_wbr *wbr;
 	struct dentry *h_parent;
-	struct inode *h_dir;
+	struct inode *h_dir, *delegated;
 
 	h_parent = wh->d_parent; /* dir inode is locked */
 	h_dir = h_parent->d_inode;
@@ -636,7 +662,13 @@ static int link_or_create_wh(struct super_block *sb, aufs_bindex_t bindex,
 	wbr = br->br_wbr;
 	wbr_wh_read_lock(wbr);
 	if (wbr->wbr_whbase) {
-		err = vfsub_link(wbr->wbr_whbase, h_dir, &h_path);
+		delegated = NULL;
+		err = vfsub_link(wbr->wbr_whbase, h_dir, &h_path, &delegated);
+		if (unlikely(err == -EWOULDBLOCK)) {
+			pr_warn("cannot retry for NFSv4 delegation"
+				" for an internal link\n");
+			iput(delegated);
+		}
 		if (!err || err != -EMLINK)
 			goto out;
 
@@ -945,8 +977,7 @@ int au_whtmp_rmdir(struct inode *dir, aufs_bindex_t bindex,
 		return 0; /* success */
 	}
 
-	pr_warn("failed removing %.*s(%d), ignored\n",
-		AuDLNPair(wh_dentry), err);
+	pr_warn("failed removing %pd(%d), ignored\n", wh_dentry, err);
 	return err;
 }
 
@@ -1015,8 +1046,7 @@ void au_whtmp_kick_rmdir(struct inode *dir, aufs_bindex_t bindex,
 	args->wh_dentry = dget(wh_dentry);
 	wkq_err = au_wkq_nowait(call_rmdir_whtmp, args, sb, /*flags*/0);
 	if (unlikely(wkq_err)) {
-		pr_warn("rmdir error %.*s (%d), ignored\n",
-			AuDLNPair(wh_dentry), wkq_err);
+		pr_warn("rmdir error %pd (%d), ignored\n", wh_dentry, wkq_err);
 		au_whtmp_rmdir_free(args);
 	}
 }

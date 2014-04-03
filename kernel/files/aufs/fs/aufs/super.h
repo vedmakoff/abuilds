@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -39,8 +38,15 @@ struct au_wbr_copyup_operations {
 	int (*copyup)(struct dentry *dentry);
 };
 
+#define AuWbr_DIR	1		/* target is a dir */
+#define AuWbr_PARENT	(1 << 1)	/* always require a parent */
+
+#define au_ftest_wbr(flags, name)	((flags) & AuWbr_##name)
+#define au_fset_wbr(flags, name)	{ (flags) |= AuWbr_##name; }
+#define au_fclr_wbr(flags, name)	{ (flags) &= ~AuWbr_##name; }
+
 struct au_wbr_create_operations {
-	int (*create)(struct dentry *dentry, int isdir);
+	int (*create)(struct dentry *dentry, unsigned int flags);
 	int (*init)(struct super_block *sb);
 	int (*fin)(struct super_block *sb);
 };
@@ -88,7 +94,8 @@ struct au_sbinfo {
 	} au_si_pid;
 
 	/*
-	 * dirty approach to protect sb->sb_inodes and ->s_files from remount.
+	 * dirty approach to protect sb->sb_inodes and ->s_files (gone) from
+	 * remount.
 	 */
 	atomic_long_t		si_ninodes, si_nfiles;
 
@@ -130,6 +137,8 @@ struct au_sbinfo {
 	unsigned long		si_xib_last_pindex;
 	int			si_xib_next_bit;
 	aufs_bindex_t		si_xino_brid;
+	unsigned long		si_xino_jiffy;
+	unsigned long		si_xino_expire;
 	/* reserved for future use */
 	/* unsigned long long	si_xib_limit; */	/* Max xib file size */
 
@@ -163,6 +172,9 @@ struct au_sbinfo {
 	wait_queue_head_t	si_plink_wq;
 	spinlock_t		si_plink_maint_lock;
 	pid_t			si_plink_maint_pid;
+
+	/* file list */
+	struct au_sphlhead	si_files;
 
 	/*
 	 * sysfs and lifetime management.
@@ -271,6 +283,10 @@ void si_pid_clr_slow(struct super_block *sb);
 extern struct au_wbr_copyup_operations au_wbr_copyup_ops[];
 extern struct au_wbr_create_operations au_wbr_create_ops[];
 int au_cpdown_dirs(struct dentry *dentry, aufs_bindex_t bdst);
+int au_wbr_nonopq(struct dentry *dentry, aufs_bindex_t bindex);
+
+/* mvdown.c */
+int au_mvdown(struct dentry *dentry, struct aufs_mvdown __user *arg);
 
 /* ---------------------------------------------------------------------- */
 

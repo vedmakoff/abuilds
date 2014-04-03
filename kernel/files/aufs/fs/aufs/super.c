@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -131,14 +130,14 @@ static void au_show_wbr_create(struct seq_file *m, int v,
 
 	AuRwMustAnyLock(&sbinfo->si_rwsem);
 
-	seq_printf(m, ",create=");
+	seq_puts(m, ",create=");
 	pat = au_optstr_wbr_create(v);
 	switch (v) {
 	case AuWbrCreate_TDP:
 	case AuWbrCreate_RR:
 	case AuWbrCreate_MFS:
 	case AuWbrCreate_PMFS:
-		seq_printf(m, pat);
+		seq_puts(m, pat);
 		break;
 	case AuWbrCreate_MFSV:
 		seq_printf(m, /*pat*/"mfs:%lu",
@@ -156,6 +155,16 @@ static void au_show_wbr_create(struct seq_file *m, int v,
 		break;
 	case AuWbrCreate_MFSRRV:
 		seq_printf(m, /*pat*/"mfsrr:%llu:%lu",
+			   sbinfo->si_wbr_mfs.mfsrr_watermark,
+			   jiffies_to_msecs(sbinfo->si_wbr_mfs.mfs_expire)
+			   / MSEC_PER_SEC);
+		break;
+	case AuWbrCreate_PMFSRR:
+		seq_printf(m, /*pat*/"pmfsrr:%llu",
+			   sbinfo->si_wbr_mfs.mfsrr_watermark);
+		break;
+	case AuWbrCreate_PMFSRRV:
+		seq_printf(m, /*pat*/"pmfsrr:%llu:%lu",
 			   sbinfo->si_wbr_mfs.mfsrr_watermark,
 			   jiffies_to_msecs(sbinfo->si_wbr_mfs.mfs_expire)
 			   / MSEC_PER_SEC);
@@ -978,7 +987,7 @@ static void aufs_kill_sb(struct super_block *sb)
 		aufs_write_unlock(sb->s_root);
 		au_nwt_flush(&sbinfo->si_nowait);
 	}
-	generic_shutdown_super(sb);
+	kill_anon_super(sb);
 }
 
 struct file_system_type aufs_fs_type = {

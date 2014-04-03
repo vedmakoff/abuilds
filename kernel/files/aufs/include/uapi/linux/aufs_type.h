@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 #ifndef __AUFS_TYPE_H__
@@ -40,7 +39,7 @@
 
 #include <linux/limits.h>
 
-#define AUFS_VERSION	"3.x-rcN-20130701"
+#define AUFS_VERSION	"3.13-20140303"
 
 /* todo? move this to linux-2.6.19/include/magic.h */
 #define AUFS_SUPER_MAGIC	('a' << 24 | 'u' << 16 | 'f' << 8 | 's')
@@ -84,8 +83,8 @@ typedef int16_t aufs_bindex_t;
 				- AUFS_WH_TMP_LEN)	/* hex */
 #define AUFS_XINO_FNAME		"." AUFS_NAME ".xino"
 #define AUFS_XINO_DEFPATH	"/tmp/" AUFS_XINO_FNAME
-#define AUFS_XINO_TRUNC_INIT	64 /* blocks */
-#define AUFS_XINO_TRUNC_STEP	4  /* blocks */
+#define AUFS_XINO_DEF_SEC	30 /* seconds */
+#define AUFS_XINO_DEF_TRUNC	45 /* percentage */
 #define AUFS_DIRWH_DEF		3
 #define AUFS_RDCACHE_DEF	10 /* seconds */
 #define AUFS_RDCACHE_MAX	3600 /* seconds */
@@ -133,7 +132,10 @@ enum {
 	AuCtl_WBR_FD,
 
 	/* busy inode */
-	AuCtl_IBUSY
+	AuCtl_IBUSY,
+
+	/* move-down */
+	AuCtl_MVDOWN
 };
 
 /* borrowed from linux/include/linux/kernel.h */
@@ -225,11 +227,55 @@ struct aufs_ibusy {
 
 /* ---------------------------------------------------------------------- */
 
+/* error code for move-down */
+/* the actual message strings are implemented in aufs-util.git */
+enum {
+	EAU_MVDOWN_OPAQUE = 1,
+	EAU_MVDOWN_WHITEOUT,
+	EAU_MVDOWN_UPPER,
+	EAU_MVDOWN_BOTTOM,
+	EAU_MVDOWN_NOUPPER,
+	EAU_MVDOWN_NOLOWERBR,
+	EAU_Last
+};
+
+/* flags for move-down */
+#define AUFS_MVDOWN_DMSG	1
+#define AUFS_MVDOWN_OWLOWER	(1 << 1)	/* overwrite lower */
+#define AUFS_MVDOWN_KUPPER	(1 << 2)	/* keep upper */
+#define AUFS_MVDOWN_ROLOWER	(1 << 3)	/* do even if lower is RO */
+#define AUFS_MVDOWN_ROLOWER_R	(1 << 4)	/* did on lower RO */
+#define AUFS_MVDOWN_ROUPPER	(1 << 5)	/* do even if upper is RO */
+#define AUFS_MVDOWN_ROUPPER_R	(1 << 6)	/* did on upper RO */
+#define AUFS_MVDOWN_BRID_UPPER	(1 << 7)	/* upper brid */
+#define AUFS_MVDOWN_BRID_LOWER	(1 << 8)	/* lower brid */
+/* will be added more */
+
+enum {
+	AUFS_MVDOWN_UPPER,
+	AUFS_MVDOWN_LOWER,
+	AUFS_MVDOWN_NARRAY
+};
+
+struct aufs_mvdown {
+	uint32_t	flags;
+	struct {
+		int16_t		bindex;
+		int16_t		brid;
+	} a[AUFS_MVDOWN_NARRAY];
+	int8_t		au_errno;
+	/* will be added more */
+} __aligned(8);
+
+/* ---------------------------------------------------------------------- */
+
 #define AuCtlType		'A'
 #define AUFS_CTL_RDU		_IOWR(AuCtlType, AuCtl_RDU, struct aufs_rdu)
 #define AUFS_CTL_RDU_INO	_IOWR(AuCtlType, AuCtl_RDU_INO, struct aufs_rdu)
 #define AUFS_CTL_WBR_FD		_IOW(AuCtlType, AuCtl_WBR_FD, \
 				     struct aufs_wbr_fd)
 #define AUFS_CTL_IBUSY		_IOWR(AuCtlType, AuCtl_IBUSY, struct aufs_ibusy)
+#define AUFS_CTL_MVDOWN		_IOWR(AuCtlType, AuCtl_MVDOWN, \
+				      struct aufs_mvdown)
 
 #endif /* __AUFS_TYPE_H__ */

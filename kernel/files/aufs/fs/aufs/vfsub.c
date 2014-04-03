@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -248,7 +247,8 @@ static int au_test_nlink(struct inode *inode)
 	return -EMLINK;
 }
 
-int vfsub_link(struct dentry *src_dentry, struct inode *dir, struct path *path)
+int vfsub_link(struct dentry *src_dentry, struct inode *dir, struct path *path,
+	       struct inode **delegated_inode)
 {
 	int err;
 	struct dentry *d;
@@ -268,7 +268,7 @@ int vfsub_link(struct dentry *src_dentry, struct inode *dir, struct path *path)
 		goto out;
 
 	lockdep_off();
-	err = vfs_link(src_dentry, dir, path->dentry);
+	err = vfs_link(src_dentry, dir, path->dentry, delegated_inode);
 	lockdep_on();
 	if (!err) {
 		struct path tmp = *path;
@@ -290,7 +290,8 @@ out:
 }
 
 int vfsub_rename(struct inode *src_dir, struct dentry *src_dentry,
-		 struct inode *dir, struct path *path)
+		 struct inode *dir, struct path *path,
+		 struct inode **delegated_inode)
 {
 	int err;
 	struct path tmp = {
@@ -310,7 +311,8 @@ int vfsub_rename(struct inode *src_dir, struct dentry *src_dentry,
 		goto out;
 
 	lockdep_off();
-	err = vfs_rename(src_dir, src_dentry, dir, path->dentry);
+	err = vfs_rename(src_dir, src_dentry, dir, path->dentry,
+			 delegated_inode);
 	lockdep_on();
 	if (!err) {
 		int did;
@@ -461,7 +463,7 @@ int vfsub_flush(struct file *file, fl_owner_t id)
 	int err;
 
 	err = 0;
-	if (file->f_op && file->f_op->flush) {
+	if (file->f_op->flush) {
 		if (!au_test_nfs(file->f_dentry->d_sb))
 			err = file->f_op->flush(file, id);
 		else {
@@ -476,12 +478,14 @@ int vfsub_flush(struct file *file, fl_owner_t id)
 	return err;
 }
 
-int vfsub_readdir(struct file *file, filldir_t filldir, void *arg)
+int vfsub_iterate_dir(struct file *file, struct dir_context *ctx)
 {
 	int err;
 
+	AuDbg("%pD, ctx{%pf, %llu}\n", file, ctx->actor, ctx->pos);
+
 	lockdep_off();
-	err = vfs_readdir(file, filldir, arg);
+	err = iterate_dir(file, ctx);
 	lockdep_on();
 	if (err >= 0)
 		vfsub_update_h_iattr(&file->f_path, /*did*/NULL); /*ignore*/
@@ -644,6 +648,7 @@ struct notify_change_args {
 	int *errp;
 	struct path *path;
 	struct iattr *ia;
+	struct inode **delegated_inode;
 };
 
 static void call_notify_change(void *args)
@@ -656,20 +661,23 @@ static void call_notify_change(void *args)
 
 	*a->errp = -EPERM;
 	if (!IS_IMMUTABLE(h_inode) && !IS_APPEND(h_inode)) {
-		*a->errp = notify_change(a->path->dentry, a->ia);
+		*a->errp = notify_change(a->path->dentry, a->ia,
+					 a->delegated_inode);
 		if (!*a->errp)
 			vfsub_update_h_iattr(a->path, /*did*/NULL); /*ignore*/
 	}
 	AuTraceErr(*a->errp);
 }
 
-int vfsub_notify_change(struct path *path, struct iattr *ia)
+int vfsub_notify_change(struct path *path, struct iattr *ia,
+			struct inode **delegated_inode)
 {
 	int err;
 	struct notify_change_args args = {
-		.errp	= &err,
-		.path	= path,
-		.ia	= ia
+		.errp			= &err,
+		.path			= path,
+		.ia			= ia,
+		.delegated_inode	= delegated_inode
 	};
 
 	call_notify_change(&args);
@@ -677,13 +685,15 @@ int vfsub_notify_change(struct path *path, struct iattr *ia)
 	return err;
 }
 
-int vfsub_sio_notify_change(struct path *path, struct iattr *ia)
+int vfsub_sio_notify_change(struct path *path, struct iattr *ia,
+			    struct inode **delegated_inode)
 {
 	int err, wkq_err;
 	struct notify_change_args args = {
-		.errp	= &err,
-		.path	= path,
-		.ia	= ia
+		.errp			= &err,
+		.path			= path,
+		.ia			= ia,
+		.delegated_inode	= delegated_inode
 	};
 
 	wkq_err = au_wkq_wait(call_notify_change, &args);
@@ -699,6 +709,7 @@ struct unlink_args {
 	int *errp;
 	struct inode *dir;
 	struct path *path;
+	struct inode **delegated_inode;
 };
 
 static void call_unlink(void *args)
@@ -707,7 +718,7 @@ static void call_unlink(void *args)
 	struct dentry *d = a->path->dentry;
 	struct inode *h_inode;
 	const int stop_sillyrename = (au_test_nfs(d->d_sb)
-				      && d->d_count == 1);
+				      && d_count(d) == 1);
 
 	IMustLock(a->dir);
 
@@ -724,7 +735,7 @@ static void call_unlink(void *args)
 		ihold(h_inode);
 
 	lockdep_off();
-	*a->errp = vfs_unlink(a->dir, d);
+	*a->errp = vfs_unlink(a->dir, d, a->delegated_inode);
 	lockdep_on();
 	if (!*a->errp) {
 		struct path tmp = {
@@ -746,13 +757,15 @@ static void call_unlink(void *args)
  * @dir: must be locked.
  * @dentry: target dentry.
  */
-int vfsub_unlink(struct inode *dir, struct path *path, int force)
+int vfsub_unlink(struct inode *dir, struct path *path,
+		 struct inode **delegated_inode, int force)
 {
 	int err;
 	struct unlink_args args = {
-		.errp	= &err,
-		.dir	= dir,
-		.path	= path
+		.errp			= &err,
+		.dir			= dir,
+		.path			= path,
+		.delegated_inode	= delegated_inode
 	};
 
 	if (!force)

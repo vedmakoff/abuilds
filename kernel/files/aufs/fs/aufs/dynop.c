@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2013 Junjiro R. Okajima
+ * Copyright (C) 2010-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -193,6 +192,7 @@ static void dy_aop(struct au_dykey *key, const void *h_op,
 	DySetAop(migratepage);
 	DySetAop(launder_page);
 	DySetAop(is_partially_uptodate);
+	DySetAop(is_dirty_writeback);
 	DySetAop(error_remove_page);
 	DySetAop(swap_activate);
 	DySetAop(swap_deactivate);

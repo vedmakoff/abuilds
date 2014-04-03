@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -98,7 +97,7 @@ static int au_dpages_append(struct au_dcsub_pages *dpages,
 		dpages->ndpage++;
 	}
 
-	AuDebugOn(!dentry->d_count);
+	AuDebugOn(!d_count(dentry));
 	dpage->dentries[dpage->ndentry++] = dget_dlock(dentry);
 	return 0; /* success */
 
@@ -106,6 +105,7 @@ out:
 	return err;
 }
 
+/* try d_walk() in linux/fs/dcache.c */
 int au_dcsub_pages(struct au_dcsub_pages *dpages, struct dentry *root,
 		   au_dpages_test test, void *arg)
 {
@@ -124,7 +124,7 @@ resume:
 	if (this_parent->d_sb == sb
 	    && !IS_ROOT(this_parent)
 	    && au_di(this_parent)
-	    && this_parent->d_count
+	    && d_count(this_parent)
 	    && (!test || test(this_parent, arg))) {
 		err = au_dpages_append(dpages, this_parent, GFP_ATOMIC);
 		if (unlikely(err))
@@ -138,7 +138,7 @@ resume:
 
 		next = tmp->next;
 		spin_lock_nested(&dentry->d_lock, DENTRY_D_LOCK_NESTED);
-		if (dentry->d_count) {
+		if (d_count(dentry)) {
 			if (!list_empty(&dentry->d_subdirs)) {
 				spin_unlock(&this_parent->d_lock);
 				spin_release(&dentry->d_lock.dep_map, 1,
@@ -189,7 +189,7 @@ int au_dcsub_pages_rev(struct au_dcsub_pages *dpages, struct dentry *dentry,
 	write_seqlock(&rename_lock);
 	spin_lock(&dentry->d_lock);
 	if (do_include
-	    && dentry->d_count
+	    && d_count(dentry)
 	    && (!test || test(dentry, arg)))
 		err = au_dpages_append(dpages, dentry, GFP_ATOMIC);
 	spin_unlock(&dentry->d_lock);
@@ -197,13 +197,13 @@ int au_dcsub_pages_rev(struct au_dcsub_pages *dpages, struct dentry *dentry,
 		goto out;
 
 	/*
-	 * vfsmount_lock is unnecessary since this is a traverse in a single
+	 * RCU for vfsmount is unnecessary since this is a traverse in a single
 	 * mount
 	 */
 	while (!IS_ROOT(dentry)) {
 		dentry = dentry->d_parent; /* rename_lock is locked */
 		spin_lock(&dentry->d_lock);
-		if (dentry->d_count
+		if (d_count(dentry)
 		    && (!test || test(dentry, arg)))
 			err = au_dpages_append(dpages, dentry, GFP_ATOMIC);
 		spin_unlock(&dentry->d_lock);

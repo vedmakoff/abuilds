@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -258,7 +257,7 @@ static int do_whplink(struct qstr *tgt, struct dentry *h_parent,
 	struct path h_path = {
 		.mnt = au_br_mnt(br)
 	};
-	struct inode *h_dir;
+	struct inode *h_dir, *delegated;
 
 	h_dir = h_parent->d_inode;
 	mutex_lock_nested(&h_dir->i_mutex, AuLsc_I_CHILD2);
@@ -273,14 +272,27 @@ again:
 	/* todo: is it really safe? */
 	if (h_path.dentry->d_inode
 	    && h_path.dentry->d_inode != h_dentry->d_inode) {
-		err = vfsub_unlink(h_dir, &h_path, /*force*/0);
+		delegated = NULL;
+		err = vfsub_unlink(h_dir, &h_path, &delegated, /*force*/0);
+		if (unlikely(err == -EWOULDBLOCK)) {
+			pr_warn("cannot retry for NFSv4 delegation"
+				" for an internal unlink\n");
+			iput(delegated);
+		}
 		dput(h_path.dentry);
 		h_path.dentry = NULL;
 		if (!err)
 			goto again;
 	}
-	if (!err && !h_path.dentry->d_inode)
-		err = vfsub_link(h_dentry, h_dir, &h_path);
+	if (!err && !h_path.dentry->d_inode) {
+		delegated = NULL;
+		err = vfsub_link(h_dentry, h_dir, &h_path, &delegated);
+		if (unlikely(err == -EWOULDBLOCK)) {
+			pr_warn("cannot retry for NFSv4 delegation"
+				" for an internal link\n");
+			iput(delegated);
+		}
+	}
 	dput(h_path.dentry);
 
 out:

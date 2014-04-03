@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -31,6 +30,8 @@ static void sysrq_sb(struct super_block *sb)
 	char *plevel;
 	struct au_sbinfo *sbinfo;
 	struct file *file;
+	struct au_sphlhead *files;
+	struct au_finfo *finfo;
 
 	plevel = au_plevel;
 	au_plevel = KERN_WARNING;
@@ -86,14 +87,16 @@ static void sysrq_sb(struct super_block *sb)
 	}
 #endif
 	pr("files\n");
-	lg_global_lock(&files_lglock);
-	do_file_list_for_each_entry(sb, file) {
+	files = &au_sbi(sb)->si_files;
+	spin_lock(&files->spin);
+	hlist_for_each_entry(finfo, &files->head, fi_hlist) {
 		umode_t mode;
+		file = finfo->fi_file;
 		mode = file_inode(file)->i_mode;
 		if (!special_file(mode) || au_special_file(mode))
 			au_dpri_file(file);
-	} while_file_list_for_each_entry;
-	lg_global_unlock(&files_lglock);
+	}
+	spin_unlock(&files->spin);
 	pr("done\n");
 
 #undef pr

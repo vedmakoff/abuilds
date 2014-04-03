@@ -1,5 +1,5 @@
 
-# Copyright (C) 2005-2013 Junjiro R. Okajima
+# Copyright (C) 2005-2014 Junjiro R. Okajima
 # 
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
 # GNU General Public License for more details.
 # 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 Basic Aufs Internal Structure
 
@@ -224,3 +223,20 @@ When user modifies a file on a readonly branch, aufs operate "copy-up"
 internally and makes change to the new file on the upper writable branch.
 When the trigger systemcall does not update the timestamps of the parent
 dir, aufs reverts it after copy-up.
+
+
+Move-down (aufs3.9 and later)
+----------------------------------------------------------------------
+"Copy-up" is one of the essential feature in aufs. It copies a file from
+the lower readonly branch to the upper writable branch when a user
+changes something about the file.
+"Move-down" is an opposite action of copy-up. Basically this action is
+ran manually instead of automatically and internally.
+
+Sometimes users want to move-down a file from the upper writable branch
+to the lower readonly or writable branch. For instance,
+- the free space of the upper writable branch is going to run out.
+- create a new intermediate branch between the upper and lower branch.
+- etc.
+
+For this purpose, use "aumvdown" command in aufs-util.git.

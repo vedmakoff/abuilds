@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -62,6 +61,9 @@ struct au_finfo {
 		atomic_t			fi_mmapped;
 	};
 	struct au_fidir		*fi_hdir;	/* for dir only */
+
+	struct hlist_node	fi_hlist;
+	struct file		*fi_file;	/* very ugly */
 } ____cacheline_aligned_in_smp;
 
 /* ---------------------------------------------------------------------- */
@@ -70,7 +72,7 @@ struct au_finfo {
 extern const struct address_space_operations aufs_aop;
 unsigned int au_file_roflags(unsigned int flags);
 struct file *au_h_open(struct dentry *dentry, aufs_bindex_t bindex, int flags,
-		       struct file *file);
+		       struct file *file, int force_wr);
 int au_do_open(struct file *file, int (*open)(struct file *file, int flags),
 	       struct au_fidir *fidir);
 int au_reopen_nondir(struct file *file);
@@ -88,12 +90,14 @@ unsigned int aufs_poll(struct file *file, poll_table *wait);
 
 #ifdef CONFIG_AUFS_BR_HFSPLUS
 /* hfsplus.c */
-struct file *au_h_open_pre(struct dentry *dentry, aufs_bindex_t bindex);
+struct file *au_h_open_pre(struct dentry *dentry, aufs_bindex_t bindex,
+			   int force_wr);
 void au_h_open_post(struct dentry *dentry, aufs_bindex_t bindex,
 		    struct file *h_file);
 #else
 static inline
-struct file *au_h_open_pre(struct dentry *dentry, aufs_bindex_t bindex)
+struct file *au_h_open_pre(struct dentry *dentry, aufs_bindex_t bindex,
+			   int force_wr)
 {
 	return NULL;
 }
@@ -143,6 +147,8 @@ long aufs_ioctl_nondir(struct file *file, unsigned int cmd, unsigned long arg);
 #ifdef CONFIG_COMPAT
 long aufs_compat_ioctl_dir(struct file *file, unsigned int cmd,
 			   unsigned long arg);
+long aufs_compat_ioctl_nondir(struct file *file, unsigned int cmd,
+			      unsigned long arg);
 #endif
 
 /* ---------------------------------------------------------------------- */
@@ -294,13 +300,11 @@ static inline void au_vm_file_reset(struct vm_area_struct *vma,
 static inline void au_vm_prfile_set(struct vm_area_struct *vma,
 				    struct file *file)
 {
-#ifdef CONFIG_AUFS_PROC_MAP
 	get_file(file);
 	vma->vm_prfile = file;
 #ifndef CONFIG_MMU
 	get_file(file);
 	vma->vm_region->vm_prfile = file;
-#endif
 #endif
 }
 

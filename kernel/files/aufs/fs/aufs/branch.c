@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -365,7 +364,7 @@ static int au_wbr_init(struct au_branch *br, struct super_block *sb,
 
 	/*
 	 * a limit for rmdir/rename a dir
-	 * cf. AUFS_MAX_NAMELEN in include/linux/aufs_type.h
+	 * cf. AUFS_MAX_NAMELEN in include/uapi/linux/aufs_type.h
 	 */
 	err = vfs_statfs(&br->br_path, &kst);
 	if (unlikely(err))
@@ -374,8 +373,8 @@ static int au_wbr_init(struct au_branch *br, struct super_block *sb,
 	if (kst.f_namelen >= NAME_MAX)
 		err = au_br_init_wh(sb, br, perm);
 	else
-		pr_err("%.*s(%s), unsupported namelen %ld\n",
-		       AuDLNPair(au_br_dentry(br)),
+		pr_err("%pd(%s), unsupported namelen %ld\n",
+		       au_br_dentry(br),
 		       au_sbtype(au_br_dentry(br)->d_sb), kst.f_namelen);
 
 out:
@@ -399,7 +398,6 @@ static int au_br_init(struct au_branch *br, struct super_block *sb,
 	spin_lock_init(&br->br_dykey_lock);
 	memset(br->br_dykey, 0, sizeof(br->br_dykey));
 	atomic_set(&br->br_count, 0);
-	br->br_xino_upper = AUFS_XINO_TRUNC_INIT;
 	atomic_set(&br->br_xino_running, 0);
 	br->br_id = au_new_br_id(sb);
 	AuDebugOn(br->br_id < 0);
@@ -611,7 +609,7 @@ static int test_dentry_busy(struct dentry *root, aufs_bindex_t bindex,
 		ndentry = dpage->ndentry;
 		for (j = 0; !err && j < ndentry; j++) {
 			d = dpage->dentries[j];
-			AuDebugOn(!d->d_count);
+			AuDebugOn(!d_count(d));
 			if (!au_digen_test(d, sigen)) {
 				di_read_lock_child(d, AuLock_IR);
 				if (unlikely(au_dbrange_test(d))) {
@@ -641,7 +639,7 @@ static int test_dentry_busy(struct dentry *root, aufs_bindex_t bindex,
 			    && au_h_dptr(d, bindex)
 			    && au_test_dbusy(d, bstart, bend)) {
 				err = -EBUSY;
-				AuVerbose(verbose, "busy %.*s\n", AuDLNPair(d));
+				AuVerbose(verbose, "busy %pd\n", d);
 				AuDbgDentry(d);
 			}
 			di_read_unlock(d, AuLock_IR);
@@ -1005,22 +1003,25 @@ static unsigned long long au_farray_cb(void *a,
 {
 	unsigned long long n;
 	struct file **p, *f;
+	struct au_sphlhead *files;
+	struct au_finfo *finfo;
 	struct super_block *sb = arg;
 
 	n = 0;
 	p = a;
-	lg_global_lock(&files_lglock);
-	do_file_list_for_each_entry(sb, f) {
-		if (au_fi(f)
-		    && file_count(f)
+	files = &au_sbi(sb)->si_files;
+	spin_lock(&files->spin);
+	hlist_for_each_entry(finfo, &files->head, fi_hlist) {
+		f = finfo->fi_file;
+		if (file_count(f)
 		    && !special_file(file_inode(f)->i_mode)) {
 			get_file(f);
 			*p++ = f;
 			n++;
 			AuDebugOn(n > max);
 		}
-	} while_file_list_for_each_entry;
-	lg_global_unlock(&files_lglock);
+	}
+	spin_unlock(&files->spin);
 
 	return n;
 }
@@ -1066,12 +1067,11 @@ static int au_br_mod_files_ro(struct super_block *sb, aufs_bindex_t bindex)
 	for (ull = 0; ull < max; ull++) {
 		file = array[ull];
 
-		/* AuDbg("%.*s\n", AuDLNPair(file->f_dentry)); */
+		/* AuDbg("%pD\n", file); */
 		fi_read_lock(file);
 		if (unlikely(au_test_mmapped(file))) {
 			err = -EBUSY;
-			AuVerbose(verbose, "mmapped %.*s\n",
-				  AuDLNPair(file->f_dentry));
+			AuVerbose(verbose, "mmapped %pD\n", file);
 			AuDbgFile(file);
 			FiMustNoWaiters(file);
 			fi_read_unlock(file);
@@ -1106,7 +1106,13 @@ static int au_br_mod_files_ro(struct super_block *sb, aufs_bindex_t bindex)
 			continue;
 
 		/* todo: already flushed? */
-		/* cf. fs/super.c:mark_files_ro() */
+		/*
+		 * fs/super.c:mark_files_ro() is gone, but aufs keeps its
+		 * approach which resets f_mode and calls mnt_drop_write() and
+		 * file_release_write() for each file, because the branch
+		 * attribute in aufs world is totally different from the native
+		 * fs rw/ro mode.
+		*/
 		/* fi_read_lock(file); */
 		hfile = &au_fi(file)->fi_htop;
 		hf = hfile->hf_file;

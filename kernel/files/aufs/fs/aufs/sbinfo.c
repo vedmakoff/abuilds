@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -91,6 +90,7 @@ int au_si_alloc(struct super_block *sb)
 	atomic_long_set(&sbinfo->si_nfiles, 0);
 
 	sbinfo->si_bend = -1;
+	sbinfo->si_last_br_id = AUFS_BRANCH_MAX / 2;
 
 	sbinfo->si_wbr_copyup = AuWbrCopyup_Def;
 	sbinfo->si_wbr_create = AuWbrCreate_Def;
@@ -99,6 +99,9 @@ int au_si_alloc(struct super_block *sb)
 
 	sbinfo->si_mntflags = au_opts_plink(AuOpt_Def);
 
+	sbinfo->si_xino_jiffy = jiffies;
+	sbinfo->si_xino_expire
+		= msecs_to_jiffies(AUFS_XINO_DEF_SEC * MSEC_PER_SEC);
 	mutex_init(&sbinfo->si_xib_mtx);
 	sbinfo->si_xino_brid = -1;
 	/* leave si_xib_last_pindex and si_xib_next_bit */
@@ -112,6 +115,8 @@ int au_si_alloc(struct super_block *sb)
 		au_sphl_init(sbinfo->si_plink + i);
 	init_waitqueue_head(&sbinfo->si_plink_wq);
 	spin_lock_init(&sbinfo->si_plink_maint_lock);
+
+	au_sphl_init(&sbinfo->si_files);
 
 	/* leave other members for sysaufs and si_mnt. */
 	sbinfo->si_sb = sb;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -23,9 +22,39 @@
 #include <linux/vt_kern.h>
 #include "aufs.h"
 
-int aufs_debug;
+/* Returns 0, or -errno.  arg is in kp->arg. */
+static int param_atomic_t_set(const char *val, const struct kernel_param *kp)
+{
+	int err, n;
+
+	err = kstrtoint(val, 0, &n);
+	if (!err) {
+		if (n > 0)
+			au_debug_on();
+		else
+			au_debug_off();
+	}
+	return err;
+}
+
+/* Returns length written or -errno.  Buffer is 4k (ie. be short!) */
+static int param_atomic_t_get(char *buffer, const struct kernel_param *kp)
+{
+	atomic_t *a;
+
+	a = kp->arg;
+	return sprintf(buffer, "%d", atomic_read(a));
+}
+
+static struct kernel_param_ops param_ops_atomic_t = {
+	.set = param_atomic_t_set,
+	.get = param_atomic_t_get
+	/* void (*free)(void *arg) */
+};
+
+atomic_t aufs_debug = ATOMIC_INIT(0);
 MODULE_PARM_DESC(debug, "debug print");
-module_param_named(debug, aufs_debug, int, S_IRUGO | S_IWUSR | S_IWGRP);
+module_param_named(debug, aufs_debug, atomic_t, S_IRUGO | S_IWUSR | S_IWGRP);
 
 char *au_plevel = KERN_DEBUG;
 #define dpri(fmt, ...) do {					\
@@ -87,7 +116,7 @@ static int do_pri_inode(aufs_bindex_t bindex, struct inode *inode, int hn,
 		return -1;
 	}
 
-	/* the type of i_blocks depends upon CONFIG_LSF */
+	/* the type of i_blocks depends upon CONFIG_LBDAF */
 	BUILD_BUG_ON(sizeof(inode->i_blocks) != sizeof(unsigned long)
 		     && sizeof(inode->i_blocks) != sizeof(u64));
 	if (wh) {
@@ -155,11 +184,11 @@ static int do_pri_dentry(aufs_bindex_t bindex, struct dentry *dentry)
 	}
 	/* do not call dget_parent() here */
 	/* note: access d_xxx without d_lock */
-	dpri("d%d: %.*s?/%.*s, %s, cnt %d, flags 0x%x\n",
-	     bindex,
-	     AuDLNPair(dentry->d_parent), AuDLNPair(dentry),
+	dpri("d%d: %p, %pd2?, %s, cnt %d, flags 0x%x, %shashed\n",
+	     bindex, dentry, dentry,
 	     dentry->d_sb ? au_sbtype(dentry->d_sb) : "??",
-	     dentry->d_count, dentry->d_flags);
+	     d_count(dentry), dentry->d_flags,
+	     d_unhashed(dentry) ? "un" : "");
 	hn = -1;
 	if (bindex >= 0 && dentry->d_inode && au_test_aufs(dentry->d_sb)) {
 		struct au_iinfo *iinfo = au_ii(dentry->d_inode);
@@ -378,14 +407,11 @@ void __au_dbg_verify_dinode(struct dentry *dentry, const char *func, int line)
 			continue;
 		h_inode = au_h_iptr(inode, bindex);
 		if (unlikely(h_inode != h_dentry->d_inode)) {
-			int old = au_debug_test();
-			if (!old)
-				au_debug(1);
+			au_debug_on();
 			AuDbg("b%d, %s:%d\n", bindex, func, line);
 			AuDbgDentry(dentry);
 			AuDbgInode(inode);
-			if (!old)
-				au_debug(0);
+			au_debug_off();
 			BUG();
 		}
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -364,6 +363,8 @@ static match_table_t au_wbr_create_policy = {
 	{AuWbrCreate_MFSRRV, "mfsrr:%d:%d"},
 	{AuWbrCreate_PMFS, "pmfs"},
 	{AuWbrCreate_PMFSV, "pmfs:%d"},
+	{AuWbrCreate_PMFSRR, "pmfsrr:%d"},
+	{AuWbrCreate_PMFSRRV, "pmfsrr:%d:%d"},
 
 	{-1, NULL}
 };
@@ -433,6 +434,7 @@ au_wbr_create_val(char *str, struct au_opt_wbr_create *create)
 	create->wbr_create = err;
 	switch (err) {
 	case AuWbrCreate_MFSRRV:
+	case AuWbrCreate_PMFSRRV:
 		e = au_wbr_mfs_wmark(&args[0], str, create);
 		if (!e)
 			e = au_wbr_mfs_sec(&args[1], str, create);
@@ -440,6 +442,7 @@ au_wbr_create_val(char *str, struct au_opt_wbr_create *create)
 			err = e;
 		break;
 	case AuWbrCreate_MFSRR:
+	case AuWbrCreate_PMFSRR:
 		e = au_wbr_mfs_wmark(&args[0], str, create);
 		if (unlikely(e)) {
 			err = e;
@@ -559,9 +562,7 @@ static void dump_opts(struct au_opts *opts)
 			break;
 		case Opt_xino:
 			u.xino = &opt->xino;
-			AuDbg("xino {%s %.*s}\n",
-				  u.xino->path,
-				  AuDLNPair(u.xino->file->f_dentry));
+			AuDbg("xino {%s %pD}\n", u.xino->path, u.xino->file);
 			break;
 		case Opt_trunc_xino:
 			AuLabel(trunc_xino);
@@ -656,6 +657,7 @@ static void dump_opts(struct au_opts *opts)
 					  u.create->mfsrr_watermark);
 				break;
 			case AuWbrCreate_MFSRRV:
+			case AuWbrCreate_PMFSRRV:
 				AuDbg("%llu watermark, %d sec\n",
 					  u.create->mfsrr_watermark,
 					  u.create->mfs_second);
@@ -1195,6 +1197,8 @@ static int au_opt_wbr_create(struct super_block *sb,
 	switch (create->wbr_create) {
 	case AuWbrCreate_MFSRRV:
 	case AuWbrCreate_MFSRR:
+	case AuWbrCreate_PMFSRR:
+	case AuWbrCreate_PMFSRRV:
 		sbinfo->si_wbr_mfs.mfsrr_watermark = create->mfsrr_watermark;
 		/*FALLTHROUGH*/
 	case AuWbrCreate_MFS:
@@ -1380,7 +1384,7 @@ static int au_opt_br(struct super_block *sb, struct au_opt *opt,
 		goto add;
 	case Opt_prepend:
 		opt->add.bindex = 0;
-	add:
+	add: /* indented label */
 	case Opt_add:
 		err = au_br_add(sb, &opt->add,
 				au_ftest_opts(opts->flags, REMOUNT));

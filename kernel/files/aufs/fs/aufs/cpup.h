@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -40,11 +39,26 @@ void au_cpup_attr_all(struct inode *inode, int force);
 
 /* ---------------------------------------------------------------------- */
 
+struct au_cp_generic {
+	struct dentry	*dentry;
+	aufs_bindex_t	bdst, bsrc;
+	loff_t		len;
+	struct au_pin	*pin;
+	unsigned int	flags;
+};
+
 /* cpup flags */
-#define AuCpup_DTIME	1		/* do dtime_store/revert */
-#define AuCpup_KEEPLINO	(1 << 1)	/* do not clear the lower xino,
-					   for link(2) */
-#define AuCpup_RENAME	(1 << 2)	/* rename after cpup */
+#define AuCpup_DTIME		1		/* do dtime_store/revert */
+#define AuCpup_KEEPLINO		(1 << 1)	/* do not clear the lower xino,
+						   for link(2) */
+#define AuCpup_RENAME		(1 << 2)	/* rename after cpup */
+#define AuCpup_HOPEN		(1 << 3)	/* call h_open_pre/post() in
+						   cpup */
+#define AuCpup_OVERWRITE	(1 << 4)	/* allow overwriting the
+						   existing entry */
+#define AuCpup_RWDST		(1 << 5)	/* force write target even if
+						   the branch is marked as RO */
+
 #define au_ftest_cpup(flags, name)	((flags) & AuCpup_##name)
 #define au_fset_cpup(flags, name) \
 	do { (flags) |= AuCpup_##name; } while (0)
@@ -52,13 +66,9 @@ void au_cpup_attr_all(struct inode *inode, int force);
 	do { (flags) &= ~AuCpup_##name; } while (0)
 
 int au_copy_file(struct file *dst, struct file *src, loff_t len);
-int au_sio_cpup_single(struct dentry *dentry, aufs_bindex_t bdst,
-		       aufs_bindex_t bsrc, loff_t len, unsigned int flags,
-		       struct dentry *dst_parent, struct au_pin *pin);
-int au_sio_cpup_simple(struct dentry *dentry, aufs_bindex_t bdst, loff_t len,
-		       unsigned int flags, struct au_pin *pin);
-int au_sio_cpup_wh(struct dentry *dentry, aufs_bindex_t bdst, loff_t len,
-		   struct file *file, struct au_pin *pin);
+int au_sio_cpup_simple(struct au_cp_generic *cpg);
+int au_sio_cpdown_simple(struct au_cp_generic *cpg);
+int au_sio_cpup_wh(struct au_cp_generic *cpg, struct file *file);
 
 int au_cp_dirs(struct dentry *dentry, aufs_bindex_t bdst,
 	       int (*cp)(struct dentry *dentry, aufs_bindex_t bdst,

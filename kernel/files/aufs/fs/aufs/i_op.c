@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -260,10 +259,12 @@ static int au_wr_dir_cpup(struct dentry *dentry, struct dentry *parent,
 
 	err = 0;
 	if (!au_h_dptr(parent, bcpup)) {
-		if (bstart < bcpup)
+		if (bstart > bcpup)
+			err = au_cpup_dirs(dentry, bcpup);
+		else if (bstart < bcpup)
 			err = au_cpdown_dirs(dentry, bcpup);
 		else
-			err = au_cpup_dirs(dentry, bcpup);
+			BUG();
 	}
 	if (!err && add_entry) {
 		h_parent = au_h_dptr(parent, bcpup);
@@ -300,6 +301,7 @@ int au_wr_dir(struct dentry *dentry, struct dentry *src_dentry,
 	      struct au_wr_dir_args *args)
 {
 	int err;
+	unsigned int flags;
 	aufs_bindex_t bcpup, bstart, src_bstart;
 	const unsigned char add_entry
 		= au_ftest_wrdir(args->flags, ADD_ENTRY)
@@ -319,8 +321,10 @@ int au_wr_dir(struct dentry *dentry, struct dentry *src_dentry,
 			if (src_bstart < bstart)
 				bcpup = src_bstart;
 		} else if (add_entry) {
-			err = AuWbrCreate(sbinfo, dentry,
-					  au_ftest_wrdir(args->flags, ISDIR));
+			flags = 0;
+			if (au_ftest_wrdir(args->flags, ISDIR))
+				au_fset_wbr(flags, DIR);
+			err = AuWbrCreate(sbinfo, dentry, flags);
 			bcpup = err;
 		}
 
@@ -630,7 +634,6 @@ static int au_pin_and_icpup(struct dentry *dentry, struct iattr *ia,
 	aufs_bindex_t bstart, ibstart;
 	struct dentry *hi_wh, *parent;
 	struct inode *inode;
-	struct file *h_file;
 	struct au_wr_dir_args wr_dir_args = {
 		.force_btgt	= -1,
 		.flags		= 0
@@ -672,13 +675,18 @@ static int au_pin_and_icpup(struct dentry *dentry, struct iattr *ia,
 		sz = ia->ia_size;
 	mutex_unlock(&a->h_inode->i_mutex);
 
-	h_file = NULL;
 	hi_wh = NULL;
 	if (au_ftest_icpup(a->flags, DID_CPUP) && d_unlinked(dentry)) {
 		hi_wh = au_hi_wh(inode, a->btgt);
 		if (!hi_wh) {
-			err = au_sio_cpup_wh(dentry, a->btgt, sz, /*file*/NULL,
-					     &a->pin);
+			struct au_cp_generic cpg = {
+				.dentry	= dentry,
+				.bdst	= a->btgt,
+				.bsrc	= -1,
+				.len	= sz,
+				.pin	= &a->pin
+			};
+			err = au_sio_cpup_wh(&cpg, /*file*/NULL);
 			if (unlikely(err))
 				goto out_unlock;
 			hi_wh = au_hi_wh(inode, a->btgt);
@@ -696,14 +704,15 @@ static int au_pin_and_icpup(struct dentry *dentry, struct iattr *ia,
 		goto out; /* success */
 
 	if (!d_unhashed(dentry)) {
-		h_file = au_h_open_pre(dentry, bstart);
-		if (IS_ERR(h_file))
-			err = PTR_ERR(h_file);
-		else {
-			err = au_sio_cpup_simple(dentry, a->btgt, sz,
-						 AuCpup_DTIME, &a->pin);
-			au_h_open_post(dentry, bstart, h_file);
-		}
+		struct au_cp_generic cpg = {
+			.dentry	= dentry,
+			.bdst	= a->btgt,
+			.bsrc	= bstart,
+			.len	= sz,
+			.pin	= &a->pin,
+			.flags	= AuCpup_DTIME | AuCpup_HOPEN
+		};
+		err = au_sio_cpup_simple(&cpg);
 		if (!err)
 			a->h_path.dentry = au_h_dptr(dentry, a->btgt);
 	} else if (!hi_wh)
@@ -730,7 +739,7 @@ out:
 static int aufs_setattr(struct dentry *dentry, struct iattr *ia)
 {
 	int err;
-	struct inode *inode;
+	struct inode *inode, *delegated;
 	struct super_block *sb;
 	struct file *file;
 	struct au_icpup_args *a;
@@ -810,8 +819,18 @@ static int aufs_setattr(struct dentry *dentry, struct iattr *ia)
 		mutex_unlock(&a->h_inode->i_mutex);
 		err = vfsub_trunc(&a->h_path, ia->ia_size, ia->ia_valid, f);
 		mutex_lock_nested(&a->h_inode->i_mutex, AuLsc_I_CHILD);
-	} else
-		err = vfsub_notify_change(&a->h_path, ia);
+	} else {
+		delegated = NULL;
+		while (1) {
+			err = vfsub_notify_change(&a->h_path, ia, &delegated);
+			if (delegated) {
+				err = break_deleg_wait(&delegated);
+				if (!err)
+					continue;
+			}
+			break;
+		}
+	}
 	if (!err)
 		au_cpup_attr_changeable(inode);
 
@@ -854,7 +873,7 @@ static void au_refresh_iattr(struct inode *inode, struct kstat *st,
 		n = inode->i_nlink;
 		n -= nlink;
 		n += st->nlink;
-		smp_mb();
+		smp_mb(); /* for i_nlink */
 		/* 0 can happen */
 		set_nlink(inode, n);
 	}

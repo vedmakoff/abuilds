@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -358,8 +357,7 @@ static int hn_job(struct hn_job_args *a)
 	if (au_ftest_hnjob(a->flags, MNTPNT)
 	    && a->dentry
 	    && d_mountpoint(a->dentry))
-		pr_warn("mount-point %.*s is removed or renamed\n",
-			AuDLNPair(a->dentry));
+		pr_warn("mount-point %pd is removed or renamed\n", a->dentry);
 
 	return 0;
 }
@@ -379,7 +377,7 @@ static struct dentry *lookup_wlock_by_name(char *name, unsigned int nlen,
 	dentry = NULL;
 	spin_lock(&parent->d_lock);
 	list_for_each_entry(d, &parent->d_subdirs, d_u.d_child) {
-		/* AuDbg("%.*s\n", AuDLNPair(d)); */
+		/* AuDbg("%pd\n", d); */
 		spin_lock_nested(&d->d_lock, DENTRY_D_LOCK_NESTED);
 		dname = &d->d_name;
 		if (dname->len != nlen || memcmp(dname->name, name, nlen))
@@ -388,13 +386,13 @@ static struct dentry *lookup_wlock_by_name(char *name, unsigned int nlen,
 			au_digen_dec(d);
 		else
 			goto cont_unlock;
-		if (d->d_count) {
+		if (d_count(d)) {
 			dentry = dget_dlock(d);
 			spin_unlock(&d->d_lock);
 			break;
 		}
 
-	cont_unlock:
+cont_unlock:
 		spin_unlock(&d->d_lock);
 	}
 	spin_unlock(&parent->d_lock);

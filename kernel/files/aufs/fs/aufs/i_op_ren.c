@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -112,29 +111,36 @@ static void au_ren_rev_diropq(int err, struct au_ren_args *a)
 	au_hn_imtx_unlock(a->src_hinode);
 	au_set_dbdiropq(a->src_dentry, a->src_bdiropq);
 	if (rerr)
-		RevertFailure("remove diropq %.*s", AuDLNPair(a->src_dentry));
+		RevertFailure("remove diropq %pd", a->src_dentry);
 }
 
 static void au_ren_rev_rename(int err, struct au_ren_args *a)
 {
 	int rerr;
+	struct inode *delegated;
 
 	a->h_path.dentry = vfsub_lkup_one(&a->src_dentry->d_name,
 					  a->src_h_parent);
 	rerr = PTR_ERR(a->h_path.dentry);
 	if (IS_ERR(a->h_path.dentry)) {
-		RevertFailure("lkup one %.*s", AuDLNPair(a->src_dentry));
+		RevertFailure("lkup one %pd", a->src_dentry);
 		return;
 	}
 
+	delegated = NULL;
 	rerr = vfsub_rename(a->dst_h_dir,
 			    au_h_dptr(a->src_dentry, a->btgt),
-			    a->src_h_dir, &a->h_path);
+			    a->src_h_dir, &a->h_path, &delegated);
+	if (unlikely(rerr == -EWOULDBLOCK)) {
+		pr_warn("cannot retry for NFSv4 delegation"
+			" for an internal rename\n");
+		iput(delegated);
+	}
 	d_drop(a->h_path.dentry);
 	dput(a->h_path.dentry);
 	/* au_set_h_dptr(a->src_dentry, a->btgt, NULL); */
 	if (rerr)
-		RevertFailure("rename %.*s", AuDLNPair(a->src_dentry));
+		RevertFailure("rename %pd", a->src_dentry);
 }
 
 static void au_ren_rev_cpup(int err, struct au_ren_args *a)
@@ -142,22 +148,25 @@ static void au_ren_rev_cpup(int err, struct au_ren_args *a)
 	int rerr;
 
 	a->h_path.dentry = a->dst_h_dentry;
-	rerr = vfsub_unlink(a->dst_h_dir, &a->h_path, /*force*/0);
+	/* no delegation since it is just created */
+	rerr = vfsub_unlink(a->dst_h_dir, &a->h_path, /*delegated*/NULL,
+			    /*force*/0);
 	au_set_h_dptr(a->src_dentry, a->btgt, NULL);
 	au_set_dbstart(a->src_dentry, a->src_bstart);
 	if (rerr)
-		RevertFailure("unlink %.*s", AuDLNPair(a->dst_h_dentry));
+		RevertFailure("unlink %pd", a->dst_h_dentry);
 }
 
 static void au_ren_rev_whtmp(int err, struct au_ren_args *a)
 {
 	int rerr;
+	struct inode *delegated;
 
 	a->h_path.dentry = vfsub_lkup_one(&a->dst_dentry->d_name,
 					  a->dst_h_parent);
 	rerr = PTR_ERR(a->h_path.dentry);
 	if (IS_ERR(a->h_path.dentry)) {
-		RevertFailure("lkup one %.*s", AuDLNPair(a->dst_dentry));
+		RevertFailure("lkup one %pd", a->dst_dentry);
 		return;
 	}
 	if (a->h_path.dentry->d_inode) {
@@ -166,13 +175,20 @@ static void au_ren_rev_whtmp(int err, struct au_ren_args *a)
 		return;
 	}
 
-	rerr = vfsub_rename(a->dst_h_dir, a->h_dst, a->dst_h_dir, &a->h_path);
+	delegated = NULL;
+	rerr = vfsub_rename(a->dst_h_dir, a->h_dst, a->dst_h_dir, &a->h_path,
+			    &delegated);
+	if (unlikely(rerr == -EWOULDBLOCK)) {
+		pr_warn("cannot retry for NFSv4 delegation"
+			" for an internal rename\n");
+		iput(delegated);
+	}
 	d_drop(a->h_path.dentry);
 	dput(a->h_path.dentry);
 	if (!rerr)
 		au_set_h_dptr(a->dst_dentry, a->btgt, dget(a->h_dst));
 	else
-		RevertFailure("rename %.*s", AuDLNPair(a->h_dst));
+		RevertFailure("rename %pd", a->h_dst);
 }
 
 static void au_ren_rev_whsrc(int err, struct au_ren_args *a)
@@ -183,7 +199,7 @@ static void au_ren_rev_whsrc(int err, struct au_ren_args *a)
 	rerr = au_wh_unlink_dentry(a->src_h_dir, &a->h_path, a->src_dentry);
 	au_set_dbwh(a->src_dentry, a->src_bwh);
 	if (rerr)
-		RevertFailure("unlink %.*s", AuDLNPair(a->src_wh_dentry));
+		RevertFailure("unlink %pd", a->src_wh_dentry);
 }
 #undef RevertFailure
 
@@ -198,6 +214,7 @@ static int au_ren_or_cpup(struct au_ren_args *a)
 {
 	int err;
 	struct dentry *d;
+	struct inode *delegated;
 
 	d = a->src_dentry;
 	if (au_dbstart(d) == a->btgt) {
@@ -206,35 +223,17 @@ static int au_ren_or_cpup(struct au_ren_args *a)
 		    && au_dbdiropq(d) == a->btgt)
 			au_fclr_ren(a->flags, DIROPQ);
 		AuDebugOn(au_dbstart(d) != a->btgt);
+		delegated = NULL;
 		err = vfsub_rename(a->src_h_dir, au_h_dptr(d, a->btgt),
-				   a->dst_h_dir, &a->h_path);
-	} else {
-#if 1
+				   a->dst_h_dir, &a->h_path, &delegated);
+		if (unlikely(err == -EWOULDBLOCK)) {
+			pr_warn("cannot retry for NFSv4 delegation"
+				" for an internal rename\n");
+			iput(delegated);
+		}
+	} else
 		BUG();
-#else
-		struct file *h_file;
 
-		au_fset_ren(a->flags, CPUP);
-		au_set_dbstart(d, a->btgt);
-		au_set_h_dptr(d, a->btgt, dget(a->dst_h_dentry));
-		h_file = au_h_open_pre(d, a->src_bstart);
-		if (IS_ERR(h_file))
-			err = PTR_ERR(h_file);
-		else {
-			err = au_sio_cpup_single(d, a->btgt, a->src_bstart, -1,
-						 !AuCpup_DTIME, a->dst_parent);
-			au_h_open_post(d, a->src_bstart, h_file);
-		}
-		if (!err) {
-			d = a->dst_dentry;
-			au_set_h_dptr(d, a->btgt, NULL);
-			au_update_dbstart(d);
-		} else {
-			au_set_h_dptr(d, a->btgt, NULL);
-			au_set_dbstart(d, a->src_bstart);
-		}
-#endif
-	}
 	if (!err && a->h_dst)
 		/* it will be set to dinfo later */
 		dget(a->h_dst);
@@ -255,8 +254,8 @@ static int au_ren_del_whtmp(struct au_ren_args *a)
 	    || au_test_fs_remote(a->h_dst->d_sb)) {
 		err = au_whtmp_rmdir(dir, a->btgt, a->h_dst, &a->whlist);
 		if (unlikely(err))
-			pr_warn("failed removing whtmp dir %.*s (%d), "
-				"ignored.\n", AuDLNPair(a->h_dst), err);
+			pr_warn("failed removing whtmp dir %pd (%d), "
+				"ignored.\n", a->h_dst, err);
 	} else {
 		au_nhash_wh_free(&a->thargs->whlist);
 		a->thargs->whlist = a->whlist;
@@ -341,25 +340,7 @@ static int do_rename(struct au_ren_args *a)
 		a->dst_h_dentry = au_h_dptr(d, a->btgt);
 	}
 
-	/* cpup src */
-	if (a->dst_h_dentry->d_inode && a->src_bstart != a->btgt) {
-#if 1
-		BUG();
-#else
-		struct file *h_file;
-
-		h_file = au_h_open_pre(a->src_dentry, a->src_bstart);
-		if (IS_ERR(h_file))
-			err = PTR_ERR(h_file);
-		else {
-			err = au_sio_cpup_simple(a->src_dentry, a->btgt, -1,
-						 !AuCpup_DTIME);
-			au_h_open_post(a->src_dentry, a->src_bstart, h_file);
-		}
-		if (unlikely(err))
-			goto out_whtmp;
-#endif
-	}
+	BUG_ON(a->dst_h_dentry->d_inode && a->src_bstart != a->btgt);
 
 	/* rename by vfs_rename or cpup */
 	d = a->dst_dentry;
@@ -847,7 +828,7 @@ int aufs_rename(struct inode *_src_dir, struct dentry *_src_dentry,
 	/* reduce stack space */
 	struct au_ren_args *a;
 
-	AuDbg("%.*s, %.*s\n", AuDLNPair(_src_dentry), AuDLNPair(_dst_dentry));
+	AuDbg("%pd, %pd\n", _src_dentry, _dst_dentry);
 	IMustLock(_src_dir);
 	IMustLock(_dst_dir);
 
@@ -961,26 +942,24 @@ int aufs_rename(struct inode *_src_dir, struct dentry *_src_dentry,
 
 	/* cpup src */
 	if (a->src_bstart != a->btgt) {
-		struct file *h_file;
 		struct au_pin pin;
 
 		err = au_pin(&pin, a->src_dentry, a->btgt,
 			     au_opt_udba(a->src_dentry->d_sb),
 			     AuPin_DI_LOCKED | AuPin_MNT_WRITE);
-		if (unlikely(err))
-			goto out_children;
-
-		AuDebugOn(au_dbstart(a->src_dentry) != a->src_bstart);
-		h_file = au_h_open_pre(a->src_dentry, a->src_bstart);
-		if (IS_ERR(h_file)) {
-			err = PTR_ERR(h_file);
-			h_file = NULL;
-		} else {
-			err = au_sio_cpup_simple(a->src_dentry, a->btgt, -1,
-						 AuCpup_DTIME, &pin);
-			au_h_open_post(a->src_dentry, a->src_bstart, h_file);
+		if (!err) {
+			struct au_cp_generic cpg = {
+				.dentry	= a->src_dentry,
+				.bdst	= a->btgt,
+				.bsrc	= a->src_bstart,
+				.len	= -1,
+				.pin	= &pin,
+				.flags	= AuCpup_DTIME | AuCpup_HOPEN
+			};
+			AuDebugOn(au_dbstart(a->src_dentry) != a->src_bstart);
+			err = au_sio_cpup_simple(&cpg);
+			au_unpin(&pin);
 		}
-		au_unpin(&pin);
 		if (unlikely(err))
 			goto out_children;
 		a->src_bstart = a->btgt;

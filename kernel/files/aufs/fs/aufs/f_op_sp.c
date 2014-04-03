@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -37,7 +36,7 @@ static struct au_sphlhead au_finfo_sp = {
 
 struct au_finfo_sp {
 	struct hlist_node	hlist;
-	struct file 		*file;
+	struct file		*file;
 	struct au_finfo		*finfo;
 };
 
@@ -247,29 +246,36 @@ static void au_init_fop_sp(struct file *file)
 static int au_cpup_sp(struct dentry *dentry)
 {
 	int err;
-	aufs_bindex_t bcpup;
 	struct au_pin pin;
 	struct au_wr_dir_args wr_dir_args = {
 		.force_btgt	= -1,
 		.flags		= 0
 	};
+	struct au_cp_generic cpg = {
+		.dentry	= dentry,
+		.bdst	= -1,
+		.bsrc	= -1,
+		.len	= -1,
+		.pin	= &pin,
+		.flags	= AuCpup_DTIME
+	};
 
-	AuDbg("%.*s\n", AuDLNPair(dentry));
+	AuDbg("%pd\n", dentry);
 
 	di_read_unlock(dentry, AuLock_IR);
 	di_write_lock_child(dentry);
 	err = au_wr_dir(dentry, /*src_dentry*/NULL, &wr_dir_args);
 	if (unlikely(err < 0))
 		goto out;
-	bcpup = err;
+	cpg.bdst = err;
 	err = 0;
-	if (bcpup == au_dbstart(dentry))
+	if (cpg.bdst == au_dbstart(dentry))
 		goto out; /* success */
 
-	err = au_pin(&pin, dentry, bcpup, au_opt_udba(dentry->d_sb),
+	err = au_pin(&pin, dentry, cpg.bdst, au_opt_udba(dentry->d_sb),
 		     AuPin_MNT_WRITE);
 	if (!err) {
-		err = au_sio_cpup_simple(dentry, bcpup, -1, AuCpup_DTIME, &pin);
+		err = au_sio_cpup_simple(&cpg);
 		au_unpin(&pin);
 	}
 
@@ -291,7 +297,7 @@ static int au_do_open_sp(struct file *file, int flags)
 		goto out;
 
 	dentry = file->f_dentry;
-	AuDbg("%.*s\n", AuDLNPair(dentry));
+	AuDbg("%pd\n", dentry);
 
 	/*
 	 * try copying-up.

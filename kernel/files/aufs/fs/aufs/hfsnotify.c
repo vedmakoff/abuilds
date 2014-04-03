@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -180,7 +179,7 @@ static int au_hfsn_handle_event(struct fsnotify_group *group,
 	h_dir = event->to_tell;
 	h_inode = event->inode;
 #ifdef AuDbgHnotify
-	au_debug(1);
+	au_debug_on();
 	if (1 || h_child_qstr.len != sizeof(AUFS_XINO_FNAME) - 1
 	    || strncmp(h_child_qstr.name, AUFS_XINO_FNAME, h_child_qstr.len)) {
 		AuDbg("i%lu, mask 0x%x %s, hcname %.*s, hi%lu\n",
@@ -188,7 +187,7 @@ static int au_hfsn_handle_event(struct fsnotify_group *group,
 		      AuLNPair(&h_child_qstr), h_inode ? h_inode->i_ino : 0);
 		/* WARN_ON(1); */
 	}
-	au_debug(0);
+	au_debug_off();
 #endif
 
 	AuDebugOn(!inode_mark);

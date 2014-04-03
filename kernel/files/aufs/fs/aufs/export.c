@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005-2013 Junjiro R. Okajima
+ * Copyright (C) 2005-2014 Junjiro R. Okajima
  *
  * This program, aufs is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -12,8 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /*
@@ -301,9 +300,9 @@ static struct vfsmount *au_mnt_get(struct super_block *sb)
 	};
 
 	get_fs_root(current->fs, &root);
-	br_read_lock(&vfsmount_lock);
+	rcu_read_lock();
 	err = iterate_mounts(au_compare_mnt, &args, root.mnt);
-	br_read_unlock(&vfsmount_lock);
+	rcu_read_unlock();
 	path_put(&root);
 	AuDebugOn(!err);
 	AuDebugOn(!args.mnt);
@@ -341,6 +340,7 @@ out:
 }
 
 struct find_name_by_ino {
+	struct dir_context ctx;
 	int called, found;
 	ino_t ino;
 	char *name;
@@ -348,10 +348,11 @@ struct find_name_by_ino {
 };
 
 static int
-find_name_by_ino(void *arg, const char *name, int namelen, loff_t offset,
-		 u64 ino, unsigned int d_type)
+find_name_by_ino(struct dir_context *ctx, const char *name, int namelen,
+		 loff_t offset, u64 ino, unsigned int d_type)
 {
-	struct find_name_by_ino *a = arg;
+	struct find_name_by_ino *a = container_of(ctx, struct find_name_by_ino,
+						  ctx);
 
 	a->called++;
 	if (a->ino != ino)
@@ -369,7 +370,11 @@ static struct dentry *au_lkup_by_ino(struct path *path, ino_t ino,
 	struct dentry *dentry, *parent;
 	struct file *file;
 	struct inode *dir;
-	struct find_name_by_ino arg;
+	struct find_name_by_ino arg = {
+		.ctx = {
+			.actor = au_diractor(find_name_by_ino)
+		}
+	};
 	int err;
 
 	parent = path->dentry;
@@ -389,7 +394,7 @@ static struct dentry *au_lkup_by_ino(struct path *path, ino_t ino,
 	do {
 		arg.called = 0;
 		/* smp_mb(); */
-		err = vfsub_readdir(file, find_name_by_ino, &arg);
+		err = vfsub_iterate_dir(file, &arg.ctx);
 	} while (!err && !arg.found && arg.called);
 	dentry = ERR_PTR(err);
 	if (unlikely(err))
