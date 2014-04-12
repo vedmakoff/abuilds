@@ -16,7 +16,6 @@ shortdesc="CoverGloobus allows you to see at a glance your currently playing son
 #source=("bzr:lp:covergloobus")
 source=("bzr:lp:${pkgname}")
 
-
 patch_opts=("")
 
 #----------------------------- AgiliaLinux vars --------------------------------------

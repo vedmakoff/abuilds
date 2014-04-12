@@ -1,5 +1,5 @@
 pkgname=acl
-pkgver=2.2.51
+pkgver=2.2.52
 pkgbuild=1
 arch=("auto")
 

@@ -1,6 +1,6 @@
 pkgname=mozilla-firefox
 
-pkgver=27.0.1
+pkgver=28.0
 _pkgver=${pkgver}
 
 pkgbuild=1
@@ -72,11 +72,6 @@ after_build() {
 			${pkgdir}/usr/share/icons/hicolor/$i/apps/firefox.png || exit 1
 	done
 
-
-	#mkdir -p ${startdir}/xpi
-	#cd ${startdir}/xpi
-
-	#install -dm755 ${pkgdir}/usr/lib${LIBDIRSUFFIX}/firefox-${pkgver}/chrome
 	_langs="ru uk"
 	for _lang in ${_langs}
 	do

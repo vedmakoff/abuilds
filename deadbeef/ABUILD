@@ -1,13 +1,14 @@
 pkgname=deadbeef
-pkgver=0.5.6
-pkgbuild=2
+pkgver=0.6.0
+pkgbuild=1
 arch=('auto')
 
 shortdesc="DeaDBeeF - Ultimate Music Player For GNU/Linux"
 
-
 source=("http://downloads.sourceforge.net/project/deadbeef/${pkgname}-${pkgver}.tar.bz2")
+
 tags="media-sound xapps"
+
 build_deps="perl-xml-parser yasm"
 
 BUILD_SYSTEM="autotools"
