@@ -1,6 +1,6 @@
 pkgname=dialog
 pkgver=1.2_20130523
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="dialog (display dialog boxes from shell scripts) "
@@ -9,7 +9,6 @@ tags="base sys-base"
 build_deps="ncurses"
 
 BUILD_SYSTEM="autotools"
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
 BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \
@@ -21,4 +20,5 @@ BUILD_KEYS="--prefix=/usr \
 --with-ncursesw \
 --enable-nls"
 
+INSTALL_WORD="make install-full"
 INSTALL_KEYS="DESTDIR=$pkgdir"

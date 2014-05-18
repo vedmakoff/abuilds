@@ -5,7 +5,9 @@ arch=('auto')
 
 shortdesc="A Massively Spiffy Yet Delicately Unobtrusive Compression Library"
 source=("http://downloads.sourceforge.net/libpng/zlib-${pkgver}.tar.xz")
-tags="libs app-arch"
+
+tags="libs app-arch compat32"
+
 build_deps="glibc-solibs"
 pkglist="minizip"
 

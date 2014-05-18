@@ -1,6 +1,6 @@
 pkgname=dracut
-pkgver=034
-pkgbuild=1
+pkgver=036
+pkgbuild=2
 arch=('auto')
 
 shortdesc="Generic, modular, cross-distribution initramfs generation tool"
@@ -11,9 +11,10 @@ build_deps="asciidoc libxslt docbook-xml docbook-xsl"
 config_files="etc/dracut.conf"
 
 BUILD_SYSTEM="autotools"
-BUILD_KEYS=" --libdir=/usr/lib$LIBDIRSUFFIX \
+BUILD_KEYS="--libdir=/usr/lib$LIBDIRSUFFIX \
  --pkglibdir=/usr/lib$LIBDIRSUFFIX \
  --sysconfdir=/etc"
+INSTAL_KEYS="DESTDIR=${pkgdir} sysconfdir=/etc"
 
 after_build() {
   go_src_dir

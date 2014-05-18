@@ -31,4 +31,3 @@ BUILD_KEYS="--prefix=/usr \
 	--disable-ffmpeg"
  
 INSTALL_KEYS="DESTDIR=$pkgdir"
-

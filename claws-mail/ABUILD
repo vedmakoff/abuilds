@@ -1,6 +1,6 @@
 pkgname=claws-mail
-pkgver=3.9.2
-pkgbuild=6
+pkgver=3.9.3
+pkgbuild=10
 arch=('auto')
 
 shortdesc="Claws Mail is an email client (and news reader), based on GTK+"
@@ -11,12 +11,39 @@ custom_opts="no_ccache"
 BUILD_SYSTEM="autotools"
 
 BUILD_KEYS="--prefix=/usr \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--disable-static \
-	--mandir=/usr/man \
-	--enable-largefile \
-	--enable-nls"
+--prefix=/usr \
+--sysconfdir=/etc \
+--localstatedir=/var \
+--libdir=/usr/lib${LIBDIRSUFFIX} \
+--disable-static \
+--disable-maintainer-mode \
+--enable-crash-dialog \
+--mandir=/usr/man \
+--enable-largefile \
+--enable-fancy-plugin \
+--enable-tnef_parse-plugin \
+--enable-vcalendar-plugin \
+--enable-notification-plugin \
+--enable-pdf_viewer-plugin \
+--enable-newmail-plugin \
+--enable-notification-plugin \
+--enable-python-plugin \
+--enable-pgpcore-plugin \
+--enable-pgpmime-plugin \
+--enable-pgpinline-plugin \
+--enable-rssyl-plugin \
+--enable-smime-plugin \
+--enable-nls"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
+
+after_build() {
+  go_src_dir
+  cd tools
+  make
+
+  # all executables and .conf files ; only top directory
+  find -maxdepth 1 -type f -and -perm /111 -or -name '*.conf' | while read i ; do
+    install -D -m755 ${i} ${pkgdir}/usr/lib${LIBDIRSUFFIX}/claws-mail/tools/${i}
+  done
+}

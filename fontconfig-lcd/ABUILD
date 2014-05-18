@@ -1,6 +1,6 @@
 pkgname=fontconfig-lcd
 pkgver=2.8.0
-pkgbuild=1
+pkgbuild=3
 arch=('noarch')
 shortdesc="A library for configuring and customizing font access (custom LCD filter). Requires fontconfig to be installed."
 tags="xserver media-libs"

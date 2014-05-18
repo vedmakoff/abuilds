@@ -6,6 +6,7 @@ arch=('auto')
 shortdesc="Multicast/unicast DNS-SD framework"
 
 source=("http://avahi.org/download/${pkgname}-${pkgver}.tar.gz")
+tags="network net-dns compat32"
 pkglist="gtk qt"
 build_deps="expat libdaemon glib2 libcap gdbm"
 
@@ -51,7 +52,6 @@ qt_prep() {
 	set +e
 }
 
-tags="network net-dns"
 build() {
 	go_src_dir
 	burn_patches

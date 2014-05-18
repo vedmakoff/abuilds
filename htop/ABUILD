@@ -4,6 +4,7 @@ pkgbuild=1
 arch="auto"
 
 shortdesc=("interactive text-mode process viewer")
+
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
 tags="sys-process console"
 build_deps="ncurses python lsof strace"

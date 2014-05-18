@@ -19,7 +19,7 @@ numjobs=1
 before_build() {
 	go_src_dir
 	# force it to use system-libs
-	rm -rf cups/libs jpeg libpng zlib jasper expat tiff freetype lcms{,2}
+	rm -rf jpeg libpng zlib jasper expat tiff freetype lcms
 }
 
 BUILD_SYSTEM="autotools"

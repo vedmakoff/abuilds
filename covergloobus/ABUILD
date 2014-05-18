@@ -12,7 +12,6 @@ shortdesc="CoverGloobus allows you to see at a glance your currently playing son
 
 
 #source=("http://downloads.sourceforge.net/sourceforge/${pkgname}/${pkgname}-${pkgver}.tar.bz2")
-
 #source=("bzr:lp:covergloobus")
 source=("bzr:lp:${pkgname}")
 

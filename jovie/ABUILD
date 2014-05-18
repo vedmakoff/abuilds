@@ -1,5 +1,5 @@
 pkgname=jovie
-pkgver=4.10.3
+pkgver=4.10.5
 pkgbuild=1
 arch=('auto')
 
