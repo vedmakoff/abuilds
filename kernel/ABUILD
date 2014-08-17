@@ -2,16 +2,16 @@
 
 pkgname=kernel
 # Kernel version may contain '-' symbol, so let's protect from it by using kernel_ver everywhere.
-pkgver=3.14.0
+pkgver=3.16.1
 
-kernel_ver=`echo ${pkgver} | sed -e s/_/-/g`
+kernel_ver=${pkgver//_/-}
 if [ "${kernel_ver}" = "`echo ${kernel_ver} | sed 's/\.0$//g'`" ] ; then
    srcver=${kernel_ver}
 else
-   srcver=`echo ${kernel_ver} | sed 's/\.0$//g'`
+   srcver=${kernel_ver%.0}
 fi
 kernel_base=${pkgver%.*}
-ver_group=`echo ${kernel_ver%%.*}
+ver_group=${kernel_ver%%.*}
 config_suffix=${CONFIG_SUFFIX:-}
 
 

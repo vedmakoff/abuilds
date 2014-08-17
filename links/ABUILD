@@ -2,7 +2,7 @@
 
 pkgname=links
 pkgver=2.8
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("WWW browser for the console")

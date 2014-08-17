@@ -1,6 +1,6 @@
 pkgname=pidgin
-pkgver=2.10.7
-pkgbuild=2
+pkgver=2.10.9
+pkgbuild=1
 arch=('auto')
 shortdesc="multi-protocol instant messaging client"
 longdesc=("Pidgin is an easy to use and free chat client used by millions. Connect to AIM, MSN, Yahoo, and more chat networks all at once")
@@ -9,7 +9,7 @@ tags="net-im xapps"
 adddep="libpurple==$pkgver"
 pkglist="finch libpurple"
 build_deps=("libXScrnSaver nss libSM libidn python hicolor-icon-theme intltool \
-    atk cairo dbus dbus-glib fontconfig freetype gdk-pixbuf glib2 glibc-solibs gstreamer \
+    atk cairo dbus dbus-glib fontconfig freetype gdk-pixbuf glib2 glibc-solibs gstreamer010 \
     gtk+2 libICE libSM libX11 libXext libxml2 pango cyrus-sasl")
 
 
@@ -46,7 +46,6 @@ build()
 	--disable-nm \
 	--disable-vv \
 	--disable-gtkspell \
-	--disable-gstreamer \
 	--with-extraversion=AgiliaLinux \
 	--with-system-ssl-certs=/usr/share/ca-certificates/ || exit 1
     make -j$numjobs || exit 1
