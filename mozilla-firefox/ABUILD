@@ -1,6 +1,6 @@
 pkgname=mozilla-firefox
 
-pkgver=28.0
+pkgver=32.0.3
 _pkgver=${pkgver}
 
 pkgbuild=1
@@ -49,23 +49,21 @@ build() {
 
 	make -j1 -f client.mk build
 	#LD_PRELOAD="" /usr/bin/Xvfb -nolisten tcp -extension GLX -screen 0 1280x1024x24 :99 &
-	#LD_PRELOAD="" DISPLAY=:99 
+	#LD_PRELOAD="" DISPLAY=:99
 	#make -j1 -f client.mk build #MOZ_MAKE_FLAGS="-j6"
 	go_src_dir
 	#mkdir -p ${pkgdir}
 	#unset MOZ_MAKE_FLAGS
 	make -j1 -f client.mk DESTDIR=${pkgdir} install || exit 1
 	set +x
-
-
 }
 
 after_build() {
 	set -x
 	cd ${pkgdir}
 	rm -rf ${pkgdir}/usr/include
-	rm -rf ${pkgdir}/usr/lib${LIBDIRSUFFIX}/firefox-devel-${pkgver} 
-	rm -rf ${pkgdir}/usr/share/idl 
+	rm -rf ${pkgdir}/usr/lib${LIBDIRSUFFIX}/firefox-devel-${pkgver}
+	rm -rf ${pkgdir}/usr/share/idl
 	go_src_dir
 	for i in 16x16 22x22 24x24 32x32 48x48 256x256; do
 		install -Dm644 browser/branding/official/default${i/x*/}.png \

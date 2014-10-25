@@ -1,5 +1,5 @@
 pkgname=xulrunner
-pkgver=28.0
+pkgver=32.0.3
 pkgbuild=1
 arch=('auto')
 
