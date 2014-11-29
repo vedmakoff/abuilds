@@ -1,7 +1,7 @@
 pkgname=gtk+2
-pkgver=2.24.22
+pkgver=2.24.24
 tree=${pkgver%.*}
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc="GTK+ version 2 (multi-platform GUI toolkit)"

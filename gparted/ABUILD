@@ -1,5 +1,5 @@
 pkgname=gparted
-pkgver=0.18.0
+pkgver=0.19.1
 pkgbuild=1
 arch=('auto')
 

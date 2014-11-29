@@ -14,7 +14,6 @@ before_build() {
   autoreconf
 }
 
-
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
