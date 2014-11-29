@@ -1,5 +1,5 @@
 pkgname=gtk+3
-pkgver=3.8.7
+pkgver=3.12.2
 pkgbuild=1
 arch=('auto')
 

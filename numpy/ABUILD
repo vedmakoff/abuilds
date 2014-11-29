@@ -1,5 +1,5 @@
 pkgname=numpy
-pkgver=1.8.0
+pkgver=1.8.1
 pkgbuild=1
 arch=('auto')
 

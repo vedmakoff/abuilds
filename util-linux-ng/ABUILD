@@ -1,6 +1,6 @@
 # util-linux-ng ABUILD
 pkgname=util-linux-ng
-pkgver=2.24
+pkgver=2.24.2
 pkgbuild=1
 arch=('auto')
 

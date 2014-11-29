@@ -2,7 +2,7 @@
 
 pkgname=kernel
 # Kernel version may contain '-' symbol, so let's protect from it by using kernel_ver everywhere.
-pkgver=3.14.0
+pkgver=3.14.4
 
 kernel_ver=`echo ${pkgver} | sed -e s/_/-/g`
 if [ "${kernel_ver}" = "`echo ${kernel_ver} | sed 's/\.0$//g'`" ] ; then
@@ -11,7 +11,7 @@ else
    srcver=`echo ${kernel_ver} | sed 's/\.0$//g'`
 fi
 kernel_base=${pkgver%.*}
-ver_group=`echo ${kernel_ver%%.*}
+ver_group=`echo ${kernel_ver%%.*}`
 config_suffix=${CONFIG_SUFFIX:-}
 
 

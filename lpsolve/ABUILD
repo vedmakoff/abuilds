@@ -13,13 +13,10 @@ build() {
   go_src_dir
   burn_patches
 
-  # taken from Fedora spec
-  cd lpsolve55
-  sh -x ccc
-  rm bin/ux*/liblpsolve55.a
-  cd ../lp_solve
-  sh -x ccc
-  cd ..
+  ( cd lpsolve55 ; sh -x ccc
+    rm bin/ux*/liblpsolve55.a )
+  ( cd ../lp_solve ; sh -x ccc )
+
   # install
   install -d ${pkgdir}/usr/{bin,lib${LIBDIRSUFFIX},include/lpsolve}
   install -m 755 lp_solve/bin/ux*/lp_solve ${pkgdir}/usr/bin/

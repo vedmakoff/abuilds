@@ -2,7 +2,7 @@
 
 pkgname=cairo
 pkgver=1.12.16
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 shortdesc=('cairo (graphics library used by GTK+)')

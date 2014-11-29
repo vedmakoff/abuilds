@@ -8,29 +8,23 @@ source=("http://software.wise-guys.nl/download/${pkgname}-${pkgver}.tar.gz")
 tags="libs dev-libs"
 build_deps="glibc"
 
-before_build()
-{
+before_build() {
   go_src_dir
   autoreconf -fi
 }
 
 BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
 BUILD_KEYS="--prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man \
---program-prefix= \
---program-suffix="
-
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man \
+  --program-prefix= \
+  --program-suffix="
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
-after_build()
-{
+after_build() {
   go_src_dir
   install -dm755 ${pkgdir}/usr/share/libtextcat/{LM,ShortTexts}
   install -m644 ${filedir}/fpdb.conf ${pkgdir}/usr/share/libtextcat
