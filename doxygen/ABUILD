@@ -1,5 +1,5 @@
 pkgname=doxygen
-pkgver=1.8.5
+pkgver=1.8.7
 pkgbuild=1
 arch=("auto")
 
@@ -12,15 +12,15 @@ source=("http://ftp.stack.nl/pub/users/dimitri/${pkgname}-${pkgver}.src.tar.gz")
 
 build_deps="fontconfig glibc-solibs python qt4 graphviz flex ghostscript"
 
-before_build() {
-  go_src_dir
+#before_build() {
+#  go_src_dir
   # fix final DESTDIR issue
-  sed -i.orig -e "s:\$(INSTALL):\$(DESTDIR)/\$(INSTALL):g" \
-              addon/doxywizard/Makefile.in || die
-}
+#  sed -i.orig -e "s:\$(INSTALL):\$(DESTDIR)/\$(INSTALL):g" \
+#              addon/doxywizard/Makefile.in || die
+#}
 
 BUILD_SYSTEM="autotools"
-BUILD_WORD="QTDIR=/usr ./configure"
+BUILD_WORD="QTDIR=/usr/lib${LIBDIRSUFFIX}/qt ./configure"
 BUILD_KEYS="--prefix /usr --with-doxywizard"
 INSTALL_KEYS="DESTDIR=${pkgdir} all"
 

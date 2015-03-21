@@ -1,6 +1,6 @@
 pkgname=man-pages
-pkgver=3.54
-_posixver=2003-a
+pkgver=3.67
+_posixver=2013-a
 pkgbuild=1
 arch=("noarch")
 
@@ -9,8 +9,8 @@ longdesc=("Man pages are online documentation for Linux. This package includes m
 
 tags=("console sys-apps")
 
-source=("http://www.kernel.org/pub/linux/docs/man-pages/$pkgname-$pkgver.tar.gz"
-"http://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/$pkgname-posix-${_posixver}.tar.bz2")
+source=("http://www.kernel.org/pub/linux/docs/man-pages/$pkgname-$pkgver.tar.xz"
+"http://www.kernel.org/pub/linux/docs/man-pages/man-pages-posix/$pkgname-posix-${_posixver}.tar.xz")
 
 build_deps="sed mkpkg"
 adddep="man"

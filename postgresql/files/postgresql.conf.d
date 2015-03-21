@@ -1,5 +1,6 @@
-# PostgreSQL's Database Directory
-PGDATA="/var/lib/pgsql/data"
+
+# PostgreSQL's config directory
+PGDATA="/etc/postgresql"
 
 # PostgreSQL User
 PGUSER="pgsql"
@@ -14,29 +15,48 @@ PGGROUP="pgsql"
 # can be set directly in the configuration-file.
 PGOPTS="-N 40 -B 80"
 
+# Which port and socket to bind PostgreSQL
+PGPORT="5432"
 
-# SERVER SHUTDOWN:
-# The server will receive 3 signals in the worst case:
-# 1. SIGTERM
-#  This signals the server to ignore new connections and to
-#  wait for all clients to end their transactions before shutting down.
-#  Use WAIT_FOR_DISCONNECT to control how much time the clients
-#  should have until the next signal is being sent.
-# 2. SIGINT
-#  Tell the server to forcefully disconnect all clients.
-#  Terminating a client results in a rollback of the open transactions for this client.
-#  Use WAIT_FOR_CLEANUP to determine how much time the server has
-#  for cleanup. (Set it to "forever" if you want to wait forever.)
-# 3. SIGQUIT
-#  This will terminate the server immediately and results in a recovery run for the next start.
+# How long to wait for server to start in seconds
+START_TIMEOUT=10
 
-# Wait for clients to disconnect (seconds or "forever")
-WAIT_FOR_DISCONNECT=10
+# NICE_QUIT ignores new connections and wait for clients to disconnect from
+# server before shutting down. NICE_TIMEOUT in seconds determines how long to
+# wait for this to succeed.
+NICE_TIMEOUT=60
 
-# Time the server has to clean up (seconds or "forever")
-WAIT_FOR_CLEANUP=10
+# Forecfully disconnect clients from server and shut down. This is performed
+# after NICE_QUIT. Terminated client connections have their open transactions
+# rolled back.
+# Set RUDE_QUIT to "NO" to disable. RUDE_TIMEOUT in seconds.
+RUDE_QUIT="YES"
+RUDE_TIMEOUT=30
 
-# If you have to export environment variables for the database process,
-# this can be done here.
-# Example:
-#   export R_HOME="/usr/lib/R"
+# If the server still fails to shutdown, you can force it to quit by setting
+# this to YES and a recover-run will execute on the next startup.
+# Set FORCE_QUIT to "YES" to enable. FORCE_TIMEOUT in seconds.
+FORCE_QUIT="NO"
+FORCE_TIMEOUT=2
+
+# Pass extra environment variables. If you have to export environment variables
+# for the database process, this can be done here.
+# Don't forget to escape quotes.
+#PG_EXTRA_ENV="PGPASSFILE=\"/path/to/.pgpass\""
+
+##############################################################################
+#
+# The following values should not be arbitrarily changed.
+#
+# The initscript also uses these variables to inform PostgreSQL where to find
+# its data directory and configuration files.
+#
+##############################################################################
+
+# Where the data directory is located/to be created
+DATA_DIR="/var/lib/pgsql/data"
+
+# Additional options to pass to initdb.
+# See 'man initdb' for available options.
+PG_INITDB_OPTS="--encoding=UTF8"
+

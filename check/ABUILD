@@ -1,28 +1,18 @@
 pkgname=check
-pkgver=0.9.11
+pkgver=0.9.12
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Check is a unit testing framework for C"
-
 source=("http://downloads.sourceforge.net/project/check/${pkgname}/${pkgver}/${pkgname}-${pkgver}.tar.gz")
-
-
 tags="develop sys-devel"
+build_deps="gawk"
 
-
-build()
-{
-
-go_src_dir
-
-./configure --prefix=/usr \
---sysconfdir=/etc \
---localstatedir=/var \
---libdir=/usr/lib${LIBDIRSUFFIX} \
---disable-static \
---mandir=/usr/man 
-
-make DESTDIR=$pkgdir install
-
-}
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man"
+INSTALL_KEYS="DESTDIR=$pkgdir"

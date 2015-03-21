@@ -14,8 +14,8 @@ gendeps_blacklist="usr/lib$LIBDIRSUFFIX/qt/plugins/"
 removedep="mysql postgresql"
 build_deps=("make gcc alsa-lib libtiff libjpeg libpng libmng sqlite ca-certificates dbus fontconfig libICE \
     libSM freetype libgl libXrandr libXv libXi alsa-lib xdg-utils hicolor-icon-theme \
-    desktop-file-utils mysql libmysqlclient cups gtk+2 mesa zlib libXinerama libXcursor libXfixes \
-    libxml2 icu4c glib2 openssl-solibs diffutils postgresql")
+    desktop-file-utils mysql cups gtk+2 mesa zlib libXinerama libXcursor libXfixes \
+    libxml2 icu4c glib2 openssl-solibs postgresql-libs")
 
 before_build() {
   CXXFLAGS=$SLKCFLAGS

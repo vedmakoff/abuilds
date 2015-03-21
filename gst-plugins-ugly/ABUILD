@@ -2,7 +2,7 @@
 
 # Package metadata
 pkgname=gst-plugins-ugly
-pkgver=1.1.1
+pkgver=1.2.4
 pkgbuild=1
 arch="auto"
 
@@ -15,7 +15,7 @@ source=("http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-
 
 # Tags
 tags="libs media-libs"
-build_deps="gst-plugins-base-libs libdvdread lame libmpeg2 a52dec libmad libsidplay libcdio x264 opencore-amr"
+build_deps="gst-plugins-base libdvdread lame libmpeg2 a52dec libmad libsidplay libcdio x264 opencore-amr"
 
 before_build() {
 	go_src_dir

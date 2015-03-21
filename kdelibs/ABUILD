@@ -2,7 +2,7 @@
 
 pkgname=kdelibs
 pkgver=4.12.4
-pkgbuild=1
+pkgbuild=2
 arch=('auto')
 
 # Conflicts with gnome-menus, so it is ok to configure it.
@@ -12,9 +12,12 @@ shortdesc=('kdelibs (KDE libraries)')
 longdesc=('System libraries and other resources required by KDE')
 
 tags=('kde-base kde4')
-
 source=("ftp://ftp.kde.org/pub/kde/stable/${pkgver}/src/kdelibs-${pkgver}.tar.xz")
 
+build_deps=("acl aspell attr bzip2 dbusmenu-qt e2fsprogs enchant ilmbase
+            jasper krb5 libattica libICE libjpeg libpng giflib libX11
+            libXcursor libXtst libxml2 libxslt openexr pcre phonon polkit-qt 
+            qca qt4 soprano strigi udev xz cmake mesa")
 
 if [ -d /usr/lib${LIBDIRSUFFIX}/qt ]; then
   QTDIR=/usr/lib${LIBDIRSUFFIX}/qt
