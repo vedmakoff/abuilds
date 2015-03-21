@@ -8,7 +8,7 @@ arch=("auto")
 shortdesc=("FUSE (Filesystem in Userspace)")
 longdesc=("FUSE is a simple interface for userspace programs to export a virtual filesystem to the Linux kernel. FUSE also aims to provide a secure method for non privileged users to create and mount their own filesystem implementations. The FUSE web site can be found here: http://fuse.sourceforge.net")
 
-tags=("libs sys-fs")
+tags=("libs sys-fs compat32")
 
 source=("http://downloads.sourceforge.net/$pkgname/$pkgname-$pkgver.tar.gz")
 build_deps="glibc"

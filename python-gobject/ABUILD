@@ -1,5 +1,5 @@
 pkgname=python-gobject
-pkgver=3.8.3
+pkgver=3.14.0
 pkgbuild=1
 arch=('auto')
 
@@ -7,7 +7,7 @@ shortdesc=("pygobject (GObject bindings for Python)")
 longdesc=("This archive contains bindings for the GObject, to be used in Python. It is a fairly complete set of bindings, it's already rather useful, and is usable to write moderately complex programs. pygobject's home page: http://www.pygtk.org/")
 tags=('dev-python libs')
 source=("http://ftp.gnome.org/pub/gnome/sources/pygobject/${pkgver%.*}/pygobject-${pkgver}.tar.xz")
-build_deps="python python-cairo glib2"
+build_deps="python python-cairo glib2 gobject-introspection"
 conflicts="pygobject"
 
 BUILD_SYSTEM='autotools'
@@ -15,5 +15,5 @@ BUILD_KEYS="--prefix=/usr \
   --libdir=/usr/lib${LIBDIRSUFFIX} \
   --sysconfdir=/etc \
   --localstatedir=/var \
-  --disable-introspection"
+  --enable-introspection"
 INSTALL_KEYS="DESTDIR=$pkgdir"

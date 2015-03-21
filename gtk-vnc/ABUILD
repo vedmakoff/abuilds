@@ -1,14 +1,13 @@
 pkgname=gtk-vnc
-pkgver=0.5.2
+pkgver=0.5.3
 pkgbuild=1
 arch=('auto')
 
 shortdesc="gtk-vnc is a VNC viewer widget for GTK"
 longdesc=("It is built using coroutines allowing it to be completely asynchronous while remaining single threaded. It provides a core C library, and bindings for Python (PyGTK).")
-
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
 tags="net-libs network"
-build_deps="gtk+2 gtk+3 libgcrypt pygtk python-gobject gobject-introspection cyrus-sasl"
+build_deps="gtk+2 gtk+3 libgcrypt python-pygtk python-gobject gobject-introspection cyrus-sasl gtk-doc"
 
 build() {
   cd ${srcdir}
@@ -21,6 +20,7 @@ build() {
     --libdir=/usr/lib${LIBDIRSUFFIX} \
     --disable-static \
     --mandir=/usr/man \
+    --enable-vala=no \
     --enable-nls \
     --enable-rebuilds \
     --with-python \

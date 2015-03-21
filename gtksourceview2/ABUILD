@@ -1,0 +1,21 @@
+pkgname=gtksourceview2
+pkgver=2.10.5
+pkgbuild=1
+arch=('auto')
+
+shortdesc="Text widget that extend the standard gtk+2.x text widget GtkTextView"
+source=("http://ftp.gnome.org/pub/gnome/sources/gtksourceview/${pkgver%.*}/gtksourceview-${pkgver}.tar.bz2")
+tags="libs x11-libs"
+build_deps="gtk+2 libxml2 intltool pkg-config"
+BUILD_SYSTEM="autotools"
+BUILD_KEYS="--prefix=/usr \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --disable-static \
+  --mandir=/usr/man \
+  --enable-shared \
+  --enable-nls"
+
+INSTALL_KEYS="DESTDIR=$pkgdir"
+

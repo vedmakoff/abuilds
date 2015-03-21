@@ -11,6 +11,7 @@ longdesc=("This package makes smooth transition from virtualbox-bin to virtualbo
 tags=("app-emulation virtual")
 
 adddep="virtualbox>=$pkgver"
+build_deps="mkpkg"
 
 build() {
 	echo "Building virtual package..."

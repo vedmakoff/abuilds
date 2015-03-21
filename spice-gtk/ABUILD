@@ -1,13 +1,15 @@
 
 pkgname=spice-gtk
-pkgver=0.21
+pkgver=0.25
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("SPICE GTK+ Widget")
 tags=("net-misc xapps")
 source=("http://spice-space.org/download/gtk/spice-gtk-${pkgver}.tar.bz2")
-build_deps="gstreamer openssl gtk+3 cairo zlib python pkg-config cyrus-sasl dbus-glib python-gobject celt051"
+build_deps=("gstreamer openssl gtk+3 cairo zlib python pkg-config cyrus-sasl
+  dbus-glib python-gobject celt051 gobject-introspection intltool usbutils
+  usbredir spice-protocol")
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
@@ -19,6 +21,8 @@ BUILD_KEYS="--prefix=/usr \
     --with-python \
     --with-sasl \
     --with-dbus \
+    --with-coroutine=gthread \
+    --enable-usbredir=yes \
     --enable-smartcard=no"
 
 INSTALL_KEYS="DESTDIR=$pkgdir"
