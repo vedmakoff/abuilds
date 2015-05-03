@@ -19,62 +19,62 @@ build_deps='openssl-solibs glibc-solibs sqlite'
 CFLAGS="$CFLAGS -fPIC"
 BUILD_SYSTEM='autotools'
 BUILD_KEYS="--prefix=/usr \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--with-plugindir=/usr/lib${LIBDIRSUFFIX}/sasl2 \
-	--with-configdir=/etc/sasl2 \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--disable-static \
-	--with-pam \
-	--enable-checkapop \
-	--enable-cram \
-	--enable-digest \
-	--disable-otp \
-	--disable-srp \
-	--disable-srp-setpass \
-	--disable-krb4 \
-	--enable-gssapi \
-	--enable-auth-sasldb \
-	--enable-plain \
-	--disable-anon \
-	--enable-login \
-	--enable-ntlm \
-	--disable-passdss \
-	--enable-sql \
-	--with-sqlite3=/usr/lib${LIBDIRSUFFIX} \
-	--with-devrandom=/dev/urandom \
-	--without-ldap \
-	--without-pgsql \
-	--without-mysql \
-	--with-saslauthd \
-	--with-gdbm \
-	--with-dblib=gdbm"
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-plugindir=/usr/lib${LIBDIRSUFFIX}/sasl2 \
+  --with-configdir=/etc/sasl2 \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --disable-static \
+  --with-pam \
+  --enable-checkapop \
+  --enable-cram \
+  --enable-digest \
+  --disable-otp \
+  --disable-srp \
+  --disable-srp-setpass \
+  --disable-krb4 \
+  --enable-gssapi \
+  --enable-auth-sasldb \
+  --enable-plain \
+  --disable-anon \
+  --enable-login \
+  --enable-ntlm \
+  --disable-passdss \
+  --enable-sql \
+  --with-sqlite3=/usr/lib${LIBDIRSUFFIX} \
+  --with-devrandom=/dev/urandom \
+  --without-ldap \
+  --without-pgsql \
+  --without-mysql \
+  --with-saslauthd \
+  --with-gdbm \
+  --with-dblib=gdbm"
 
 MAKE_KEYS="sasldir=/usr/lib${LIBDIRSUFFIX}/sasl2"
 INSTALL_KEYS="sasldir=/usr/lib${LIBDIRSUFFIX}/sasl2 install DESTDIR=$pkgdir"
 
 before_build() {
-    go_src_dir
-    burn_patches
+  go_src_dir
+  burn_patches
 
-    # Get rid of the -R switch (runpath_switch for Sun)
-    # >=gcc-4.6 errors out with unknown option
-    sed -i -e '/LIB_SQLITE.*-R/s/ -R[^"]*//' configure.in || die
+  # Get rid of the -R switch (runpath_switch for Sun)
+  # >=gcc-4.6 errors out with unknown option
+  sed -i -e '/LIB_SQLITE.*-R/s/ -R[^"]*//' configure.in || die
 
-    sed -i -e 's:AM_CONFIG_HEADER:AC_CONFIG_HEADERS:g' configure.in || die
+  sed -i -e 's:AM_CONFIG_HEADER:AC_CONFIG_HEADERS:g' configure.in || die
 }
 
 after_build() {
-    mkdir -p $pkgdir/var/state/saslauthd
+  mkdir -p $pkgdir/var/state/saslauthd
 
-    # Fix sloppy man page installation:
-    rm -rf $pkgdir/usr/man/cat8
-    mkdir -p $pkgdir/usr/man/man8/
-    cat saslauthd/saslauthd.mdoc > $pkgdir/usr/man/man8/saslauthd.8
-    find $pkgdir/usr/doc/cyrus-sasl-$pkgver -type f -exec chmod 644 {} \;
-    rm -f $pkgdir/usr/doc/cyrus-sasl-$pkgver/doc/*Makefile*
+  # Fix sloppy man page installation:
+  rm -rf $pkgdir/usr/man/cat8
+  mkdir -p $pkgdir/usr/man/man8/
+  cat saslauthd/saslauthd.mdoc > $pkgdir/usr/man/man8/saslauthd.8
+  find $pkgdir/usr/doc/cyrus-sasl-$pkgver -type f -exec chmod 644 {} \;
+  rm -f $pkgdir/usr/doc/cyrus-sasl-$pkgver/doc/*Makefile*
 
-    # Add OpenRC scripts
-    install -Dm0644 $filedir/conf.d/saslauthd $pkgdir/etc/conf.d/saslauthd
-    install -Dm0755 $filedir/init.d/saslauthd $pkgdir/etc/init.d/saslauthd
+  # Add OpenRC scripts
+  install -Dm0644 $filedir/conf.d/saslauthd $pkgdir/etc/conf.d/saslauthd
+  install -Dm0755 $filedir/init.d/saslauthd $pkgdir/etc/init.d/saslauthd
 }

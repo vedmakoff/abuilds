@@ -2,7 +2,7 @@
 
 # Package metadata
 pkgname=ppl
-pkgver=1.0
+pkgver=1.1
 pkgbuild=1
 arch="auto"
 
@@ -22,40 +22,40 @@ pkglist="static ppldocs"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
-	--bindir=/usr/bin \
-	--sbindir=/usr/sbin \
-	--libexecdir=/usr/libexec \
-	--includedir=/usr/include \
-	--mandir=/usr/man \
-	--infodir=/usr/info \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--sysconfdir=/etc \
-	--localstatedir=/var \
-	--enable-ppl_lcdd \
-	--docdir=/usr/doc/${pkgname}-${pkgver} \
-	--enable-ppl_lpsol \
-	--enable-interfaces='c,cxx' \
-	--enable-optimization=sspeed"
+  --bindir=/usr/bin \
+  --sbindir=/usr/sbin \
+  --libexecdir=/usr/libexec \
+  --includedir=/usr/include \
+  --mandir=/usr/man \
+  --infodir=/usr/info \
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --sysconfdir=/etc \
+  --localstatedir=/var \
+  --enable-ppl_lcdd \
+  --docdir=/usr/doc/${pkgname}-${pkgver} \
+  --enable-ppl_lpsol \
+  --enable-interfaces='c,cxx' \
+  --enable-optimization=sspeed"
 
 static() {
-	pkgname=ppl-static
-	shortdesc="PPL static libs"
-	adddep="ppl"
+  pkgname=ppl-static
+  shortdesc="PPL static libs"
+  adddep="ppl"
 }
 
 ppldocs() {
-	pkgname=ppl-docs
-	shortdesc="PPL Documentation"
-	arch=("noarch")
+  pkgname=ppl-docs
+  shortdesc="PPL Documentation"
+  arch=("noarch")
 }
 
 static_prep() {
-	mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-	mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/*.a ${pkgdir}/usr/lib${LIBDIRSUFFIX}/
+  mkdir -p ${pkgdir}/usr/lib${LIBDIRSUFFIX}
+  mv ${p_pkgdir}/usr/lib${LIBDIRSUFFIX}/*.a ${pkgdir}/usr/lib${LIBDIRSUFFIX}/
 }
 
 ppldocs_prep() {
-	mkdir -p ${pkgdir}/usr
-	mv ${p_pkgdir}/usr/doc ${pkgdir}/usr
+  mkdir -p ${pkgdir}/usr
+  mv ${p_pkgdir}/usr/doc ${pkgdir}/usr
 }
 

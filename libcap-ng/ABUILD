@@ -1,6 +1,6 @@
 #ABUILD created by/создан: NomerUNO, uno.kms at gmail.com 
 pkgname=libcap-ng
-pkgver=0.7.3
+pkgver=0.7.4
 pkgbuild=1
 arch=('auto')
 
@@ -12,9 +12,6 @@ tags="sys-libs libs"
 build_deps="gcc libnl"
 
 BUILD_SYSTEM="autotools"
-
-BUILD_WORD="LDFLAGS=\"$SLKLDFLAGS\" CFLAGS=\"$SLKCFLAGS\" CXXFLAGS=\"$SLKCFLAGS\" ./configure"
-
 BUILD_KEYS="--prefix=/usr \
 --sysconfdir=/etc \
 --localstatedir=/var \

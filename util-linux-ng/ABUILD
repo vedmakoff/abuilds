@@ -1,6 +1,6 @@
 # util-linux-ng ABUILD
 pkgname=util-linux-ng
-pkgver=2.24.2
+pkgver=2.26.2
 pkgbuild=1
 arch=('auto')
 
@@ -44,7 +44,6 @@ BUILD_KEYS="--prefix=/usr \
   --enable-write \
   --enable-use-tty-group \
   --enable-vipw"
-
 
 after_build() {
   # Moving things around that have been in the same place
