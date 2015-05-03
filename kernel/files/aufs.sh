@@ -34,7 +34,7 @@ aufs_checkout() {
   done
 
   # Clean up
-  #rm -rf ${AUFS_DIR}
+  rm -rf ${AUFS_DIR}
 }
 
 aufs_git() {
