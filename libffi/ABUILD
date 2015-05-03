@@ -1,14 +1,11 @@
 pkgname=libffi
-pkgver=3.0.13
+pkgver=3.2.1
 pkgbuild=1
 arch=("auto")
 
 shortdesc=("A Portable Foreign Function Interface Library")
-
 tags=("dev-libs libs")
-
 source=("ftp://sourceware.org/pub/libffi/libffi-${pkgver}.tar.gz")
-
 build_deps="glibc-solibs"
 
 BUILD_SYSTEM="autotools"

@@ -6,11 +6,8 @@ pkgbuild=11
 arch=('auto')
 
 shortdesc=('libpthread-stubs')
-
 tags=('x11-libs xserver')
-
 source=("http://xcb.freedesktop.org/dist/libpthread-stubs-${pkgver}.tar.bz2")
-
 build_deps='glibc-solibs'
 
 adddep="glibc-solibs"

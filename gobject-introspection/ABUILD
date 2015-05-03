@@ -1,18 +1,15 @@
 pkgname=gobject-introspection
-pkgver=1.42.0
+pkgver=1.44.0
 pkgbuild=1
 arch=('auto')
 
 shortdesc="GObject Introspection"
-longdesc=("The goal of the project is to describe the APIs and  collect them in a uniform, machine readable format.")
-
+longdesc=("The goal of the project is to describe the APIs and collect them in a uniform, machine readable format.")
 source=("http://ftp.gnome.org/pub/gnome/sources/${pkgname}/${pkgver%.*}/${pkgname}-${pkgver}.tar.xz")
-
-build_deps="glib2 python python-mako libffi libpthread-stubs renderproto kbproto"
+build_deps="glib2 python python-mako libffi libpthread-stubs"
 tags="libs dev-libs"
 
 BUILD_SYSTEM="autotools"
-
 BUILD_KEYS="--prefix=/usr \
 	--sysconfdir=/etc \
 	--localstatedir=/var \
