@@ -41,8 +41,8 @@ build() {
   CFLAGS="${GLIBC_CFLAGS}"
 
   if [[ ${CARCH} = "i686" ]]; then
-  	# Hack to fix NPTL issues with Xen, only required on 32bit platforms
-  	export CFLAGS="${CFLAGS} -mno-tls-direct-seg-refs"
+    # Hack to fix NPTL issues with Xen, only required on 32bit platforms
+    export CFLAGS="${CFLAGS} -mno-tls-direct-seg-refs"
   fi
 
   export CFLAGS
