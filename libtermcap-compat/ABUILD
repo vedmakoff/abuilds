@@ -21,14 +21,14 @@ build() {
 
   gcc -fPIC -c "${pkgbase}.c" -o "${pkgbase}.o" \
     -DHAVE_STRING_H=1 -DHAVE_UNISTD_H=1 -DSTDC_HEADERS=1 || return 1
-  gcc -shared -Wl,-soname,"${pkgname}.so" \
-    -o "${pkgname}.so.${pkgver}" "${pkgbase}.o" || return 1
+  gcc -shared -Wl,-soname,"${pkgbase}.so" \
+    -o "${pkgbase}.so.${pkgver}" "${pkgbase}.o" || return 1
 }
 
 after_build() {
   go_src_dir
   # Install only runtime libs
   mkdir ${pkgdir}/usr/lib${LIBDIRSUFFIX}
-  install -D -m755 "${pkgname}.so.${pkgver}" "${pkgdir}/lib${LIBDIRSUFFIX}/${pkgname}.so.${pkgver}"
-  ln -s "/lib${LIBDIRSUFFIX}/${pkgname}.so.${pkgver}" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgname}.so.${pkgver}"
+  install -D -m755 "${pkgbase}.so.${pkgver}" "${pkgdir}/lib${LIBDIRSUFFIX}/${pkgbase}.so.${pkgver}"
+  ln -s "/lib${LIBDIRSUFFIX}/${pkgbase}.so.${pkgver}" "${pkgdir}/usr/lib${LIBDIRSUFFIX}/${pkgbase}.so.${pkgver}"
 }
