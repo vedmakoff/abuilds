@@ -2,7 +2,7 @@
 
 pkgname=ncurses
 pkgver=5.9
-pkgbuild=1
+pkgbuild=2
 arch=("auto")
 
 shortdesc=("ncurses (CRT screen handling and optimization package)")
@@ -12,90 +12,100 @@ tags=("libs sys-libs")
 
 source=("ftp://ftp.gnu.org/pub/gnu/${pkgname}/${pkgname}-${pkgver}.tar.gz")
 
-build_deps="glibc-solibs libtermcap"
+build_deps="glibc-solibs"
+
 if [ "$ARCH" = "x86_64" ] ; then
-	X86_64OPTS=" --with-chtype=long --with-mmask-t=long "
+  X86_64OPTS=" --with-chtype=long --with-mmask-t=long "
 fi
-
 BUILD_KEYS="--prefix=/usr \
-	--libdir=/usr/lib${LIBDIRSUFFIX} \
-	--with-gpm \
-	--disable-termcap \
-	--with-normal \
-	--with-shared \
-	--enable-symlinks \
-	--without-debug \
-	--without-profile \
-	--without-ada \
-	$X86_64OPTS \
-	--program-suffix= \
-	--program-prefix="
-
+  --libdir=/usr/lib${LIBDIRSUFFIX} \
+  --with-gpm \
+  --disable-termcap \
+  --with-normal \
+  --with-shared \
+  --enable-symlinks \
+  --without-debug \
+  --without-profile \
+  --without-ada \
+  $X86_64OPTS \
+  --with-cxx-binding \
+  --with-cxx-shared \
+  --program-suffix= \
+  --program-prefix="
 
 build() {
-	go_src_dir
-	burn_patches
-	set -e
+  go_src_dir
+  burn_patches
 
-	./configure $BUILD_KEYS
-	make -j${numjobs}
-	make install DESTDIR=${pkgdir}
+  mkdir ncurses{,w}-build
+  cd ncursesw-build
+  ../configure $BUILD_KEYS --enable-pc-files --enable-widec
+  make -j${numjobs}
 
-	make clean
-	./configure $BUILD_KEYS --enable-widec
-	make -j${numjobs}
-	make install DESTDIR=${pkgdir}
-	set +e
+  # libraries for external binary support
+  cd ../ncurses-build
+  ../configure $BUILD_KEYS
+  make -j${numjobs}
 }
 
 after_build() {
-	go_src_dir
-	set -e
-	if [ ! -d $pkgdir/usr/include/ncursesw -a ! -L $pkgdir/usr/include/ncursesw ]; then
-		( cd $pkgdir/usr/include ; ln -sf ncurses ncursesw )
-	fi
+  go_src_dir
+  local PKGLIB="${pkgdir}/usr/lib${LIBDIRSUFFIX}"
 
-	# Move the include files from /usr/include into
-	# /usr/include/ncurses, then make symlinks back
-	# into /usr/include.
-	( cd $pkgdir/usr/include
-		rm -rf ncurses
-		mkdir ncurses
-		mv *.h ncurses
-		for file in ncurses/* ; do
-			ln -sf $file .
-		done
-		# This shouldn't clobber the real one:
-		mv termcap.h termcap-ncurses.h
-	)
+  cd ncursesw-build
+  make install DESTDIR=${pkgdir}
 
-	# Move the ncurses libraries into /lib, since they're important:
-	mkdir -p $pkgdir/lib${LIBDIRSUFFIX}
-	( cd $pkgdir/usr/lib${LIBDIRSUFFIX}
-		chmod 755 *.so
-		chmod 644 *.a
-		mv libncurses.so.5* ${pkgdir}/lib${LIBDIRSUFFIX}
-		mv libncursesw.so.5* ${pkgdir}/lib${LIBDIRSUFFIX}
-		rm -f libncurses.so
-		ln -sf /lib${LIBDIRSUFFIX}/libncurses.so.5 libncurses.so
-		rm -f libncursesw.so
-		ln -sf /lib${LIBDIRSUFFIX}/libncursesw.so.5 libncursesw.so
-		# Olde obsolete names, just in case
-		rm -f libcurses.so
-		ln -sf libncurses.so libcurses.so
-		rm -f libcursesw.so
-		ln -sf libncursesw.so libcursesw.so
-	)
+  # fool packages looking to link to non-wide-character ncurses libraries
+  for lib in ncurses ncurses++ form panel menu; do
+    echo "INPUT(-l${lib}w)" > ${PKGLIB}/lib${lib}.so
+  done
 
-	# Set TERMINFO to point to the package:
-	export TERMINFO=${pkgdir}/usr/share/terminfo
-	# Fix the xterm, screen, rxvt, and Eterm entries:
-	for tfile in xterm.terminfo screeninfo.src rxvt.terminfo Eterm.ti ; do
-		if [ -r $tfile ]; then
-			progs/tic -v ${filedir}/$tfile
-		fi
-	done
-	unset TERMINFO
+  mkdir -p ${PKGLIB}/pkgconfig
+  for lib in ncurses ncurses++ form panel menu; do
+    ln -s ${lib}w.pc ${PKGLIB}/pkgconfig/${lib}.pc
+  done
 
-	set +e
+  # some packages look for -lcurses during build
+  echo "INPUT(-lncursesw)" > ${PKGLIB}/libcursesw.so
+  ln -s libncurses.so ${PKGLIB}/libcurses.so
+
+  # non-widec compatibility libraries
+  cd ../ncurses-build
+  for lib in ncurses form panel menu; do
+    install -Dm755 lib/lib${lib}.so.${pkgver%_*} ${PKGLIB}/lib${lib}.so.${pkgver%_*}
+    ln -s lib${lib}.so.${pkgver%_*} ${PKGLIB}/lib${lib}.so.5
+  done
+
+  go_src_dir
+  if [ ! -d $pkgdir/usr/include/ncursesw -a ! -L $pkgdir/usr/include/ncursesw ]; then
+    ( cd $pkgdir/usr/include ; ln -sf ncurses ncursesw )
+  fi
+
+  # Move the include files from /usr/include into
+  # /usr/include/ncurses, then make symlinks back
+  # into /usr/include.
+  ( cd $pkgdir/usr/include
+    rm -rf ncurses
+    mkdir ncurses
+    mv *.h ncurses
+    for file in ncurses/* ; do
+      ln -sf $file .
+    done
+    # This shouldn\'t clobber the real one:
+    mv termcap.h termcap-ncurses.h
+  )
+
+  # Set TERMINFO to point to the package:
+  export TERMINFO=${pkgdir}/usr/share/terminfo
+  # Fix the xterm, screen, rxvt, and Eterm entries:
+  for tfile in xterm.terminfo screeninfo.src rxvt.terminfo Eterm.ti ; do
+    if [ -r $tfile ]; then
+      progs/tic -v ${filedir}/$tfile
+    fi
+  done
+  unset TERMINFO
+
+  cd "$srcdir"/$pkgname-${pkgver/_/-}
+  install -dm755 "$pkgdir"/usr/share/licenses/$pkgname
+  grep -B 100 '$Id' README > "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 }
