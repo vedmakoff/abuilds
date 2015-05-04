@@ -1,5 +1,5 @@
 pkgname=agibuild
-pkgver=0.3.3
+pkgver=0.3.3.1
 pkgbuild=1
 arch=('auto')
 
