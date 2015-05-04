@@ -1,15 +1,10 @@
-#ABUILD created by/создан: K900, k0009000 at gmail.com 
 pkgname=beets
-pkgver=1.0b13
+pkgver=1.3.13
 pkgbuild=1
 arch=('auto')
 
 shortdesc="A music geek's library organizer"
 source="git:https://github.com/sampsyo/beets.git"
-
 tags="libs dev-python"
-adddep="mutagen python-munkres pysetuptools python-unidecode python-musicbrainz-ngs"
-
+adddep="mutagen python-munkres python-setuptools python-unidecode python-musicbrainz-ngs"
 BUILD_SYSTEM="python"
-MAKE_WORD="python setup.py build"
-

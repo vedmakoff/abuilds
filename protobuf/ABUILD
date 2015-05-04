@@ -1,26 +1,24 @@
 pkgname=protobuf
-pkgver=2.5.0
+pkgver=2.6.1
 pkgbuild=1
 arch=('auto')
 shortdesc="A way of encoding structured data in an efficient yet extensible format"
 source=("http://$pkgname.googlecode.com/files/$pkgname-$pkgver.tar.bz2")
 tags="libs dev-libs"
-build_deps="gcc zlib python pysetuptools"
+build_deps="gcc zlib python python-setuptools"
 pkglist="python_protobuf"
 
-python_protobuf()
-{
-	pkgname=python-protobuf
-	shortdesc="protobuf Python API"
-	adddep="protobuf=$pkgver python"
+python_protobuf() {
+  pkgname=python-protobuf
+  shortdesc="protobuf Python API"
+  adddep="protobuf=$pkgver python"
 }
 
-before_build()
-{
-	set -e
-	go_src_dir
-	./autogen.sh
-	set +e
+before_build() {
+  set -e
+  go_src_dir
+  ./autogen.sh
+  set +e
 }
 
 BUILD_SYSTEM="autotools"
@@ -35,11 +33,10 @@ BUILD_KEYS="--prefix=/usr \
 --program-suffix="
 INSTALL_KEYS="DESTDIR=$pkgdir"
 
-python_protobuf_prep()
-{
-	set -e
-	go_src_dir
-	cd python
-	python setup.py install --prefix=/usr --root $pkgdir
-	set +e
+python_protobuf_prep() {
+  set -e
+  go_src_dir
+  cd python
+  python setup.py install --prefix=/usr --root $pkgdir
+  set +e
 }

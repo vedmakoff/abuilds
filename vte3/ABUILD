@@ -9,7 +9,7 @@ source=("http://ftp.gnome.org/pub/GNOME/sources/vte/${pkgver%.*}/vte-${pkgver}.t
 tags="libs x11-libs"
 build_deps="gtk+2 python-gobject intltool gobject-introspection gtk-doc"
 adddep="python vte-common"
-pkglist="vte-common"
+pkglist="vte_common"
 
 BUILD_SYSTEM="autotools"
 BUILD_KEYS="--prefix=/usr \
@@ -28,12 +28,12 @@ after_build(){
   rm "$pkgdir"/etc/profile.d/vte.sh
 }
 
-vte-common(){
+vte_common(){
   pkgname=vte-common
   shortdesc="Common VTE files"
 }
 
-vte-common_prep(){
+vte_common_prep(){
   go_src_dir
   make -C gnome-pty-helper DESTDIR=$pkgdir install
   install -Dm644 src/vte.sh "$pkgdir"/etc/profile.d/vte.sh

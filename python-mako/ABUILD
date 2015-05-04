@@ -8,7 +8,7 @@ arch=("auto")
 shortdesc=("Hyperfast and lightweight templating for the Python2 platform.")
 tags=("dev-python develop")
 source=("http://www.makotemplates.org/downloads/Mako-$pkgver.tar.gz")
-build_deps="python pysetuptools"
+build_deps="python python-setuptools"
 adddep="python-markupsafe python-beaker"
 provides="mako"
 

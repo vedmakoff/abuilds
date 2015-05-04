@@ -1,13 +1,11 @@
 pkgname=python-south
-pkgver=0.8.1
+pkgver=1.0.2
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Intelligent database migrations library for the Django web framework"
 source=("http://www.aeracode.org/releases/south/south-$pkgver.tar.gz")
 tags="develop dev-python"
-build_deps="python pysetuptools"
+build_deps="python python-setuptools"
 adddep="python django"
-
 BUILD_SYSTEM="python"
-BUILD_KEYS=

@@ -1,13 +1,12 @@
 pkgname=python-memcached
-pkgver=1.53
+pkgver=1.54
 pkgbuild=1
 arch=('auto')
 
 shortdesc="Python interface to memcached"
 source=("http://ftp.tummy.com/pub/python-memcached/${pkgname}-${pkgver}.tar.gz")
 tags="develop dev-python"
-build_deps="pysetuptools"
+build_deps="python-setuptools"
 adddep="python memcached"
 
 BUILD_SYSTEM="python"
-BUILD_KEYS=

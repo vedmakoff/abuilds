@@ -1,11 +1,11 @@
 
 pkgname=python-babel
-pkgver=0.9.6
+pkgver=1.3
 pkgbuild=1
 shortdesc="A collection of tools for internationalizing Python applications"
 arch=('auto')
 
-build_deps="python pysetuptools"
+build_deps="python python-setuptools"
 adddep="python"
 
 source=("http://ftp.edgewall.com/pub/babel/Babel-$pkgver.tar.gz")

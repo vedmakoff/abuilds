@@ -1,17 +1,15 @@
 pkgname=mysql-python
-pkgver=1.2.4
+pkgver=1.2.5
 pkgbuild=1
 arch=('auto')
 
 shortdesc="MySQL support for Python"
-#-ruler---|--------------------------------------------------------------------------|
 longdesc=("MySQL support for Python")
 source=("http://pypi.python.org/packages/source/M/MySQL-python/MySQL-python-${pkgver}.zip")
 tags="dev-python libs"
-build_deps="python libmysqlclient pysetuptools mysql"
+build_deps="python libmysqlclient python-setuptools mysql"
 
-build()
-{
+build() {
   go_src_dir
   burn_patches
   python setup.py install --root=${pkgdir} || return 1
