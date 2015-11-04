@@ -1,0 +1,109 @@
+pkgname=mozilla-firefox-bin
+provides=${pkgname/-bin/}
+
+verbin=42.0
+verbeta=
+
+# beta
+if [ -z "$verbeta" ]; then
+ pkgver=${verbin}
+ _pkgver=${pkgver}
+else
+ pkgver=${verbin}_beta${verbeta}
+ _pkgver=${pkgver/_beta/b}
+fi
+
+#arch=('auto')
+if [[ "`uname -m`" == "x86_64" ]]; then
+ arch="x86_64"
+else
+ arch="i686"
+fi
+
+pkgbuild=1
+build_deps="mkpkg"
+
+https://download-installer.cdn.mozilla.net/pub/firefox/releases/42.0/linux-x86_64/ru/firefox-42.0.tar.bz2
+source=(
+"http://ftp.mozilla.org/pub/mozilla.org/firefox/releases/${_pkgver}/linux-${arch}/ru/firefox-${_pkgver}.tar.bz2"
+)
+
+#shortdesc="The free, non-profit browser for desktop"
+shortdesc="Standalone web browser from mozilla.org, beta build binaries"
+
+tags="xapps www-client"
+
+adddep="${pkgname}-xulrunner==$pkgver"
+removedep="xulrunner xulrunner-devel"
+conflicts="xulrunner xulrunner-devel"
+
+build() {
+cd $srcdir
+
+# opt
+mkdir -p $pkgdir/opt
+cp -r firefox $pkgdir/opt/
+
+# bin
+mkdir -p $pkgdir/usr/bin
+#ln -s /opt/firefox/firefox $pkgdir/usr/bin/firefox
+cat << EOF > ${pkgdir}/usr/bin/firefox
+#!/bin/bash
+cd /opt/firefox
+./firefox \$*
+cd -
+EOF
+chmod 755 ${pkgdir}/usr/bin/firefox
+
+# desktop-icon
+if [ -f "$pkgdir/opt/firefox/browser/icons/mozicon128.png" ]; then
+mkdir -p $pkgdir/usr/share/applications/
+cat << EOF > $pkgdir/usr/share/applications/${provides}.desktop
+[Desktop Entry]
+Encoding=UTF-8
+Exec=firefox %u
+Icon=/opt/firefox/browser/icons/mozicon128.png
+#Icon=firefox
+Type=Application
+Categories=Application;Network;
+Name=Firefox
+GenericName=Web Browser
+MimeType=text/html;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;
+X-KDE-StartupNotify=true
+EOF
+fi
+
+# dictionaries // we are using system hunspell
+rm -rf ${pkgdir}/opt/firefox/dictionaries
+ln -sfv /usr/share/hunspell ${pkgdir}/opt/firefox/dictionaries
+
+
+# Flash Player
+
+#mkdir -p ${pkgdir}/usr/lib
+#ln -sv /usr/lib64/mozilla ${pkgdir}/usr/lib
+
+if [[ -d "${pkgdir}/opt/firefox/browser/" && \
+! -e "${pkgdir}/opt/firefox/browser/plugins/" ]]; then
+ ln -sv /usr/lib${arch/x86_/}/mozilla/plugins/ ${pkgdir}/opt/firefox/browser/ || exit 1
+fi
+
+# for building OTHER chroot-ARCH system
+#cd $srcache
+#mv firefox-${_pkgver}.tar.bz2 firefox-${arch}-${_pkgver}.tar.bz2
+}
+
+
+# xulrunner
+if [[ "$conflicts" == "xulrunner xulrunner-devel" ]]; then
+ pkglist="lib"
+fi
+lib(){
+	pkgname="${p_pkgname}-xulrunner"
+	shortdesc="Xulrunner - common Mozilla runtime"
+	#conflicts="xulrunner"
+}
+lib_prep(){
+ mkdir -p $pkgdir/opt/firefox
+ mv -v ${p_pkgdir}/opt/firefox/libxul.so $pkgdir/opt/firefox
+}
