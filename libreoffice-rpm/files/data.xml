@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package>
+	<name>
+		libreoffice-rpm
+	</name>
+	<version>
+		4.0.1
+	</version>
+	<arch>
+		noarch
+	</arch>
+	<build>
+		1
+	</build>
+	<provides>
+		libreoffice
+	</provides>
+	<short_description>
+		LibreOffice is the free power-packed Open Source personal productivity suite, that gives you six feature-rich applications for all your document production and data processing needs:
+	</short_description>
+	<description>
+		
+		
+	
+	
+	</description>
+	<dependencies/>
+	<suggests/>
+	<maintainer>
+		<name>
+			Ben
+		</name>
+		<email>
+			ivan29m@rambler.ru
+		</email>
+	</maintainer>
+	<tags>
+		<tag>
+			app-office
+		</tag>
+		<tag>
+			virtual
+		</tag>
+	</tags>
+</package>
