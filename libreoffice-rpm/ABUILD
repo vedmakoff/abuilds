@@ -32,7 +32,7 @@ numjobs=1
 
 custom_opts="skip_gendeps"
 
-build_deps="mkpkg"
+build_deps="mkpkg rpm"
 
 
 #----------------------------- Make PKG --------------------------------------
